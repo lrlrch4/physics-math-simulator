@@ -1,7 +1,11 @@
+backgroundColor = '#050505'
+xy.grid = true;
+
+
 const rn = [];
 const pointsNumber = 20;
 for(let i = 0; i < pointsNumber; i++){
-    rn.push(  );
+    rn.push(Math.random()/2);
 }
 
 const endPoint = new CoordinatePoint({
@@ -67,7 +71,7 @@ const fourierCurve = new ParametricCurve({
       }),
     opacity: .5      
 })
-drawObjects.push(fourierCurve)
+drawObjects.push(fourierCurve);
 
 //Start the drawing
 updateSceneSetup();
