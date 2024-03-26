@@ -5,7 +5,9 @@ xy.grid = true;
 const rn = [];
 const pointsNumber = 20;
 for(let i = 0; i < pointsNumber; i++){
-    rn.push(Math.random()/2);
+    rn.push(
+        1/(i+1)
+        );
 }
 
 const endPoint = new CoordinatePoint({
@@ -69,7 +71,7 @@ const fourierCurve = new ParametricCurve({
         } 
         return position;        
       }),
-    opacity: .5      
+    opacity: .1      
 })
 drawObjects.push(fourierCurve);
 
