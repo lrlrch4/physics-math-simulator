@@ -1,0 +1,79 @@
+<head>
+    <title>
+        Physics-math engine
+    </title>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+<style>
+    body{
+        background-color: rgb(12, 12, 12);
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+    }
+    canvas {
+        border: 1px solid rgb(100, 100, 100);
+        padding: 0;
+        box-sizing: border-box;
+    }
+    button {
+        font-size: 2vh;
+        width: 3vw;
+        height: 3vh;
+        background-color: rgba(0, 0, 0, .2);
+        color: #0af;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        margin: 2px;
+    }
+
+    .buttonContainer{
+        position: absolute;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+        display: flex; 
+    }
+</style>
+<body>
+    <div class = 'buttonContainer'> 
+        <button id="startButton"><i class="fas fa-play"></i></button>
+        <button id="pauseButton"><i class="fas fa-pause"></i></button>
+        <button id="restartButton"><i class="fas fa-redo"></i></button>       
+    </div>
+    <canvas id = 'canvas'></canvas>
+</body>
+<script src = 'utils/Vector.js'></script>
+<script src = 'utils/FittingMap.js'></script>
+<script src = 'utils/Matrix.js'></script>
+<script src = 'utils/DrawSelectionRectangle.js'></script>
+
+<script src = 'scene-setup/canvasSetup.js'></script>
+
+<script src = 'object-classes/Arrow.js'></script>
+<script src = 'object-classes/AxisCoordinates.js'></script>
+
+<script src = 'object-classes/Particle.js'></script>
+<script src = 'object-classes/PointController.js'></script>
+
+<script src = 'object-classes/coordinateObjects/CoordinatePoint.js'></script>
+<script src = 'object-classes/coordinateObjects/Curve.js'></script>
+<script src = 'object-classes/coordinateObjects/ParametricCurve.js'></script>
+<script src = 'object-classes/coordinateObjects/Line.js'></script>
+<script src = 'object-classes/coordinateObjects/CoordinateVector.js'></script>
+<script src = 'object-classes/coordinateObjects/VectorField.js'></script>
+<script src = 'object-classes/coordinateObjects/ScalarField.js'></script>
+<script src = 'object-classes/coordinateObjects/NewAxis.js'></script>
+<script src = 'object-classes/coordinateObjects/Polygon.js'></script>
+<script src = 'object-classes/coordinateObjects/Rectangle.js'></script>
+<script src = 'object-classes/coordinateObjects/CircleArc.js'></script>
+<script src = 'object-classes/coordinateObjects/MathFunctionByParts.js'></script>
+
+<script src = 'scene-setup/animationSetup.js'></script>
+<script src = 'scene-setup/animationHandlers.js'></script>
+
+<script src = 'objectsCreation.js'></script> 
+<!-- <script src = 'fourierCurveScene.js'></script> -->
