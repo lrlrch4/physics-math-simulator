@@ -41,31 +41,6 @@ const xy = new AxisCoordinates({});
 
 interactiveObjects.push(xy);
 
-
-//Create a particle and its controller
-// const initialConditions = {
-//     pos: {x: 300, y: 300}, 
-//     vel: {x: 30, y: 40},
-//     acc: {x: 0, y: 0}
-// }
-
-// const particle = new Particle({
-//     pos: {...initialConditions.pos},
-//     vel: {...initialConditions.vel}, 
-//     acc: {...initialConditions.acc}
-// });
-// drawObjects.push(particle);
-
-
-// const controller = new PointController({})
-// controller.setAsControllerFor(particle);
-// drawObjects.push(controller);
-// interactiveObjects.push(controller);
-
-// const arrow = new Arrow({});
-// drawObjects.push(arrow);
-//-------------------------------------------------------
-
 //Handle animation
 var updateValuesBeforeDrawing = () => {}
 
@@ -88,9 +63,6 @@ function drawFrame(){
 function animate() {
     frame += 1; 
     t = frame * timeStep;
-    // particle.updateWith(controller);
-    // particle.update();
-    // controller.updateWith(particle); 
 }
 
 //handle on mouse down events

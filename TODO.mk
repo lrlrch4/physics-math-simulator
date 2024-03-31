@@ -1,4 +1,5 @@
 General: 
+Complete selection by a box 
 
 AxisCoordinates class:
 Make the axis values to keep on the screen if the axis is out of sight.
