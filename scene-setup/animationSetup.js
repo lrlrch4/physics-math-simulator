@@ -38,7 +38,6 @@ const animatedObjects = [];
 
 //Create the main coordinates axis
 const xy = new AxisCoordinates({});
-
 interactiveObjects.push(xy);
 
 //Handle animation
@@ -50,11 +49,6 @@ function drawFrame(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     drawBackground();  
-    //Keep values updated each frame
-    // arrow.origin = particle.pos;
-    // arrow.ending = controller.pos;
-    
-    //Draw list of objects
     xy.draw();
     updateValuesBeforeDrawing();
     drawObjects.forEach(element => element.draw())

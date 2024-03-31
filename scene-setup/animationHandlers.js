@@ -30,8 +30,7 @@ function resetSimulation(){
     frame = 0;
     t = 0;
 
-    // particle.resetInitialConditions(initialConditions);
-    // controller.setAsControllerFor(particle);
+    resetValues();
     drawFrame();    
 }
 

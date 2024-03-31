@@ -75,6 +75,3 @@ const fourierCurve = new ParametricCurve({
 })
 drawObjects.push(fourierCurve);
 
-//Start the drawing
-updateSceneSetup();
-drawFrame();

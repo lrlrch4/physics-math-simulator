@@ -14,6 +14,9 @@ class CoordinatePoint {
         this.layer = 0;
         this.offset = {x: 0, y: 0},
         this.isClicked = false;
+
+        this.onMouseMoveAddition = props.onMouseMoveAddition || 
+        (() => {});
         
         //Animation props
         this.animation = props.animation || (
@@ -103,7 +106,9 @@ class CoordinatePoint {
             
             this.pos = xy.pixelsToCoordiantes(pixels);                 
             drawFrame();
+            this.onMouseMoveAddition();
         }
+
     }
     
     onMouseUp() {                    

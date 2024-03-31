@@ -44,8 +44,6 @@ class CircleArc {
         const pixelRadius = xy.coordinatePixelUnit(this.radius);   
         const pixelStartPoint = xy.coordinatesToPixels(this.startPoint);
 
-        console.log('draw', this.startPoint);
-
         layer.save();
 
         layer.fillStyle = this.color;

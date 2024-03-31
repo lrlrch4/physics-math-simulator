@@ -7,9 +7,7 @@ backgroundColor = '#000000';
 unit = 300;
 xy.grid = true;
 xy.origin = {x: .1*canvas.width, y: .9*canvas.height};
-xy.axisColor = 'black';
-xy.labelColor = 'black';
-xy.gridColor = 'black'
+
 
 const pointA = new CoordinatePoint({ 
     label: 'A', 
@@ -30,20 +28,6 @@ interactiveObjects.push(pointA);
 animatedObjects.push(pointA);
 
 
-const pointB = new CoordinatePoint({ 
-    pos: {x: -4, y: 1}, 
-    label: 'B'
-})
-drawObjects.push(pointB);
-interactiveObjects.push(pointB);
-
-const pointC = new CoordinatePoint({ 
-    pos: {x: 2, y: -1}, 
-    label: 'C'
-})
-drawObjects.push(pointC);
-interactiveObjects.push(pointC);
-
 
 
 const coordinateVector = new CoordinateVector({ 
@@ -52,8 +36,6 @@ const coordinateVector = new CoordinateVector({
     opacity: 0.5
 });
 drawObjects.push(coordinateVector);
-animatedObjects.push(coordinateVector);
-
 
 
 
@@ -63,8 +45,6 @@ const newAxis = new NewAxis({
     newBasis2: {x: -1, y: 2}
 })
 drawObjects.push(newAxis);
-
-
 
 
 const polygon = new Polygon({ 

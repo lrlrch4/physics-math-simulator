@@ -1,0 +1,2 @@
+updateSceneSetup();
+drawFrame();
