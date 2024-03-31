@@ -23,7 +23,7 @@ function pauseSimulation(){
     startButtonCount = 0;
     isSimulating = false;           
 }
-
+var resetValues = (() => {});
 function resetSimulation(){
     isSimulating = false; 
     startButtonCount = 0;

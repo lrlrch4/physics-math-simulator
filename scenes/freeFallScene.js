@@ -8,6 +8,7 @@ const initial = {
     acc: {x: 0, y: -9.81}
 }
 
+
 const scaleVelocityFactor = .1
 const controller = new CoordinatePoint({ 
     pos: {
@@ -28,11 +29,13 @@ const controller = new CoordinatePoint({
             initial.vel.y = (controller.pos.y - particle.pos.y)/scaleVelocityFactor;
         }     
     }),
-    color: 'red'
+    color: 'red', 
+    opacity: .1
 })
 drawObjects.push(controller);
 interactiveObjects.push(controller);
 animatedObjects.push(controller);
+
 
 
 const particle = new CoordinatePoint({
@@ -62,16 +65,17 @@ animatedObjects.push(particle);
 
 
 
-
 const freeFallCurve = new ParametricCurve({
     mathFunction: ((s) => ({
         x: initial.pos.x + initial.vel.x*s + initial.acc.x*(s**2/2), 
         y: initial.pos.y + initial.vel.y*s + initial.acc.y*(s**2/2)
     })), 
     range: {start: 0, end: 5},
-    opacity: .25
+    opacity: .2
 })
 drawObjects.push(freeFallCurve);
+
+
 
 const velocityVector = new CoordinateVector({ 
     animation: (() => {
@@ -83,7 +87,9 @@ drawObjects.push(velocityVector);
 animatedObjects.push(velocityVector);
 
 
-const resetValues = (() => {
+
+//Reset values
+resetValues = (() => {
     particle.pos = initial.pos;
     controller.pos = {
         x: initial.pos.x + initial.vel.x*scaleVelocityFactor, 
