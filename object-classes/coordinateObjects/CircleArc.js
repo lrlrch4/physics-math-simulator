@@ -64,8 +64,8 @@ class CircleArc {
             layer.fillStyle = this.color;   
             layer.fillText(
                 this.label,
-                pixels.x + .75*this.labelSize,
-                pixels.y);
+                pixels.x + pixelRadius,
+                pixels.y - pixelRadius*0.70);
             }
             
             if(this.isClicked){ 

@@ -7,6 +7,8 @@ class Line{
         //Style props
         this.lineWidth = props.lineWidth || 3;
         this.color = props.color || '#0af';
+        this.opacity = props.opacity || 1;
+        this.isDashed = props.isDashed || false;
 
         //Animation props
         this.animation = props.animation || (
@@ -16,19 +18,26 @@ class Line{
 
     //Graphics methods
     draw(){
-        ctx.strokeStyle = this.color;  // Line color
-        ctx.lineWidth = this.lineWidth;         // Line width
+        const layer = canvas.getContext('2d');
+        layer.save();
+        layer.globalAlpha = this.opacity;
+        layer.strokeStyle = this.color;  // Line color
+        layer.lineWidth = this.lineWidth;         // Line width
     
         // Define the starting and ending points of the line
         const originPixels = xy.coordinatesToPixels(this.origin);
         const endingPixels = xy.coordinatesToPixels(this.ending);
 
         // Draw the line
-        ctx.beginPath();
-        ctx.moveTo(originPixels.x, originPixels.y);  
-        ctx.lineTo(endingPixels.x, endingPixels.y);      
-        ctx.stroke();                
-        ctx.closePath();
+        if(this.isDashed){
+            layer.setLineDash([10, 10]);
+        }
+        layer.beginPath();
+        layer.moveTo(originPixels.x, originPixels.y);  
+        layer.lineTo(endingPixels.x, endingPixels.y);      
+        layer.stroke();                
+        layer.closePath();
+        layer.restore();
     } 
     
     rotate({angle, from = {x: 0, y: 0}}){

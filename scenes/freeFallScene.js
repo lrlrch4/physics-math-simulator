@@ -8,7 +8,6 @@ const initial = {
     acc: {x: 0, y: -9.81}
 }
 
-
 const scaleVelocityFactor = .1
 const controller = new CoordinatePoint({ 
     pos: {

@@ -5,7 +5,7 @@ class CoordinatePoint {
         this.radius = props.radius || 15,
         
         //additional props
-        this.color = props.color || '#0fa', 
+        this.color = props.color || '#0af', 
         this.opacity = props.opacity || 1;
         this.label = props.label || '';
         this.labelSize = props.labelSize || 60;

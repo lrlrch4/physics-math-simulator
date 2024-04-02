@@ -71,7 +71,7 @@ class CoordinateVector{
             const layer3 = canvas.getContext('2d');
 
             layer3.font = `${this.labelSize}px Courier`;
-            layer3.fillStyle = "white";   
+            layer3.fillStyle = this.color;   
             layer3.fillText(
                 this.label,
                 (pixelsOrigin.x + pixelsEnding.x)/2,
