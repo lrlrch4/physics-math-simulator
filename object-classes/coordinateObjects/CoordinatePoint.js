@@ -15,8 +15,7 @@ class CoordinatePoint {
         this.offset = {x: 0, y: 0},
         this.isClicked = false;
 
-        this.onMouseMoveAddition = props.onMouseMoveAddition || 
-        (() => {});
+        this.onMouseMoveAddition = props.onMouseMoveAddition || (() => {});
         
         //Animation props
         this.animation = props.animation || (
@@ -54,7 +53,7 @@ class CoordinatePoint {
         if(this.isClicked){ 
             layer.save();
 
-            layer.globalAlpha = 0.3;
+            layer.globalAlpha = 0.3*this.opacity;
             layer.fillStyle = this.color;
             layer.beginPath();
             layer.arc(

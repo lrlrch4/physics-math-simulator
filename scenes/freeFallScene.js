@@ -48,6 +48,11 @@ const particle = new CoordinatePoint({
                 y: initial.pos.y + initial.vel.y*t + initial.acc.y*(t**2/2) 
             }
         }
+        particle.labelSize = 40;
+        particle.label = `r = (${particle.pos.x.toFixed(2)}, ${particle.pos.y.toFixed(2)})`;
+
+        xy.origin.x = 270 - initial.vel.x*unit*t;
+        xy.origin.y = 1600 + initial.vel.y*unit*t + initial.acc.y*(t**2/2)*unit;
     }), 
     onMouseMoveAddition: (() => {
         if(!isSimulating){
@@ -81,7 +86,13 @@ const velocityVector = new CoordinateVector({
     animation: (() => {
         velocityVector.origin = {x: particle.pos.x, y: particle.pos.y};
         velocityVector.ending = {x: controller.pos.x, y: controller.pos.y};
-    })
+
+        const velX = (controller.pos.x - particle.pos.x)/scaleVelocityFactor;
+        const velY = (controller.pos.y - particle.pos.y)/scaleVelocityFactor;
+        velocityVector.labelSize = 40;
+        velocityVector.label = `v = (${velX.toFixed(2)}, ${velY.toFixed(2)})`;
+    }), 
+    
 })
 drawObjects.push(velocityVector);
 animatedObjects.push(velocityVector);
