@@ -1,51 +1,61 @@
 backgroundColor = '#000000'
-unit = 500;
+unit = 400;
 xy.grid = true;
-
-
+xy.origin = {
+    x: 454,
+    y: 1407
+}
+var w = 1;
 const point = new CoordinatePoint({
+    color: '#0fa',
     animation: (() => {
         point.pos = { 
-            x: Math.cos(t),
-            y: Math.sin(t)
+            x: Math.cos(w*t),
+            y: Math.sin(w*t)
         }
-        point.showTrace({});
+        point.showTrace({
+            maxLength: 100
+        });
     })
 });
-drawObjects.push(point);
 animatedObjects.push(point);
 
-const vector = new CoordinateVector({ 
+const vector = new CoordinateVector({
+    color: '#0fa', 
     animation: (() => {
         vector.ending = { 
-            x: Math.cos(t),
-            y: Math.sin(t)
+            x: Math.cos(w*t),
+            y: Math.sin(w*t)
         }
     })
 });
-drawObjects.push(vector);
 animatedObjects.push(vector);
 
 const horizontalVector = new CoordinateVector({ 
+    color: 'red',
+    label: 'cos',
+    labelSize: 50,
     animation: (() => {
         horizontalVector.ending = { 
-            x: Math.cos(t),
+            x: Math.cos(w*t),
             y: 0
         }
     })
 });
-drawObjects.push(horizontalVector);
 animatedObjects.push(horizontalVector);
 
-const verticalVector = new CoordinateVector({ 
+const verticalVector = new CoordinateVector({
+    color: '#0af',
+    label: 'sin', 
+    labelSize: 50, 
     animation: (() => {
         verticalVector.ending = { 
             x: 0,
-            y: Math.sin(t)
+            y: Math.sin(w*t)
         }
+        verticalVector.label = 'sin'
     })
 });
-drawObjects.push(verticalVector);
 animatedObjects.push(verticalVector);
 
 const hLine = new Line({ 
@@ -55,10 +65,9 @@ const hLine = new Line({
 
         hLine.isDashed = true;
         hLine.color = 'white';
-        hLine.opacity = .25;
+        hLine.opacity = .5;
     })
-})
-drawObjects.push(hLine);
+});
 animatedObjects.push(hLine);
 
 const vLine = new Line({ 
@@ -68,31 +77,29 @@ const vLine = new Line({
 
         vLine.isDashed = true;
         vLine.color = 'white';
-        vLine.opacity = .25;
+        vLine.opacity = .5;
     })
-})
-drawObjects.push(vLine);
+});
 animatedObjects.push(vLine);
 
 const arc = new CircleArc({
     radius: .2,
     labelSize: 40,
     animation: (() => {
-        n = Math.floor(t/(2*Math.PI))
-        arc.endAngle = t-2*n*Math.PI;
+        n = Math.floor(w*t/(2*Math.PI))
+        arc.endAngle = w*t-2*n*Math.PI;
 
         arc.label = `a = ${arc.endAngle.toFixed(2)}`;
         arc.color = 'white'
     })
 });
-drawObjects.push(arc);
 animatedObjects.push(arc);
 
 const sinCurve = new ParametricCurve({
     animation: (() => {
         sinCurve.mathFunction = ((s) => ({
             x: s, 
-            y: Math.sin(t-s)
+            y: Math.sin(w*t-w*s)
         }))
 
         sinCurve.range = {
@@ -101,13 +108,13 @@ const sinCurve = new ParametricCurve({
         }
     })
 });
-drawObjects.push(sinCurve);
 animatedObjects.push(sinCurve);
 
 const cosCurve = new ParametricCurve({
+    color: 'red',
     animation: (() => {
         cosCurve.mathFunction = ((s) => ({
-            x: Math.cos(t-s), 
+            x: Math.cos(w*t-w*s), 
             y: s
         }))
 
@@ -117,5 +124,16 @@ const cosCurve = new ParametricCurve({
         }
     })
 });
-drawObjects.push(cosCurve);
 animatedObjects.push(cosCurve);
+
+drawObjects.push(
+    hLine,
+    vLine, 
+    arc,
+    horizontalVector,
+    verticalVector,
+    vector,
+    sinCurve, 
+    cosCurve,
+    point
+)

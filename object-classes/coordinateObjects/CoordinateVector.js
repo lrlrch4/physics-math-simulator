@@ -8,7 +8,7 @@ class CoordinateVector{
         this.color = props.color || '#0af';
         this.opacity = props.opacity || 1;
         this.label = props.label || '';
-        this.labelSize = 60 || props.labelSize;
+        this.labelSize = props.labelSize || 60;
         this.strokeWidth = props.strokeWidth || 5;
         this.tipSize = props.tipSize || 20;
 

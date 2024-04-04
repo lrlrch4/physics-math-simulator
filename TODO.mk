@@ -1,6 +1,7 @@
 General: 
 Complete selection by a box 
 Create a function that saves the value of the camera
+Create a slider to modify values
 
 AxisCoordinates class:
 Make the axis values to keep on the screen if the axis is out of sight.
