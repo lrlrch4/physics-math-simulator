@@ -4,14 +4,45 @@ class NewAxis{
         this.newOrigin = props.newOrigin || {x: 0, y: 0};
         this.newBasis1 = props.newBasis1; 
         this.newBasis2 = props.newBasis2; 
+        this.axis1Length = props.axis1Length || 5;
+        this.axis2Length = props.axis2Length || 5;
 
         //Style props
         this.axisColor = props.axisColor || '#0af';
         this.axisWidth = props.axisWidth || 1;
+        this.grid = props.grid || false;
+        this.drawBasisVectors = props.drawBasisVectors || false;
 
     }//End of constructor
 
-    draw(){ 
+    draw(){
+        const module1 = Math.sqrt(this.newBasis1.x**2 + this.newBasis1.y**2);  
+        const direction1 = {
+            x: this.newBasis1.x/module1,
+            y: this.newBasis1.y/module1,
+        }
+        const axis1 = new CoordinateVector({
+            origin: this.newOrigin,
+            ending: {
+                x: this.newOrigin.x + this.axis1Length*direction1.x, 
+                y: this.newOrigin.y + this.axis1Length*direction1.y
+            }
+        });
+        const module2 = Math.sqrt(this.newBasis2.x**2 + this.newBasis2.y**2);  
+        const direction2 = {
+            x: this.newBasis2.x/module2,
+            y: this.newBasis2.y/module2,
+        }
+        const axis2 = new CoordinateVector({
+            origin: this.newOrigin,
+            ending: {
+                x: this.newOrigin.x + this.axis2Length*direction2.x, 
+                y: this.newOrigin.y + this.axis2Length*direction2.y
+            }
+        });
+        axis1.draw();
+        axis2.draw();
+
         const newBasisVector1 = new CoordinateVector({
             origin: this.newOrigin,
             ending: {
@@ -23,12 +54,14 @@ class NewAxis{
             origin: this.newOrigin,
             ending: {
                 x: this.newOrigin.x + this.newBasis2.x,
-                y: this.newOrigin.y + this.newBasis2.y}
+                y: this.newOrigin.y + this.newBasis2.y
+            }
         });
 
-        newBasisVector1.draw();
-        newBasisVector2.draw();
-
+        if(this.drawBasisVectors){
+            newBasisVector1.draw();
+            newBasisVector2.draw();
+        }
         const topLeftCoordinates = xy.pixelsToCoordiantes({x: 0, y: 0});
         const bottomRightCoordinates = xy.pixelsToCoordiantes({x: canvas.width, y: canvas.height});
 
@@ -92,13 +125,13 @@ class NewAxis{
             ctx.stroke();                
             ctx.closePath();
         }
-
+    if(this.grid){
         const m1 = this.newBasis1.y/this.newBasis1.x;
         const m2 = this.newBasis2.y/this.newBasis2.x;
         
         drawLine(m1, this.newOrigin);        
         drawLine(m2, this.newOrigin);
-
+    }
     }//End of draw method
 
     getNewCoordinates(coor){
