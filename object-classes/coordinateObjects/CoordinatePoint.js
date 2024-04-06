@@ -122,7 +122,8 @@ class CoordinatePoint {
     showTrace({
         maxLength = 20,
         saveFrameRate = 3, 
-        opacity = .3
+        opacity = .3, 
+        radiusFunction = ((index) => (index + 1)/maxLength)
     }){ 
         if(this.trackList.length >= maxLength){ 
             this.trackList.shift();
@@ -135,7 +136,7 @@ class CoordinatePoint {
             new CoordinatePoint({
                 pos: element, 
                 color: this.color, 
-                radius: ((index+1)/maxLength)*this.radius, 
+                radius: radiusFunction(index)*this.radius, 
                 opacity: opacity
             }).draw();
         });

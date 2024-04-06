@@ -4,10 +4,15 @@ class NewAxis{
         this.newOrigin = props.newOrigin || {x: 0, y: 0};
         this.newBasis1 = props.newBasis1; 
         this.newBasis2 = props.newBasis2; 
+
+        
+        //Style props
         this.axis1Length = props.axis1Length || 5;
         this.axis2Length = props.axis2Length || 5;
+        this.labelSize = props.labelSize || 60;
+        this.axis1Label = props.axis1Label || "x'";
+        this.axis2Label = props.axis2Label || "y'";
 
-        //Style props
         this.axisColor = props.axisColor || '#0af';
         this.axisWidth = props.axisWidth || 1;
         this.grid = props.grid || false;
@@ -62,89 +67,39 @@ class NewAxis{
             newBasisVector1.draw();
             newBasisVector2.draw();
         }
-        const topLeftCoordinates = xy.pixelsToCoordiantes({x: 0, y: 0});
-        const bottomRightCoordinates = xy.pixelsToCoordiantes({x: canvas.width, y: canvas.height});
+        const layer = canvas.getContext('2d');
+        const pixels1 = xy.coordinatesToPixels(axis1.ending); 
 
-        // console.log(topLeftCoordinates, bottomRightCoordinates);
-        const drawLine = (slope, point) => {
-            //Calculate point where intercepts with the top screen 
-            const topScreenIntersection = {
-                x: (topLeftCoordinates.y - point.y)/slope + point.x,
-                y: topLeftCoordinates.y
-            }
+        layer.font = `${this.labelSize}px Courier`;
+        layer.fillStyle = this.axisColor;   
+        layer.fillText(
+            this.axis1Label,
+            pixels1.x + .5*this.labelSize,
+            pixels1.y);
 
-            const leftScreenIntersection = { 
-                x: topLeftCoordinates.x, 
-                y: slope*(topLeftCoordinates.x - point.x) + point.y
-            }
+        const pixels2 = xy.coordinatesToPixels(axis2.ending); 
 
-            //Calculate point where intercepts with the bottom screen 
-            const bottomScreenIntersection = {
-                x: (bottomRightCoordinates.y - point.y)/slope + point.x, 
-                y: bottomRightCoordinates.y
-            };
+        layer.font = `${this.labelSize}px Courier`;
+        layer.fillStyle = this.axisColor;   
+        layer.fillText(
+            this.axis2Label,
+            pixels2.x + .5*this.labelSize,
+            pixels2.y);
 
-            const rightScreenIntersection = {
-                x: bottomRightCoordinates.x, 
-                y: slope*(bottomRightCoordinates.x - point.x) + point.y
-            };
 
-            ctx.strokeStyle = this.axisColor;  // Line color
-            ctx.lineWidth = this.axisWidth;         // Line width
-
-            const startPoint = {};
-            const endPoint = {};
-
-            if(topScreenIntersection.x > topLeftCoordinates.x & topScreenIntersection.x < bottomRightCoordinates.x){
-                startPoint.x = topScreenIntersection.x;
-                startPoint.y = topLeftCoordinates.y;
-            }
-            if(leftScreenIntersection.y > bottomRightCoordinates.y & leftScreenIntersection.y < topLeftCoordinates.y){
-                startPoint.x = topLeftCoordinates.x;
-                startPoint.y = leftScreenIntersection.y;
-            }
-            if(bottomScreenIntersection.x > topLeftCoordinates.x & bottomScreenIntersection.x < bottomRightCoordinates.x){
-                endPoint.x = bottomScreenIntersection.x;
-                endPoint.y = bottomRightCoordinates.y;
-            }
-            if(rightScreenIntersection.y > bottomRightCoordinates.y & rightScreenIntersection.y < topLeftCoordinates.y){
-                endPoint.x = bottomRightCoordinates.x;
-                endPoint.y = rightScreenIntersection.y;
-            }
-            
-            // Draw the line
-            ctx.beginPath();
-            ctx.moveTo(
-                xy.coordinatesToPixels(startPoint).x, 
-                xy.coordinatesToPixels(startPoint).y
-                );  
-            ctx.lineTo(
-                xy.coordinatesToPixels(endPoint).x,
-                xy.coordinatesToPixels(endPoint).y
-                );      
-            ctx.stroke();                
-            ctx.closePath();
-        }
-    if(this.grid){
-        const m1 = this.newBasis1.y/this.newBasis1.x;
-        const m2 = this.newBasis2.y/this.newBasis2.x;
-        
-        drawLine(m1, this.newOrigin);        
-        drawLine(m2, this.newOrigin);
-    }
     }//End of draw method
 
-    getNewCoordinates(coor){
+    getNewCoordinates(mainCoordinates){
+        
         const forwardMatrix = new Matrix( [
             [this.newBasis1.x, this.newBasis2.x],
             [this.newBasis1.y, this.newBasis2.y]
         ]);
 
         const vector = { 
-            x: coor.x - this.newOrigin.x,
-            y: coor.y - this.newOrigin.y
+            x: mainCoordinates.x - this.newOrigin.x,
+            y: mainCoordinates.y - this.newOrigin.y
         }
-    
         return forwardMatrix.inverse().applyMatrixTo(vector);
     }
 
