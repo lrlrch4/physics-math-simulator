@@ -39,3 +39,14 @@ const dot = new CoordinatePoint({
 drawObjects.push(dot);
 animatedObjects.push(dot);
 
+const graph = new CoordinatePoint({
+    pos: xtAxis.getOriginalCoordinates({x: t, y: particle.pos.x}),
+    animation: (() => {
+        graph.pos = {
+            x: xtAxis.getOriginalCoordinates({x: t, y: 0}).x,
+            y: xtAxis.getOriginalCoordinates(particle.pos).x 
+        };
+    })
+})
+drawObjects.push(graph);
+animatedObjects.push(graph);
