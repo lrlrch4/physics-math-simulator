@@ -15,7 +15,8 @@ function drawBackground(){
         `fps: ${fps}`, 
         `unit: ${unit.toFixed(0)}px`, 
         `resolution: ${canvas.width}x${canvas.height}`, 
-        `window: ${windowWidth}x${windowHeight}`
+        `window: ${windowWidth}x${windowHeight}`, 
+        `origin: (${xy.origin.x.toFixed(0)}, ${xy.origin.y.toFixed(0)})`
     ]
     var informationString = ''
     for(let i = 0; i < backgroundInformation.length; i++){
@@ -28,7 +29,9 @@ function drawBackground(){
     ctx.fillText(
         informationString,
         .01*canvas.width,
-        .99*canvas.height);     
+        .99*canvas.height);
+        
+    xy.draw();
 }
 
 //Creating objects
@@ -43,13 +46,12 @@ interactiveObjects.push(xy);
 //Handle animation
 var updateValuesBeforeDrawing = () => {}
 
-function drawFrame(){
-    
-    console.log(`Frame ${frame} drawn`);    
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+function drawFrame(){    
+    console.log(`Frame ${frame} drawn`); 
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);    
     drawBackground();  
-    xy.draw();
+    
     updateValuesBeforeDrawing();
     drawObjects.forEach(element => element.draw())
 } 

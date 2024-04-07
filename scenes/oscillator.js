@@ -40,7 +40,7 @@ const dot = new CoordinatePoint({
 })
 drawObjects.push(dot);
 animatedObjects.push(dot);
-xtAxis.getOriginalCoordinates(particle.pos);
+
 
 const graph = new CoordinatePoint({
     color: 'red',
@@ -57,8 +57,5 @@ const graph = new CoordinatePoint({
     })
 })
 
-console.log(
-    xtAxis.getOriginalCoordinates({x: 5, y: 0})
-)
 drawObjects.push(graph);
 animatedObjects.push(graph);

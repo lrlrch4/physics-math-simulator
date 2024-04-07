@@ -46,8 +46,8 @@ class CoordinatePoint {
             layer.fillStyle = this.color;   
             layer.fillText(
                 this.label,
-                pixels.x + .75*this.labelSize,
-                pixels.y);
+                pixels.x + this.radius +  .75*this.labelSize,
+                pixels.y - this.radius);
         }
 
         if(this.isClicked){ 
@@ -140,6 +140,7 @@ class CoordinatePoint {
                 opacity: opacity
             }).draw();
         });
+
     }//End of showTrace method
 
 }// End of class
