@@ -33,7 +33,12 @@ class Rectangle{
         }
         
         if(this.respectTo === 'bottom-left'){
-                  
+            this.vertexCoordinates = [
+                this.pos,
+                {x: this.pos.x + this.width, y: this.pos.y}, 
+                {x: this.pos.x + this.width, y: this.pos.y + this.height}, 
+                {x: this.pos.x, y: this.pos.y + this.height}
+            ]                  
         }
         if(this.respectTo === 'bottom-right'){
  

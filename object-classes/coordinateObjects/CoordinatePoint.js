@@ -2,6 +2,8 @@ class CoordinatePoint {
     constructor(props){        
         //Special props
         this.pos = props.pos,
+        this.vel = props.vel || {x: 0, y: 0};
+        this.acc = props.acc || {x: 0, y: 0};
         this.radius = props.radius || 15,
         
         //additional props

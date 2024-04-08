@@ -224,6 +224,7 @@ class AxisCoordinates {
     }
 
     coordinatePixelUnit(unit){
+        //pixels value of one coordinate unit
         const pixelFactor = this.coordinatesToPixels({x: 1, y: 0}).x - this.coordinatesToPixels({x: 0, y: 0}).x  
         return pixelFactor*unit;
     }
