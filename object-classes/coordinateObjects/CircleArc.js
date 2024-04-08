@@ -170,7 +170,7 @@ class CircleArc {
     }
 
     //Animation methods
-    update() {
+    animate() {
         this.animation();
     }
 

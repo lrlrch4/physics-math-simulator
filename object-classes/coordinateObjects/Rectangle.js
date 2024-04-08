@@ -109,4 +109,12 @@ class Rectangle{
         
         drawFrame();
     }
+
+    animate(){
+
+    }
+
+    simulate(){
+        
+    }
 }

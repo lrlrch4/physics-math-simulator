@@ -43,7 +43,7 @@ class Curve {
     }     
     
     //Animation methods
-    update(){
+    animate(){
         this.animation();
     }
 

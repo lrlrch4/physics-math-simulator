@@ -11,7 +11,9 @@ class Text {
 
         this.layer = 0;
 
-        this.animation = props.animation || (() => (console.log('animation added')));
+        this.animation = props.animation || (
+            () => (console.log('animation added'))
+        );
     }
 
     //Graphics props
@@ -52,7 +54,7 @@ class Text {
     }
 
     //Animation props
-    update(){
+    animate(){
         this.animation()
     }
 

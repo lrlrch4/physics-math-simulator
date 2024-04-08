@@ -32,6 +32,10 @@ class Polygon {
         this.vertices.forEach(element => element.applyMatrixTransformation(matrix));
         
     }
+
+    animate(){
+        
+    }
     
     onMouseDown(event) {                      
 

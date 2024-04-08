@@ -38,13 +38,14 @@ function drawBackground(){
 const drawObjects = [];
 const interactiveObjects = [];
 const animatedObjects = [];
+const simulationObjects = [];
 
 //Create the main coordinates axis
 const xy = new AxisCoordinates({});
 interactiveObjects.push(xy);
 
 //Handle animation
-var updateValuesBeforeDrawing = () => {}
+var updateValuesBeforeDrawing = () => {};
 
 function drawFrame(){    
     console.log(`Frame ${frame} drawn`); 
@@ -56,9 +57,11 @@ function drawFrame(){
     drawObjects.forEach(element => element.draw())
 } 
 
-function animate() {
+var updateValuesForSimulation = () => {};
+function simulate () {
     frame += 1; 
     t = frame * timeStep;
+    updateValuesForSimulation();     
 }
 
 //handle on mouse down events
@@ -145,6 +148,9 @@ function updateSceneSetup(){
     });
 
     updateValuesBeforeDrawing = () => {
-        animatedObjects.forEach(element => element.update());
+        animatedObjects.forEach(element => element.animate());
+    }
+    updateValuesForSimulation = () => {
+        simulationObjects.forEach(element => element.simulate())
     }
 }

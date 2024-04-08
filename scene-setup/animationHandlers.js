@@ -4,7 +4,7 @@ var startButtonCount = 0;
 function update() {
     if(isSimulating){
         setTimeout(function () {                
-            animate();
+            simulate();
             drawFrame();
             update();
         }, 1000 / fps);

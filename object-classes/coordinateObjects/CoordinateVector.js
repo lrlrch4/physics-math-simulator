@@ -122,7 +122,7 @@ class CoordinateVector{
     } 
     
     //Animation methods
-    update(){
+    animate(){
         this.animation();
     }
 

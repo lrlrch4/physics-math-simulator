@@ -52,7 +52,7 @@ class MathFunctionByParts {
     }
 
     //Animation props
-    update(){
+    animate(){
 
     }
 

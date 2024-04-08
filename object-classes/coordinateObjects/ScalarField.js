@@ -91,6 +91,14 @@ class ScalarField {
 
     onMouseUp() {                    
 
-    }     
+    }    
+    
+    animate() {
+
+    }
+
+    simulate(){
+
+    }
 }
 

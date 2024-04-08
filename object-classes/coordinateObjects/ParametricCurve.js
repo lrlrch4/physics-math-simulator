@@ -122,7 +122,7 @@ class ParametricCurve {
     }       
 
     //Animation methods
-    update(){ 
+    animate(){ 
         this.animation();
     }
 

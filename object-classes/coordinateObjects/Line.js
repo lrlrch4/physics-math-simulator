@@ -79,7 +79,7 @@ class Line{
     }     
     
     //Animation methods
-    update(){ 
+    animate(){ 
         this.animation()
     }
 

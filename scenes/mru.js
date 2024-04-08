@@ -2,22 +2,22 @@ backgroundColor = '#000000'
 unit = 230;
 
 camera =  {
-    x: 700,
-    y: 1000
+    x: 100,
+    y: 1700
 }
 
 xy.grid = true;
 xy.origin = {x: camera.x, y: camera.y};
 
 const particle = {
-    pos: {x: -1, y: -1}, 
+    pos: {x: 4, y: 3}, 
     vel: {x: 2, y: 1}
 }
 
 const dot = new CoordinatePoint({
     radius: 100,
     color: '#0af',
-    labelSize: 50,
+    labelSize: 30,
     animation: (() => {
         
         dot.pos = {
@@ -43,7 +43,7 @@ const description = new Text({
     animation: (() => {
         description.pos = {
             x: dot.pos.x + .1,
-            y: dot.pos.y - .6
+            y: dot.pos.y - .7
         }
 
         description.text = [

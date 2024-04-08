@@ -129,7 +129,7 @@ class NewAxis{
     }    
     
     //Animation methods
-    update(){ 
+    animate(){ 
         this.animation();
     }
     showTrace(){ 

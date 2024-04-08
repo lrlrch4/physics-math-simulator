@@ -134,6 +134,13 @@ class VectorField {
 
     onMouseUp() {                    
 
-    }     
+    }   
+    
+    animate() {
+
+    }
+    simulate() {
+        
+    }
 }
 

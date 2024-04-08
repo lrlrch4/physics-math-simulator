@@ -22,6 +22,10 @@ class CoordinatePoint {
             () => ( console.log('animation added') )
             );
 
+        this.simulation = props.simulation || (
+            () => ( console.log('simulation added') )
+            );
+        
         this.trackList = [];
     }
     
@@ -115,8 +119,12 @@ class CoordinatePoint {
     }
 
     //Animation methods
-    update() {
+    animate() {
         this.animation();
+    }
+
+    simulate(){
+        this.simulation();
     }
 
     showTrace({
