@@ -4,7 +4,7 @@ class Text {
         this.pos = props.pos || {x: 0, y: 0};
         this.size = props.size || 50;
         this.absolutePosition = props.absolutePosition || false;
-        this.lineSpacing = props.lineSpacing || 50;
+        this.lineSpacing = props.lineSpacing || 75;
 
         this.color = props.color || 'white', 
         this.opacity = props.opacity || 1;

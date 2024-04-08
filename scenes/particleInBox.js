@@ -11,11 +11,11 @@ const box = new Rectangle({
 })
 drawObjects.push(box);
 
-const numberParticles = 10;
+const numberParticles = 300;
 const v = 1;
 const particleList = [];
 for(let i = 0; i < numberParticles; i++){
-    const cRadius = .2; 
+    const cRadius = .05; 
 
     particleList.push(
         new CoordinatePoint({
@@ -23,7 +23,7 @@ for(let i = 0; i < numberParticles; i++){
                 x: cRadius + Math.random()*(box.width - 2*cRadius), 
                 y: cRadius + Math.random()*(box.height - 2*cRadius)
             },
-            vel: {x: v*Math.random(), y: v*Math.random()},
+            vel: {x: v*(2*Math.random()-1), y: v*(2*Math.random()-1)},
             color: `hsl(${Math.random()*255}, ${100}%, ${50}%)`,
             animation: (() => {
                 particleList[i].radius = xy.coordinatePixelUnit(cRadius);
@@ -61,8 +61,6 @@ for(let i = 0; i < numberParticles; i++){
                         const distance = distanceVector.module();
                         
                         if(distance < 2*cRadius){
-
-                            console.log(i, index, 'collided')
                             const Vcm = {
                                 x: (particleList[i].vel.x + element.vel.x)/2,
                                 y: (particleList[i].vel.y + element.vel.y)/2
@@ -97,12 +95,6 @@ for(let i = 0; i < numberParticles; i++){
                                 x: element.pos.x - (cRadius - .5001*distance)*distanceVector.unitary().x,
                                 y: element.pos.y - (cRadius - .5001*distance)*distanceVector.unitary().y
                             }
-                            console.log(particleList[i].pos)
-                            console.log(particleList[i].vel)
-                            console.log(element.pos)
-                            console.log(element.vel)
-
-
                         }
                     }// end of if statement              
                 })// end of for each
@@ -117,15 +109,25 @@ simulationObjects.push(...particleList);
 
 
 const description = new Text({
-    color: '#0af',
-    pos: {x: 5.2, y: 4.5},
+    pos: {x: 5.2, y: 4.8},
     animation: (() => {
-        description.text = particleList.map(element => 
-            `(${element.pos.x.toFixed(2)}, ${element.pos.y.toFixed(2)})`
-        );
-
-        // console.log(particleList.map(element => element.pos))
-
+        const average = {
+            x: 0,
+            y: 0,
+            vx: 0, 
+            vy: 0,
+            E: 0,            
+        }
+        particleList.forEach(element => {
+            average.x  += element.pos.x/numberParticles; 
+            average.y  += element.pos.y/numberParticles;
+            average.vx += element.vel.x/numberParticles;
+            average.vy += element.vel.y/numberParticles;
+            average.E += (element.vel.x**2 + element.vel.y**2);
+        });
+        description.text = Object.entries(average).map(([key, element]) => {
+            return `${key}_m = ${element.toFixed(2)}`
+        });
     })
 })
 drawObjects.push(description);
