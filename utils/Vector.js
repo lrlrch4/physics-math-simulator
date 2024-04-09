@@ -13,17 +13,26 @@ class Vector {
     }
 
     unitary(){
-        return new Vector({x: this.x/this.module(), y: this.y/this.module()});
+        return new Vector({
+            x: this.x/this.module(), 
+            y: this.y/this.module()
+        });
     }
 
     orthogonal(){
-        return new Vector({x: -this.y, y: this.x});
+        return new Vector({
+            x: -this.y, 
+            y: this.x
+        });
     }
 
     projectOver(b){
         const factor = (dotProduct(this, b)/dotProduct(b, b))
 
-        return new Vector({x: factor*b.x, y: factor*b.y});
+        return new Vector({
+            x: factor*b.x, 
+            y: factor*b.y
+        });
     }
 }
 

@@ -6,49 +6,49 @@ xy.origin = {x: camera.x, y: camera.y}
 
 const box = new Rectangle({
     respectTo: 'bottom-left',
-    width: 5,
-    height: 5
+    width: 2,
+    height: 2
 })
 drawObjects.push(box);
 
-const numberParticles = 300;
-const v = 1;
+const numberParticles = 2;
+const v = 5;
 const particleList = [];
+const restitutionCoef = 1;
 for(let i = 0; i < numberParticles; i++){
-    const cRadius = .05; 
-
+    const cRadius = .1; 
     particleList.push(
-        new CoordinatePoint({
+        new Particle({
             pos: {
                 x: cRadius + Math.random()*(box.width - 2*cRadius), 
                 y: cRadius + Math.random()*(box.height - 2*cRadius)
             },
             vel: {x: v*(2*Math.random()-1), y: v*(2*Math.random()-1)},
+            acc: {x: 0, y: 0},
+            radius: cRadius*(i+1),
             color: `hsl(${Math.random()*255}, ${100}%, ${50}%)`,
-            animation: (() => {
-                particleList[i].radius = xy.coordinatePixelUnit(cRadius);
-            }),
             simulation: (() => {
+                particleList[i].vel.y += timeStep*particleList[i].acc.y;
 
                 particleList[i].pos.x += timeStep*particleList[i].vel.x;
                 particleList[i].pos.y += timeStep*particleList[i].vel.y;
 
-                if(particleList[i].pos.x >= box.width - cRadius){
-                    particleList[i].pos.x = box.width - cRadius;
-                    particleList[i].vel.x *= -1;
+                if(particleList[i].pos.x >= box.width - particleList[i].radius){
+                    particleList[i].pos.x = box.width - particleList[i].radius;
+                    particleList[i].vel.x *= -1*restitutionCoef;
                 }
-                if(particleList[i].pos.x <= cRadius){
-                    particleList[i].pos.x = cRadius;
-                    particleList[i].vel.x *= -1;
+                if(particleList[i].pos.x <= particleList[i].radius){
+                    particleList[i].pos.x = particleList[i].radius;
+                    particleList[i].vel.x *= -1*restitutionCoef;
                 }
 
-                if(particleList[i].pos.y <= cRadius){
-                    particleList[i].pos.y = cRadius;
-                    particleList[i].vel.y *= -1;
+                if(particleList[i].pos.y <= particleList[i].radius){
+                    particleList[i].pos.y = particleList[i].radius;
+                    particleList[i].vel.y *= -1*restitutionCoef;
                 }
-                if(particleList[i].pos.y >= box.height - cRadius){
-                    particleList[i].pos.y = box.height - cRadius;
-                    particleList[i].vel.y *= -1;
+                if(particleList[i].pos.y >= box.height - particleList[i].radius){
+                    particleList[i].pos.y = box.height - particleList[i].radius;
+                    particleList[i].vel.y *= -1*restitutionCoef;
                 } 
 
                 particleList.forEach((element, index) => { 
@@ -56,11 +56,17 @@ for(let i = 0; i < numberParticles; i++){
                         const distanceVector = new Vector({
                             x: particleList[i].pos.x - element.pos.x,
                             y: particleList[i].pos.y - element.pos.y
-                        })
-
+                        });
                         const distance = distanceVector.module();
-                        
-                        if(distance < 2*cRadius){
+
+                        if(distance < particleList[i].radius + element.radius){
+                            const dUnit = new Vector({
+                                x: distanceVector.x/distance,
+                                y: distanceVector.y/distance
+                            })
+    
+                            const dUnitOrt = dUnit.orthogonal();
+
                             const Vcm = {
                                 x: (particleList[i].vel.x + element.vel.x)/2,
                                 y: (particleList[i].vel.y + element.vel.y)/2
@@ -76,24 +82,29 @@ for(let i = 0; i < numberParticles; i++){
                                 y: element.vel.y - Vcm.y
                             })
 
+                            const p1 = dotProduct(v1cm, dUnit);
+                            const p2 = dotProduct(v1cm, dUnitOrt);
                             particleList[i].vel = {
-                                x: -v1cm.projectOver(distanceVector).x + v1cm.projectOver(distanceVector.orthogonal()).x + Vcm.x,
-                                y: -v1cm.projectOver(distanceVector).y + v1cm.projectOver(distanceVector.orthogonal()).y + Vcm.y,                                
+                                x: -restitutionCoef*p1*dUnit.x + p2*dUnitOrt.x + Vcm.x,
+                                y: -restitutionCoef*p1*dUnit.y + p2*dUnitOrt.y + Vcm.y,                                
                             }
 
-                            element.vel = {
-                                x: -v2cm.projectOver(distanceVector).x + v2cm.projectOver(distanceVector.orthogonal()).x + Vcm.x,
-                                y: -v2cm.projectOver(distanceVector).y + v2cm.projectOver(distanceVector.orthogonal()).y + Vcm.y,                                
-                            }
-
+                            const k = distance/(particleList[i].radius + element.radius);
                             particleList[i].pos = {
-                                x: particleList[i].pos.x + (cRadius - .5001*distance)*distanceVector.unitary().x,
-                                y: particleList[i].pos.y + (cRadius - .5001*distance)*distanceVector.unitary().y,
+                                x: particleList[i].pos.x + particleList[i].radius*(1-k)*dUnitOrt.x,
+                                y: particleList[i].pos.y + particleList[i].radius*(1-k)*dUnitOrt.y,
+                            }
+
+                            const e1 = dotProduct(v2cm, dUnit);
+                            const e2 = dotProduct(v2cm, dUnitOrt);
+                            element.vel = { 
+                                x: -restitutionCoef*e1*dUnit.x + e2*dUnitOrt.x + Vcm.x,
+                                y: -restitutionCoef*e1*dUnit.y + e2*dUnitOrt.y + Vcm.y,                             
                             }
 
                             element.pos = {
-                                x: element.pos.x - (cRadius - .5001*distance)*distanceVector.unitary().x,
-                                y: element.pos.y - (cRadius - .5001*distance)*distanceVector.unitary().y
+                                x: element.pos.x - element.radius*(1-k)*dUnitOrt.x,
+                                y: element.pos.y - element.radius*(1-k)*dUnitOrt.y
                             }
                         }
                     }// end of if statement              
@@ -103,15 +114,13 @@ for(let i = 0; i < numberParticles; i++){
     )// end of push
 }
 drawObjects.push(...particleList);
-animatedObjects.push(...particleList);
 simulationObjects.push(...particleList);
 
-
-
 const description = new Text({
-    pos: {x: 5.2, y: 4.8},
+    pos: {x: 1.1*box.width, y: .9*box.height},
     animation: (() => {
         const average = {
+            N: numberParticles,
             x: 0,
             y: 0,
             vx: 0, 
@@ -126,9 +135,13 @@ const description = new Text({
             average.E += (element.vel.x**2 + element.vel.y**2);
         });
         description.text = Object.entries(average).map(([key, element]) => {
-            return `${key}_m = ${element.toFixed(2)}`
+            return `${key} = ${element.toFixed(2)}`
         });
+
     })
 })
 drawObjects.push(description);
 animatedObjects.push(description)
+
+
+

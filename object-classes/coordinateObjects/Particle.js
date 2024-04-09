@@ -1,8 +1,11 @@
-class CoordinatePoint {
+class Particle {
     constructor(props){        
         //Special props
         this.pos = props.pos,
-        this.radius = props.radius || 15,
+        this.vel = props.vel || {x: 0, y: 0};
+        this.acc = props.acc || {x: 0, y: 0};
+        this.radius = props.radius || .5;
+        this.mass = props.mass || 2;
         
         //additional props
         this.color = props.color || '#0af', 
@@ -37,9 +40,10 @@ class CoordinatePoint {
         layer.globalAlpha = this.opacity;
 
         const pixels = xy.coordinatesToPixels(this.pos);
+        const pixelRadius = xy.coordinatePixelUnit(this.radius);
         layer.beginPath();
         layer.arc(
-            pixels.x, pixels.y, this.radius, 0, 2*Math.PI);
+            pixels.x, pixels.y, pixelRadius, 0, 2*Math.PI);
         layer.closePath();
         layer.fill(); 
 
