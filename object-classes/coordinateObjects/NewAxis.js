@@ -7,6 +7,8 @@ class NewAxis{
 
         
         //Style props
+        this.axis1Range = props.axis1Range || {start: -2, end: 6}
+        this.axis2Range = props.axis1Range || {start: -2, end: 6}
         this.axis1Length = props.axis1Length || 5;
         this.axis2Length = props.axis2Length || 5;
         this.labelSize = props.labelSize || 60;
@@ -17,7 +19,6 @@ class NewAxis{
         this.axisWidth = props.axisWidth || 1;
         this.grid = props.grid || false;
         this.drawBasisVectors = props.drawBasisVectors || false;
-
     }//End of constructor
 
     draw(){
@@ -27,11 +28,14 @@ class NewAxis{
             y: this.newBasis1.y/module1,
         }
         const axis1 = new CoordinateVector({
-            origin: this.newOrigin,
-            ending: {
-                x: this.newOrigin.x + this.axis1Length*direction1.x, 
-                y: this.newOrigin.y + this.axis1Length*direction1.y
-            }
+            origin: this.getOriginalCoordinates({
+                x: this.axis1Range.start,
+                y: this.axis2Range.start
+            }),
+            ending: this.getOriginalCoordinates({
+                x: this.axis1Range.end, 
+                y: this.axis2Range.start
+            })
         });
         const module2 = Math.sqrt(this.newBasis2.x**2 + this.newBasis2.y**2);  
         const direction2 = {
@@ -39,11 +43,14 @@ class NewAxis{
             y: this.newBasis2.y/module2,
         }
         const axis2 = new CoordinateVector({
-            origin: this.newOrigin,
-            ending: {
-                x: this.newOrigin.x + this.axis2Length*direction2.x, 
-                y: this.newOrigin.y + this.axis2Length*direction2.y
-            }
+            origin: this.getOriginalCoordinates({
+                x: this.axis1Range.start,
+                y: this.axis2Range.start
+            }),
+            ending: this.getOriginalCoordinates({
+                x: this.axis1Range.start, 
+                y: this.axis2Range.end
+            })
         });
         axis1.draw();
         axis2.draw();

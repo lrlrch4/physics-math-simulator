@@ -6,17 +6,18 @@ xy.origin = {x: camera.x, y: camera.y}
 
 const box = new Rectangle({
     respectTo: 'bottom-left',
-    width: 2,
-    height: 2
+    width: 5,
+    height: 5
 })
 drawObjects.push(box);
 
-const numberParticles = 2;
-const v = 5;
+const numberParticles = 400;
+const v = 1;
 const particleList = [];
 const restitutionCoef = 1;
 for(let i = 0; i < numberParticles; i++){
     const cRadius = .1; 
+    const mass = .1; 
     particleList.push(
         new Particle({
             pos: {
@@ -25,7 +26,8 @@ for(let i = 0; i < numberParticles; i++){
             },
             vel: {x: v*(2*Math.random()-1), y: v*(2*Math.random()-1)},
             acc: {x: 0, y: 0},
-            radius: cRadius*(i+1),
+            radius: cRadius*Math.random(),
+            mass: mass*Math.random(),
             color: `hsl(${Math.random()*255}, ${100}%, ${50}%)`,
             simulation: (() => {
                 particleList[i].vel.y += timeStep*particleList[i].acc.y;
@@ -63,13 +65,13 @@ for(let i = 0; i < numberParticles; i++){
                             const dUnit = new Vector({
                                 x: distanceVector.x/distance,
                                 y: distanceVector.y/distance
-                            })
-    
+                            })    
                             const dUnitOrt = dUnit.orthogonal();
-
                             const Vcm = {
-                                x: (particleList[i].vel.x + element.vel.x)/2,
-                                y: (particleList[i].vel.y + element.vel.y)/2
+                                x: (particleList[i].mass*particleList[i].vel.x + element.mass*element.vel.x)
+                                    /(particleList[i].mass + element.mass),
+                                y: (particleList[i].mass*particleList[i].vel.y + element.mass*element.vel.y)
+                                    /(particleList[i].mass + element.mass)
                             }
                             
                             const v1cm = new Vector({
@@ -88,23 +90,21 @@ for(let i = 0; i < numberParticles; i++){
                                 x: -restitutionCoef*p1*dUnit.x + p2*dUnitOrt.x + Vcm.x,
                                 y: -restitutionCoef*p1*dUnit.y + p2*dUnitOrt.y + Vcm.y,                                
                             }
-
-                            const k = distance/(particleList[i].radius + element.radius);
-                            particleList[i].pos = {
-                                x: particleList[i].pos.x + particleList[i].radius*(1-k)*dUnitOrt.x,
-                                y: particleList[i].pos.y + particleList[i].radius*(1-k)*dUnitOrt.y,
-                            }
-
                             const e1 = dotProduct(v2cm, dUnit);
                             const e2 = dotProduct(v2cm, dUnitOrt);
                             element.vel = { 
                                 x: -restitutionCoef*e1*dUnit.x + e2*dUnitOrt.x + Vcm.x,
                                 y: -restitutionCoef*e1*dUnit.y + e2*dUnitOrt.y + Vcm.y,                             
                             }
-
+                            
+                            const k = distance/(particleList[i].radius + element.radius) + 0.001;
+                            particleList[i].pos = {
+                                x: particleList[i].pos.x + particleList[i].radius*(1-k)*dUnit.x,
+                                y: particleList[i].pos.y + particleList[i].radius*(1-k)*dUnit.y,
+                            }
                             element.pos = {
-                                x: element.pos.x - element.radius*(1-k)*dUnitOrt.x,
-                                y: element.pos.y - element.radius*(1-k)*dUnitOrt.y
+                                x: element.pos.x - element.radius*(1-k)*dUnit.x,
+                                y: element.pos.y - element.radius*(1-k)*dUnit.y
                             }
                         }
                     }// end of if statement              
@@ -132,7 +132,7 @@ const description = new Text({
             average.y  += element.pos.y/numberParticles;
             average.vx += element.vel.x/numberParticles;
             average.vy += element.vel.y/numberParticles;
-            average.E += (element.vel.x**2 + element.vel.y**2);
+            average.E += .5*element.mass*(element.vel.x**2 + element.vel.y**2);
         });
         description.text = Object.entries(average).map(([key, element]) => {
             return `${key} = ${element.toFixed(2)}`
