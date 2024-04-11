@@ -4,16 +4,16 @@ class NewAxis{
         this.newOrigin = props.newOrigin || {x: 0, y: 0};
         this.newBasis1 = props.newBasis1; 
         this.newBasis2 = props.newBasis2; 
-
-        
+        this.axis1Range = props.axis1Range || {start: 0, end: 5}
+        this.axis2Range = props.axis2Range || {start: 0, end: 5}
+        this.axis1Step = props.axis1Step || 1;
+        this.axis2Step = props.axis2Step || 1;
+ 
         //Style props
-        this.axis1Range = props.axis1Range || {start: -2, end: 6}
-        this.axis2Range = props.axis1Range || {start: -2, end: 6}
-        this.axis1Length = props.axis1Length || 5;
-        this.axis2Length = props.axis2Length || 5;
         this.labelSize = props.labelSize || 60;
         this.axis1Label = props.axis1Label || "x'";
         this.axis2Label = props.axis2Label || "y'";
+        this.ticksSize = props.ticksSize || 40;
 
         this.axisColor = props.axisColor || '#0af';
         this.axisWidth = props.axisWidth || 1;
@@ -22,11 +22,6 @@ class NewAxis{
     }//End of constructor
 
     draw(){
-        const module1 = Math.sqrt(this.newBasis1.x**2 + this.newBasis1.y**2);  
-        const direction1 = {
-            x: this.newBasis1.x/module1,
-            y: this.newBasis1.y/module1,
-        }
         const axis1 = new CoordinateVector({
             origin: this.getOriginalCoordinates({
                 x: this.axis1Range.start,
@@ -37,11 +32,7 @@ class NewAxis{
                 y: this.axis2Range.start
             })
         });
-        const module2 = Math.sqrt(this.newBasis2.x**2 + this.newBasis2.y**2);  
-        const direction2 = {
-            x: this.newBasis2.x/module2,
-            y: this.newBasis2.y/module2,
-        }
+
         const axis2 = new CoordinateVector({
             origin: this.getOriginalCoordinates({
                 x: this.axis1Range.start,
@@ -85,13 +76,42 @@ class NewAxis{
             pixels1.y);
 
         const pixels2 = xy.coordinatesToPixels(axis2.ending); 
-
-        layer.font = `${this.labelSize}px Courier`;
-        layer.fillStyle = this.axisColor;   
         layer.fillText(
             this.axis2Label,
             pixels2.x + .5*this.labelSize,
             pixels2.y);
+
+        const ticksNumber1 = Math.floor((this.axis1Range.end - this.axis1Range.start)/this.axis1Step);         
+        for(let i = 0; i <= ticksNumber1; i++){
+            const pixels = xy.coordinatesToPixels(
+                this.getOriginalCoordinates({
+                    x: this.axis1Range.start + i*this.axis1Step, 
+                    y: this.axis2Range.start
+                })
+            )
+            layer.font = `${this.ticksSize}px Courier`;
+            layer.fillText(
+                `${this.axis1Range.start + i*this.axis1Step}`,
+                pixels.x,
+                pixels.y + this.ticksSize
+            );
+        }    
+
+        const ticksNumber2 = Math.floor((this.axis2Range.end - this.axis2Range.start)/this.axis2Step);         
+        for(let i = 0; i < ticksNumber2; i++){
+            const pixels = xy.coordinatesToPixels(
+                this.getOriginalCoordinates({
+                    x: this.axis1Range.start, 
+                    y: this.axis2Range.start + i*this.axis2Step
+                })
+            )
+            layer.font = `${this.ticksSize}px Courier`;
+            layer.fillText(
+                `${this.axis2Range.start + i*this.axis2Step}`,
+                pixels.x - this.ticksSize,
+                pixels.y 
+            );
+        }    
 
 
     }//End of draw method
