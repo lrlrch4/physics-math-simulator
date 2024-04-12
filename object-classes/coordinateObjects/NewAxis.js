@@ -15,10 +15,13 @@ class NewAxis{
         this.axis2Label = props.axis2Label || "y'";
         this.ticksSize = props.ticksSize || 40;
 
-        this.axisColor = props.axisColor || '#0af';
+        this.color = props.color || '#0af';
         this.axisWidth = props.axisWidth || 1;
         this.grid = props.grid || false;
         this.drawBasisVectors = props.drawBasisVectors || false;
+
+        //Animation props
+        this.animation = props.animation || (() => (console.log('animation added')));
     }//End of constructor
 
     draw(){
@@ -30,7 +33,8 @@ class NewAxis{
             ending: this.getOriginalCoordinates({
                 x: this.axis1Range.end, 
                 y: this.axis2Range.start
-            })
+            }),
+            color: this.color
         });
 
         const axis2 = new CoordinateVector({
@@ -41,7 +45,8 @@ class NewAxis{
             ending: this.getOriginalCoordinates({
                 x: this.axis1Range.start, 
                 y: this.axis2Range.end
-            })
+            }),
+            color: this.color
         });
         axis1.draw();
         axis2.draw();
@@ -69,7 +74,7 @@ class NewAxis{
         const pixels1 = xy.coordinatesToPixels(axis1.ending); 
 
         layer.font = `${this.labelSize}px Courier`;
-        layer.fillStyle = this.axisColor;   
+        layer.fillStyle = this.color;   
         layer.fillText(
             this.axis1Label,
             pixels1.x + .5*this.labelSize,
@@ -82,16 +87,17 @@ class NewAxis{
             pixels2.y);
 
         const ticksNumber1 = Math.floor((this.axis1Range.end - this.axis1Range.start)/this.axis1Step);         
-        for(let i = 0; i <= ticksNumber1; i++){
+        for(let i = 0; i < ticksNumber1; i++){
+            const ticksValues = this.axis1Range.start + i*this.axis1Step
             const pixels = xy.coordinatesToPixels(
                 this.getOriginalCoordinates({
-                    x: this.axis1Range.start + i*this.axis1Step, 
+                    x: ticksValues, 
                     y: this.axis2Range.start
                 })
             )
             layer.font = `${this.ticksSize}px Courier`;
             layer.fillText(
-                `${this.axis1Range.start + i*this.axis1Step}`,
+                `${ticksValues.toFixed(0)}`,
                 pixels.x,
                 pixels.y + this.ticksSize
             );
@@ -116,13 +122,11 @@ class NewAxis{
 
     }//End of draw method
 
-    getNewCoordinates(mainCoordinates){
-        
+    getNewCoordinates(mainCoordinates){        
         const forwardMatrix = new Matrix( [
             [this.newBasis1.x, this.newBasis2.x],
             [this.newBasis1.y, this.newBasis2.y]
         ]);
-
         const vector = { 
             x: mainCoordinates.x - this.newOrigin.x,
             y: mainCoordinates.y - this.newOrigin.y
@@ -134,8 +138,7 @@ class NewAxis{
         const forwardMatrix = new Matrix( [
             [this.newBasis1.x, this.newBasis2.x],
             [this.newBasis1.y, this.newBasis2.y]
-        ]);
-        
+        ]);        
         return {
             x: this.newOrigin.x + forwardMatrix.applyMatrixTo(coor).x,
             y: this.newOrigin.y + forwardMatrix.applyMatrixTo(coor).y
@@ -159,6 +162,7 @@ class NewAxis{
     animate(){ 
         this.animation();
     }
+
     showTrace(){ 
 
     }

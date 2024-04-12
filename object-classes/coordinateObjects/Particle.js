@@ -4,7 +4,7 @@ class Particle {
         this.pos = props.pos,
         this.vel = props.vel || {x: 0, y: 0};
         this.acc = props.acc || {x: 0, y: 0};
-        this.radius = props.radius || .5;
+        this.radius = props.radius || .1;
         this.mass = props.mass || 2;
         
         //additional props
@@ -112,8 +112,8 @@ class Particle {
             pixels.y = -this.offset.y + resolutionFactor * event.y;
             
             this.pos = xy.pixelsToCoordiantes(pixels);                 
-            drawFrame();
             this.onMouseMoveAddition();
+            drawFrame();
         }
 
     }
