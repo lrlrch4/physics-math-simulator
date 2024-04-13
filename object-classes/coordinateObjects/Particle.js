@@ -132,23 +132,26 @@ class Particle {
     }
 
     showTrace({
-        maxLength = 20,
+        maxLength = 50,
         saveFrameRate = 3, 
-        opacity = .3, 
+        opacity = .5, 
         radiusFunction = ((index) => (index + 1)/maxLength)
     }){ 
         if(this.trackList.length >= maxLength){ 
             this.trackList.shift();
         }
         if(frame % saveFrameRate === 0){ 
-            this.trackList.push(this.pos);
+            this.trackList.push({
+                x: this.pos.x, 
+                y: this.pos.y
+            });
         }
-
+         const pixelRadius = xy.coordinatePixelUnit(this.radius);
         this.trackList.forEach((element, index) => {
             new CoordinatePoint({
                 pos: element, 
                 color: this.color, 
-                radius: radiusFunction(index)*this.radius, 
+                radius: radiusFunction(index)*pixelRadius, 
                 opacity: opacity
             }).draw();
         });
