@@ -148,6 +148,8 @@ class CoordinatePoint {
                 opacity: opacity
             }).draw();
         });
-
     }//End of showTrace method
+
+    
+
 }// End of class
