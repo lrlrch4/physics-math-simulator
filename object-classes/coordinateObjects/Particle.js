@@ -7,12 +7,23 @@ class Particle {
         this.radius = props.radius || .25;
         this.mass = props.mass || 2;
         
-        //additional props
+        //style props
         this.color = props.color || '#0af', 
         this.opacity = props.opacity || 1;
         this.label = props.label || '';
         this.labelSize = props.labelSize || 60;
+
+        this.drawPosVec = props.drawPosVec || false;
+        this.posVecColor = props.posVecColor || '#ff7300'; //Orange
         
+        this.drawVelVec = props.drawVelVec || false;
+        this.velVecScale = props.velVecScale || 1;
+        this.velVecColor = props.velVecColor || '#3bff00'; //Green 
+
+        this.drawAccVec = props.drawAccVec || false;
+        this.accVecScale = props.accVecScale || 1;
+        this.accVecColor = props.accVecColor || '#f6ff00'; //Yellow
+
         //interaction props
         this.layer = 0;
         this.offset = {x: 0, y: 0},
@@ -70,6 +81,41 @@ class Particle {
             layer.fill();
 
             layer.restore(); 
+        }
+
+        if(this.drawPosVec){
+            const posVector = new CoordinateVector({ 
+                origin: {x: 0, y: 0}, 
+                ending: {
+                    x: this.pos.x, 
+                    y: this.pos.y
+                }, 
+                color: this.posVecColor
+            })
+            posVector.draw();
+        }
+
+        if(this.drawVelVec){
+            const velocityVector = new CoordinateVector({ 
+                origin: {x: this.pos.x, y: this.pos.y}, 
+                ending: {
+                    x: this.pos.x + this.velVecScale*this.vel.x, 
+                    y: this.pos.y + this.velVecScale*this.vel.y
+                }, 
+                color: this.velVecColor
+            })
+            velocityVector.draw();
+        }
+        if(this.drawAccVec){
+            const accVector = new CoordinateVector({ 
+                origin: {x: this.pos.x, y: this.pos.y}, 
+                ending: {
+                    x: this.pos.x + this.accVecScale*this.acc.x, 
+                    y: this.pos.y + this.accVecScale*this.acc.y
+                }, 
+                color: this.accVecColor
+            })
+            accVector.draw();
         }
     }
 
@@ -207,7 +253,7 @@ class Particle {
                 x: -b1*u1.x + b2*u2.x + vcm.x, 
                 y: -b1*u1.y + b2*u2.y + vcm.y
             }
-            const k = distance/(this.radius + particle.radius)+0.001;
+            const k = distance/(this.radius + particle.radius);
 
             this.pos.x = this.pos.x - this.radius*(1-k)*u1.x;
             this.pos.y = this.pos.y - this.radius*(1-k)*u1.y;

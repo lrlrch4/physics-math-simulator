@@ -1,42 +1,54 @@
-backgroundColor = '#303030'
-unit = 50;
+backgroundColor = '#000000'
+unit = 120;
 xy.grid = true;
 
 G = 1;
-
+const dFactor = 1;
+const vFactor = .25;
+const pRadius = .5;
 const pA = new Particle({
-    pos: {x: 0, y: 0},
-    vel: {x: 0, y: 0},
-    radius: 10,
-    mass: 100,
+    pos: {x: Math.sqrt(3)*dFactor, y: -1*dFactor},
+    vel: {x: 1*vFactor, y: Math.sqrt(3)*vFactor},
+    radius: pRadius,
+    mass: 1,
+    drawPosVec: true, 
+    drawVelVec: true,
+    velVecScale: 2,
+    drawAccVec: true, 
+    accVecScale: 2,
     color: 'red', 
-    label: 'A'
+    label: 'A', 
+    opacity: .5
 })
 
 const pB = new Particle({
-    pos: {x: 30, y: 0},
-    vel: {x: 0, y: 2},
-    radius: 1, 
-    mass: 10,
+    pos: {x: 0*dFactor, y: 2*dFactor},
+    vel: {x: -2*vFactor, y: 0*vFactor},
+    radius: pRadius, 
+    mass: 1,
     color: 'green',
     label: 'B'
 })
 
 const pC = new Particle({
-    pos: {x: 32, y: 0},
-    vel: {x: 0, y:  1},
-    radius: .1,
+    pos: {x: -Math.sqrt(3)*dFactor, y: -1*dFactor},
+    vel: {x: 1*vFactor, y:  -Math.sqrt(3)*vFactor},
+    radius: pRadius,
     mass: 1,
     color: '#0af',
     label: 'C',
     animation: (() => {
-        pA.showTrace({maxLength: 100});  
-        pB.showTrace({maxLength: 100});  
-        pC.showTrace({maxLength: 100});  
+        if(frame > 0){
+            const props = {
+                maxLength: 100, 
+                opacity: .05
+            }
+            // pA.showTrace(props);  
+            pB.showTrace(props);  
+            pC.showTrace(props);  
+        }
     }),
-    simulation: (() => {
-        
-
+    simulation: (() => {        
         pA.acc = pA.gravityInteractionWith([pB, pC]);
         pA.vel.x += pA.acc.x*timeStep;
         pA.vel.y += pA.acc.y*timeStep;
