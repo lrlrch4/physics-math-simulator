@@ -31,21 +31,21 @@ function gravityResultant({
 }
 
 const pA = new Particle({
-    pos: {x: Math.sqrt(3), y: -1},
-    vel: {x: 1, y: Math.sqrt(3)},
+    pos: {x: -1, y: 0},
+    vel: {x: 1, y: 0},
     color: 'red', 
     label: 'A'
 })
 
 const pB = new Particle({
-    pos: {x: 0, y: 2},
-    vel: {x: -2, y: 0},
+    pos: {x: 1, y: 0},
+    vel: {x: -1, y: 0},
     color: 'green',
     label: 'B'
 })
 
 const pC = new Particle({
-    pos: {x: -Math.sqrt(3), y: -1},
+    pos: {x: -100, y: -100},
     vel: {x: 1, y: -Math.sqrt(3)},
     color: '#0af',
     label: 'C',
@@ -77,6 +77,58 @@ const pC = new Particle({
         pA.pos.x += pA.vel.x*timeStep;
         pA.pos.y += pA.vel.y*timeStep;
 
+        const distanceVector = new Vector({
+            x: pB.pos.x - pA.pos.x, 
+            y: pB.pos.y - pA.pos.y
+        })
+        const distance = distanceVector.module(); 
+        const unit = distanceVector.unitary();
+        const unitOrt = unit.orthogonal();
+
+        const vcm = {
+            x: (pA.mass*pA.vel.x + pB.mass*pB.vel.x)/(pA.mass + pB.mass),
+            y: (pA.mass*pA.vel.y + pB.mass*pB.vel.y)/(pA.mass + pB.mass)
+        }
+        const vA = {
+            x: pA.vel.x - vcm.x,
+            y: pA.vel.y - vcm.y
+        }
+        const vB = {
+            x: pB.vel.x - vcm.x,
+            y: pB.vel.y - vcm.y
+        }
+
+        const a1 = dotProduct(vA, unit);
+        const a2 = dotProduct(vA, unitOrt);
+
+        const b1 = dotProduct(vB, unit);
+        const b2 = dotProduct(vB, unitOrt);
+        if(distance < pA.radius + pB.radius){
+            console.log(pA.pos)
+            console.log(pA.vel)
+
+            pA.vel = { 
+                x: -a1*unit.x + a2*unitOrt.x + vcm.x,
+                y: -a1*unit.y + a2*unitOrt.y + vcm.y
+            }
+            pB.vel = { 
+                x: -b1*unit.x + b2*unitOrt.x + vcm.x,
+                y: -b1*unit.y + b2*unitOrt.y + vcm.y
+            }
+            const k = distance/(pA.radius + pB.radius);
+            pA.pos = {
+                x: pA.pos.x - pA.radius*(1-k)*unit.x,
+                y: pA.pos.y - pA.radius*(1-k)*unit.y
+            }
+            pB.pos = {
+                x: pB.pos.x + pB.radius*(1-k)*unit.x,
+                y: pB.pos.y + pB.radius*(1-k)*unit.y
+            }
+            console.log(pA.pos)
+            console.log(pA.vel)
+
+        }
+
         pB.acc = fB;
         pB.vel.x += pB.acc.x*timeStep;
         pB.vel.y += pB.acc.y*timeStep;
@@ -87,10 +139,7 @@ const pC = new Particle({
         pC.vel.x += pC.acc.x*timeStep;
         pC.vel.y += pC.acc.y*timeStep;
         pC.pos.x += pC.vel.x*timeStep;
-        pC.pos.y += pC.vel.y*timeStep;
-
-
-        
+        pC.pos.y += pC.vel.y*timeStep;        
     })
 })
 

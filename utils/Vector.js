@@ -13,9 +13,10 @@ class Vector {
     }
 
     unitary(){
+        const v = this.module()
         return new Vector({
-            x: this.x/this.module(), 
-            y: this.y/this.module()
+            x: this.x/v, 
+            y: this.y/v
         });
     }
 
