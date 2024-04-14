@@ -4,7 +4,7 @@ class Particle {
         this.pos = props.pos,
         this.vel = props.vel || {x: 0, y: 0};
         this.acc = props.acc || {x: 0, y: 0};
-        this.radius = props.radius || .2;
+        this.radius = props.radius || .25;
         this.mass = props.mass || 2;
         
         //additional props
@@ -54,8 +54,8 @@ class Particle {
             layer.fillStyle = this.color;   
             layer.fillText(
                 this.label,
-                pixels.x + this.radius +  .75*this.labelSize,
-                pixels.y - this.radius);
+                pixels.x + .8*pixelRadius ,
+                pixels.y - .8*pixelRadius);
         }
 
         if(this.isClicked){ 
