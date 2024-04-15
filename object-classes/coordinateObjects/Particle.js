@@ -29,6 +29,17 @@ class Particle {
         this.offset = {x: 0, y: 0},
         this.isClicked = false;
 
+        //Velocity controller props
+        this.addVelController = props.addVelController || false;
+        this.drawVelController = props.drawVelController || false;
+        this.controllerRadius = props.controllerRadius || 25;
+        this.controllerOffset = {x: 0, y: 0};
+        this.controllerPos = {
+            x: this.pos.x + this.velVecScale*this.vel.x,
+            y: this.pos.y + this.velVecScale*this.vel.y,
+        }
+        this.controllerIsClicked = false;
+
         this.onMouseMoveAddition = props.onMouseMoveAddition || (() => {});
         
         //Animation props
@@ -57,7 +68,6 @@ class Particle {
             pixels.x, pixels.y, pixelRadius, 0, 2*Math.PI);
         layer.closePath();
         layer.fill(); 
-
         layer.restore();
 
         if(this.label != ''){
@@ -117,6 +127,20 @@ class Particle {
             })
             accVector.draw();
         }
+
+        if(this.addVelController & this.drawVelController){
+            const velController = new CoordinatePoint({
+                pos: {
+                    x: this.controllerPos.x,
+                    y: this.controllerPos.y
+                },
+                radius: this.controllerRadius,
+                color: 'red', 
+                opacity: .5
+            })
+            velController.draw()
+        }
+        
     }
 
     rotate({angle, from = {x: 0, y: 0}}){
@@ -145,15 +169,25 @@ class Particle {
         this.offset.x = mouseX - pixels.x;
         this.offset.y = mouseY - pixels.y;
         
-        if( (pixels.x - mouseX)**2 + (pixels.y - mouseY)**2 <= this.radius**2){
+        const pixelRadius = xy.coordinatePixelUnit(this.radius);
+        if( (pixels.x - mouseX)**2 + (pixels.y - mouseY)**2 <= pixelRadius**2){
             this.isClicked = true;
             drawFrame();
-        }      
+        }  
+        
+        const controllerPixels = xy.coordinatesToPixels(this.controllerPos);
+        this.controllerOffset.x = mouseX - controllerPixels.x;
+        this.controllerOffset.y = mouseY - controllerPixels.y;
+        if((controllerPixels.x - mouseX)**2 + (controllerPixels.y - mouseY)**2 <= this.controllerRadius**2){
+            this.controllerIsClicked = true;
+            this.isClicked = true;
+        }
+
     }        
     
     onMouseMove(event) {        
         const pixels = xy.coordinatesToPixels(this.pos);        
-        if(this.isClicked){            
+        if(this.isClicked & !this.controllerIsClicked){            
             pixels.x = -this.offset.x + resolutionFactor * event.x;
             pixels.y = -this.offset.y + resolutionFactor * event.y;
             
@@ -161,11 +195,22 @@ class Particle {
             this.onMouseMoveAddition();
             drawFrame();
         }
+        const controllerPixels = xy.coordinatesToPixels(this.controllerPos);
+        if(this.controllerIsClicked){
+            controllerPixels.x = -this.controllerOffset.x + resolutionFactor*event.x;
+            controllerPixels.y = -this.controllerOffset.y + resolutionFactor*event.y;
+            this.controllerPos = xy.pixelsToCoordiantes(controllerPixels);
+            
+            this.vel.x = (this.controllerPos.x - this.pos.x)/this.velVecScale;
+            this.vel.y = (this.controllerPos.y - this.pos.y)/this.velVecScale;
 
+            drawFrame();
+        }
     }
     
     onMouseUp() {                    
         this.isClicked = false;
+        this.controllerIsClicked = false;
     }
 
     //Animation methods
@@ -225,7 +270,6 @@ class Particle {
         const distance = distanceVector.module();
         const totalMass = this.mass + particle.mass;
         if(distance < (this.radius + particle.radius)){
-
             const u1 = distanceVector.unitary();
             const u2 = u1.orthogonal();            
             const vcm = {
@@ -254,10 +298,8 @@ class Particle {
                 y: -b1*u1.y + b2*u2.y + vcm.y
             }
             const k = distance/(this.radius + particle.radius);
-
             this.pos.x = this.pos.x - this.radius*(1-k)*u1.x;
             this.pos.y = this.pos.y - this.radius*(1-k)*u1.y;
-
             particle.pos.x = particle.pos.x + particle.radius*(1-k)*u1.x;
             particle.pos.y = particle.pos.y + particle.radius*(1-k)*u1.y;
         } 

@@ -6,44 +6,46 @@ G = 1;
 const dFactor = 1;
 const vFactor = .25;
 const pRadius = .5;
-const pA = new Particle({
-    pos: {x: Math.sqrt(3)*dFactor, y: -1*dFactor},
-    vel: {x: 1*vFactor, y: Math.sqrt(3)*vFactor},
-    radius: pRadius,
+
+const particleProps = {
     mass: 1,
+    radius: pRadius,
     drawPosVec: true, 
     drawVelVec: true,
     velVecScale: 2,
     drawAccVec: true, 
     accVecScale: 2,
+    opacity: .5
+}
+const pA = new Particle({
+    pos: {x: Math.sqrt(3)*dFactor, y: -1*dFactor},
+    vel: {x: 1*vFactor, y: Math.sqrt(3)*vFactor},
     color: 'red', 
     label: 'A', 
-    opacity: .5
+    ...particleProps
 })
 
 const pB = new Particle({
     pos: {x: 0*dFactor, y: 2*dFactor},
     vel: {x: -2*vFactor, y: 0*vFactor},
-    radius: pRadius, 
-    mass: 1,
     color: 'green',
-    label: 'B'
+    label: 'B', 
+    ...particleProps
 })
 
 const pC = new Particle({
     pos: {x: -Math.sqrt(3)*dFactor, y: -1*dFactor},
-    vel: {x: 1*vFactor, y:  -Math.sqrt(3)*vFactor},
-    radius: pRadius,
-    mass: 1,
+    vel: {x: 1*vFactor, y:  -Math.sqrt(3)*vFactor},    
     color: '#0af',
     label: 'C',
+    ...particleProps,
     animation: (() => {
         if(frame > 0){
             const props = {
                 maxLength: 100, 
                 opacity: .05
             }
-            // pA.showTrace(props);  
+            pA.showTrace(props);  
             pB.showTrace(props);  
             pC.showTrace(props);  
         }

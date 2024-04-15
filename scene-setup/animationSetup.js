@@ -3,7 +3,7 @@ var timeStep = 1 / fps;
 var frame = 0;
 var t = frame*timeStep;
 
-var backgroundColor = '#242424';
+var backgroundColor = '#303030';
 function drawBackground(){
 
     ctx.fillStyle = backgroundColor;

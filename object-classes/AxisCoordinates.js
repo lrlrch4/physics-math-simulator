@@ -53,7 +53,9 @@ class AxisCoordinates {
         this.origin = props.origin || {x: .5*canvas.width, y: .5*canvas.height};
         this.offset = {x: 0, y: 0}
         this.grid = props.grid || false;
-        
+        this.horizontalAxis = true;
+        this.verticalAxis = true;
+
         //Style props
         this.axisColor = props.axisColor || 'white';
         this.labelSize = props.labelSize || 30;
@@ -80,8 +82,8 @@ class AxisCoordinates {
             ending: {x: this.origin.x, y: 0},
             color: this.axisColor
         })
-        xAxis.draw();
-        yAxis.draw();
+        if(this.horizontalAxis){xAxis.draw()}
+        if(this.verticalAxis){yAxis.draw()};
     
     //Draw horizontal labels
         const horizontalPositiveLabels = Math.ceil(
@@ -98,30 +100,29 @@ class AxisCoordinates {
         var toFixedValue = 0;
 
         if(unit > 500){unitScale = 4; toFixedValue = 2}
-        if(unit > 3000){unitScale = 20; toFixedValue = 3}
-        
-        
+        if(unit > 3000){unitScale = 20; toFixedValue = 3}            
         const hLabelPos = { 
             x: 0,
             y: this.origin.y + this.labelSize
         }
+        ctx.font = `${this.labelSize}px Couriers`;
+        ctx.fillStyle = this.labelColor;                
 
-        for(let i = -unitScale*horizontalNegativeLabels; i <= unitScale*horizontalPositiveLabels; i++){
-            if(i != 0 & i%labelsMultiplicity === 0){
-                hLabelPos.x = i*(1/unitScale)*unit + this.origin.x - this.labelSize;
+        if(this.horizontalAxis){        
+            for(let i = -unitScale*horizontalNegativeLabels; i <= unitScale*horizontalPositiveLabels; i++){
+                if(i != 0 & i%labelsMultiplicity === 0){
+                    hLabelPos.x = i*(1/unitScale)*unit + this.origin.x - this.labelSize;
 
-                if(hLabelPos.y > canvas.height){
-                    hLabelPos.y = canvas.height;
-                }
-                
-                ctx.font = `${this.labelSize}px Couriers`;
-                ctx.fillStyle = this.labelColor;                
-                ctx.fillText(
-                    `${((1/unitScale)*i).toFixed(toFixedValue)}`,
-                    hLabelPos.x,
-                    hLabelPos.y
-                ); 
-            }                           
+                    if(hLabelPos.y > canvas.height){
+                        hLabelPos.y = canvas.height;
+                    }
+                    ctx.fillText(
+                        `${((1/unitScale)*i).toFixed(toFixedValue)}`,
+                        hLabelPos.x,
+                        hLabelPos.y
+                    ); 
+                }                           
+            }
         }
 
     //Draw vertical labels
@@ -131,27 +132,28 @@ class AxisCoordinates {
             x: this.origin.x - this.labelSize, 
             y: 0
         }
-        for(let i = -unitScale*verticalNegativeLabels; i < unitScale*verticalPositiveLabels; i++){                        
-            if(i != 0 & i%labelsMultiplicity === 0){
-                vLabelPos.y = -i*unit*(1/unitScale) + this.origin.y + this.labelSize
-                if(vLabelPos.x < 0){
-                    vLabelPos.x = 0;
-                }
+        if(this.verticalAxis){
+            for(let i = -unitScale*verticalNegativeLabels; i < unitScale*verticalPositiveLabels; i++){                        
+                if(i != 0 & i%labelsMultiplicity === 0){
+                    vLabelPos.y = -i*unit*(1/unitScale) + this.origin.y + this.labelSize
+                    if(vLabelPos.x < 0){
+                        vLabelPos.x = 0;
+                    }
 
-                ctx.fillText(
-                    `${((1/unitScale)*i).toFixed(toFixedValue)}`, 
-                    vLabelPos.x,
-                    vLabelPos.y
+                    ctx.fillText(
+                        `${((1/unitScale)*i).toFixed(toFixedValue)}`, 
+                        vLabelPos.x,
+                        vLabelPos.y
                     );
+                }
             }
         }
-
     //Draw grid
         if(this.grid){
             //Horizontal lines
             const gridCtx = canvas.getContext('2d');
             for(let i = -unitScale*horizontalNegativeLabels; i < unitScale*horizontalPositiveLabels; i++){
-                if(i != 0 & i%labelsMultiplicity === 0){
+                if(i%labelsMultiplicity === 0){
                     gridCtx.save()
                     gridCtx.globalAlpha = this.gridOpacity;
                     gridCtx.beginPath();
@@ -165,7 +167,7 @@ class AxisCoordinates {
             }
 
             for(let i = -unitScale*verticalNegativeLabels; i < unitScale*verticalPositiveLabels; i++){  
-                if(i != 0 & i%labelsMultiplicity === 0){  
+                if(i%labelsMultiplicity === 0){  
                     gridCtx.save()
                     gridCtx.globalAlpha = this.gridOpacity;         
                     gridCtx.beginPath();
