@@ -40,6 +40,7 @@ class Particle {
         }
         this.controllerIsClicked = false;
 
+        //On mouse move addition
         this.onMouseMoveAddition = props.onMouseMoveAddition || (() => {});
         
         //Animation props
@@ -191,7 +192,10 @@ class Particle {
             pixels.x = -this.offset.x + resolutionFactor * event.x;
             pixels.y = -this.offset.y + resolutionFactor * event.y;
             
-            this.pos = xy.pixelsToCoordiantes(pixels);                 
+            this.pos = xy.pixelsToCoordiantes(pixels);  
+            const s = this.velVecScale;               
+            this.controllerPos.x = this.pos.x + s*this.vel.x; 
+            this.controllerPos.y = this.pos.y + s*this.vel.y; 
             this.onMouseMoveAddition();
             drawFrame();
         }

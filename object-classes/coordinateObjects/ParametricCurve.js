@@ -23,6 +23,9 @@ class ParametricCurve {
         this.animation = props.animation || (() => (
             console.log('Animation added')
         ));
+        this.simulation = props.simulation || (
+            () => ( console.log('simulation added') )
+            );
     }
 
     draw(){
@@ -124,6 +127,10 @@ class ParametricCurve {
     //Animation methods
     animate(){ 
         this.animation();
+    }
+
+    simulate(){
+        this.simulation();
     }
 
     showTrace(){

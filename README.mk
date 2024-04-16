@@ -35,11 +35,18 @@ class CoordinateObject {
     }
 
     //Animation props
-    update(){
-
+    animate(){
+        this.animation();
     }
 
+    simulate(){
+        this.simulation();
+    }
     showTrace(){
 
     }
 }
+drawObjects = [];
+interactiveObjects = [];
+animatedObjects = [];
+simulationObjects = [];

@@ -4,11 +4,12 @@ xy.grid = true;
 xy.origin = {x: 1394, y: 1493};
 
 const xtAxis = new NewAxis({
-    newOrigin: {x: -5, y: 2}, 
+    newOrigin: {x: -5, y: 3}, 
     newBasis1: {x: .1, y: 0},
     newBasis2: {x: 0, y: .25}, 
-    axis1Length: 10,
-    axis2Length: 3, 
+    axis1Range: {start: 0, end: 100},
+    axis2Range: {start: -6, end: 6},
+    axis1Step: 10,
     axis1Label: 't',
     axis2Label: 'x(t)'
 });
@@ -28,7 +29,7 @@ const parameter = {
 const dot = new CoordinatePoint({
     pos: particle.pos,
     color: 'red',
-    animation: (() => { 
+    simulation: (() => { 
         if(isSimulating){
             particle.acc.x = -parameter.k*particle.pos.x - parameter.b*particle.vel.x;
             particle.vel.x += particle.acc.x*timeStep;
@@ -39,7 +40,7 @@ const dot = new CoordinatePoint({
     })
 })
 drawObjects.push(dot);
-animatedObjects.push(dot);
+simulationObjects.push(dot);
 
 
 const graph = new CoordinatePoint({
@@ -59,3 +60,38 @@ const graph = new CoordinatePoint({
 
 drawObjects.push(graph);
 animatedObjects.push(graph);
+
+
+var order = 50;
+const springOrigin = {x: -6, y: 0};
+const springEnding = {x:  5, y: 0};
+var springLength = Math.sqrt(
+    (springEnding.x - springOrigin.x)**2 + (springEnding.y - springOrigin.y)**2
+);
+
+const spring = new ParametricCurve({ 
+    mathFunction: (
+        (s) => ({x: s, y: .05*Math.sin((order*Math.PI*(s-springOrigin.x))/springLength)})
+    ),
+    range: {
+        start: springOrigin.x, 
+        end: springOrigin.x + springLength
+    },
+    simulation: (() => {
+        springEnding.x = particle.pos.x;
+
+        springLength = Math.sqrt(
+            (springEnding.x - springOrigin.x)**2 + (springEnding.y - springOrigin.y)**2
+        );
+
+        spring.mathFunction = (
+            (s) => ({x: s, y: .05*Math.sin((order*Math.PI*(s-springOrigin.x))/springLength)})
+        );
+        spring.range = {
+            start: springOrigin.x, 
+            end: springOrigin.x + springLength
+        }
+    })
+})
+drawObjects.push(spring)
+simulationObjects.push(spring)

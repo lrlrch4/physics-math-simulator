@@ -86,6 +86,7 @@ class NewAxis{
             pixels2.x + .5*this.labelSize,
             pixels2.y);
 
+        //Horizontal ticks
         const ticksNumber1 = Math.floor((this.axis1Range.end - this.axis1Range.start)/this.axis1Step);         
         for(let i = 0; i < ticksNumber1; i++){
             const ticksValues = this.axis1Range.start + i*this.axis1Step
@@ -102,19 +103,21 @@ class NewAxis{
                 pixels.y + this.ticksSize
             );
         }    
-
+        //Vertical ticks
         const ticksNumber2 = Math.floor((this.axis2Range.end - this.axis2Range.start)/this.axis2Step);         
         for(let i = 0; i < ticksNumber2; i++){
+            const ticksValues = this.axis2Range.start + i*this.axis2Step;
             const pixels = xy.coordinatesToPixels(
                 this.getOriginalCoordinates({
                     x: this.axis1Range.start, 
-                    y: this.axis2Range.start + i*this.axis2Step
+                    y: ticksValues
                 })
             )
+            const dFactor = (ticksValues>=0)? 1 : 1.5;
             layer.font = `${this.ticksSize}px Courier`;
             layer.fillText(
-                `${this.axis2Range.start + i*this.axis2Step}`,
-                pixels.x - this.ticksSize,
+                `${ticksValues.toFixed(0)}`,
+                pixels.x - dFactor*this.ticksSize,
                 pixels.y 
             );
         }    
