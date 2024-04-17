@@ -87,7 +87,9 @@ class NewAxis{
             pixels2.y);
 
         //Horizontal ticks
-        const ticksNumber1 = Math.floor((this.axis1Range.end - this.axis1Range.start)/this.axis1Step);         
+        const ticksNumber1 = Math.floor(
+            (this.axis1Range.end - this.axis1Range.start)/this.axis1Step
+        );         
         for(let i = 0; i < ticksNumber1; i++){
             const ticksValues = this.axis1Range.start + i*this.axis1Step
             const pixels = xy.coordinatesToPixels(
@@ -104,7 +106,9 @@ class NewAxis{
             );
         }    
         //Vertical ticks
-        const ticksNumber2 = Math.floor((this.axis2Range.end - this.axis2Range.start)/this.axis2Step);         
+        const ticksNumber2 = Math.floor(
+            (this.axis2Range.end - this.axis2Range.start)/this.axis2Step
+        );         
         for(let i = 0; i < ticksNumber2; i++){
             const ticksValues = this.axis2Range.start + i*this.axis2Step;
             const pixels = xy.coordinatesToPixels(

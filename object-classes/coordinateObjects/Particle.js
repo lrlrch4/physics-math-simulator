@@ -87,7 +87,7 @@ class Particle {
             layer.fillStyle = this.color;
             layer.beginPath();
             layer.arc(
-            pixels.x, pixels.y, 1.5*this.radius, 0, 2*Math.PI);
+            pixels.x, pixels.y, 1.5*pixelRadius, 0, 2*Math.PI);
             layer.closePath();
             layer.fill();
 
@@ -175,16 +175,16 @@ class Particle {
             this.isClicked = true;
             drawFrame();
         }  
-        
-        const controllerPixels = xy.coordinatesToPixels(this.controllerPos);
-        this.controllerOffset.x = mouseX - controllerPixels.x;
-        this.controllerOffset.y = mouseY - controllerPixels.y;
-        if((controllerPixels.x - mouseX)**2 + (controllerPixels.y - mouseY)**2 <= this.controllerRadius**2){
-            this.controllerIsClicked = true;
-            this.isClicked = true;
+        if(this.addVelController){
+            const controllerPixels = xy.coordinatesToPixels(this.controllerPos);
+            this.controllerOffset.x = mouseX - controllerPixels.x;
+            this.controllerOffset.y = mouseY - controllerPixels.y;
+            if((controllerPixels.x - mouseX)**2 + (controllerPixels.y - mouseY)**2 <= this.controllerRadius**2){
+                this.controllerIsClicked = true;
+                this.isClicked = true;
+            }
         }
-
-    }        
+    }//End of draw method        
     
     onMouseMove(event) {        
         const pixels = xy.coordinatesToPixels(this.pos);        
@@ -193,6 +193,8 @@ class Particle {
             pixels.y = -this.offset.y + resolutionFactor * event.y;
             
             this.pos = xy.pixelsToCoordiantes(pixels);  
+            this.vel.x = 0; 
+            this.vel.y = 0;
             const s = this.velVecScale;               
             this.controllerPos.x = this.pos.x + s*this.vel.x; 
             this.controllerPos.y = this.pos.y + s*this.vel.y; 

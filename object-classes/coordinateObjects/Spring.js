@@ -22,16 +22,18 @@ class Spring {
     draw(){
         const theta = Math.atan(
             (this.ending.y - this.origin.y)/(this.ending.x - this.origin.x)
-        )
-        const length = Math.sqrt(
-            (this.ending.y - this.origin.y)**2 + (this.ending.x - this.origin.x)**2
-        )
-
+        );
+        const length = Math.abs(this.ending.x - this.origin.x);
+        
         const sinCurve = new ParametricCurve({
-            mathFunction: ((s) => ({
-                x: Math.cos(theta)*s - this.thickness*Math.sin(theta)*Math.sin(s*this.order*Math.PI/length), 
-                y: Math.sin(theta)*s + this.thickness*Math.cos(theta)*Math.sin(s*this.order*Math.PI/length) 
-            })),
+            mathFunction: ((s) => {
+                const fs = this.thickness*Math.sin((s-this.origin.x)*this.order*Math.PI/length);
+                const pFunction = {
+                    x: Math.cos(theta)*s - Math.sin(theta)*fs, 
+                    y: Math.sin(theta)*s + Math.cos(theta)*fs
+                }
+                return pFunction 
+            }),
             range: {
                 start: this.origin.x, 
                 end: this.origin.x + length

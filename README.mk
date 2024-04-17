@@ -9,30 +9,18 @@ class CoordinateObject {
     }
 
     //Graphics props
-    draw(){
+    draw(){}
 
-    }
+    rotate(){}
 
-    rotate(){
-
-    }
-
-    applyMatrixTransformation(){ 
-
-    }
+    applyMatrixTransformation(){}
 
     //Interaction props
-    onMouseDown(){ 
+    onMouseDown(){}
 
-    }
+    onMouseMove(){}
 
-    onMouseMove(){
-
-    }
-
-    onMouseUp(){
-
-    }
+    onMouseUp(){}
 
     //Animation props
     animate(){
@@ -43,10 +31,21 @@ class CoordinateObject {
         this.simulation();
     }
     showTrace(){
-
     }
 }
+Objecst lists:
 drawObjects = [];
 interactiveObjects = [];
 animatedObjects = [];
 simulationObjects = [];
+
+Code to start: 
+backgroundColor = '#000000';
+unit = 420;
+camera = {
+    x: 150, y: 1000
+}
+xy.origin = camera;
+xy.grid = true;
+xy.horizontalAxis = true;
+xy.verticalAxis = true;
