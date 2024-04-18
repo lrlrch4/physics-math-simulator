@@ -23,20 +23,22 @@ class Spring {
         const theta = Math.atan(
             (this.ending.y - this.origin.y)/(this.ending.x - this.origin.x)
         );
-        const length = Math.abs(this.ending.x - this.origin.x);
+        const length = Math.sqrt(
+            (this.ending.x - this.origin.x)**2 + (this.ending.y - this.origin.y)**2
+        );
         
         const sinCurve = new ParametricCurve({
             mathFunction: ((s) => {
-                const fs = this.thickness*Math.sin((s-this.origin.x)*this.order*Math.PI/length);
+                const fs = this.thickness*Math.sin(s*this.order*Math.PI/length);
                 const pFunction = {
-                    x: Math.cos(theta)*s - Math.sin(theta)*fs, 
-                    y: Math.sin(theta)*s + Math.cos(theta)*fs
+                    x: this.origin.x + Math.cos(theta)*s - Math.sin(theta)*fs, 
+                    y: this.origin.y +Math.sin(theta)*s + Math.cos(theta)*fs
                 }
                 return pFunction 
             }),
             range: {
-                start: this.origin.x, 
-                end: this.origin.x + length
+                start: 0, 
+                end: length
             } 
         })
         sinCurve.draw();
@@ -44,5 +46,9 @@ class Spring {
 
     animate(){
         this.animation();
+    }
+
+    simulate(){
+        this.simulation();
     }
 }
