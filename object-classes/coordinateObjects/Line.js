@@ -14,6 +14,9 @@ class Line{
         this.animation = props.animation || (
             () => (console.log('animation added'))
             );
+
+        //interaction props 
+        this.layer = 0
     }
 
     //Graphics methods

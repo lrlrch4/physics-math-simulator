@@ -2,10 +2,17 @@
 
 This is a math and physics engine and calculator for academic purposes. It is inspired on geogebra but with personalized features to be more suitable for more advance uses, especially in math and physics topics. It is created canvas with javascript and HTML. 
 
-Object general structure
+Object general structure:
+
+
 class CoordinateObject { 
     constructor(props){ 
-
+        this.simulation = props.simulation || (()=>{
+            'simulation added'
+        });
+        this.animation = props.animation || (()=>{
+            'simulation added'
+        })
     }
 
     //Graphics props
@@ -33,6 +40,8 @@ class CoordinateObject {
     showTrace(){
     }
 }
+
+
 Objecst lists:
 drawObjects = [];
 interactiveObjects = [];
@@ -43,7 +52,7 @@ Code to start:
 backgroundColor = '#000000';
 unit = 420;
 camera = {
-    x: 150, y: 1000
+    x: canvas.width/2, y: canvas.height/2
 }
 xy.origin = camera;
 xy.grid = true;

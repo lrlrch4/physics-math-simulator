@@ -1,5 +1,8 @@
 class EmptyObject{
-    constructor(props){}
+    constructor(props){
+        this.animation = props.animation || (() => {});
+        this.simulation = props.simulation || (() => {});
+    }
 
     //Graphics props
     draw(){}

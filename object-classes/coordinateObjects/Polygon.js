@@ -1,6 +1,7 @@
 class Polygon { 
     constructor(props){
         this.vertexCoordinates = props.vertexCoordinates;
+        
         this.vertices = this.vertexCoordinates.map(
             (element, index) => new CoordinatePoint({
                 pos: element, 
