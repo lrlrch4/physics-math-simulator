@@ -23,7 +23,7 @@ function drawBackground(){
         informationString +=  backgroundInformation[i] + '  ' 
      }  
 
-    const fontSize = 36;
+    const fontSize = 30;
     ctx.font = `${fontSize}px Courier`;
     ctx.fillStyle = "#0af";   
     ctx.fillText(
@@ -73,7 +73,6 @@ function updateSceneSetup(){
     interactiveObjects.forEach( (obj, index) => {
         obj.layer = index;
     });
-
     canvas.addEventListener('mousedown', (event) => {
         //Element selection
         if(event.button === 0){
@@ -84,15 +83,14 @@ function updateSceneSetup(){
                 if(selectedLayer < element.layer & element.isClicked){
                     selectedLayer = element.layer;
                 }
-            });
-            
+            });            
             interactiveObjects.forEach(element => {
                 if(element.layer != selectedLayer){
                     element.isClicked = false;
                 }
             });
         }
-
+        
         //Box selection
         
         // var boxSelectionActivated = false;

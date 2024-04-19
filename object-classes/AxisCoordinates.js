@@ -218,7 +218,7 @@ class AxisCoordinates {
         };
     }
 
-    pixelsToCoordiantes(pixels){
+    pixelsToCoordinates(pixels){
         return {
             x: ( pixels.x - this.origin.x)/unit,
             y: (-pixels.y + this.origin.y)/unit
