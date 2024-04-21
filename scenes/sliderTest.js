@@ -10,6 +10,8 @@ xy.horizontalAxis = true;
 xy.verticalAxis = true;
 
 const slider = new Slider({
+    range: {start: 2, end: 4},
+    label: 'r',
     animation: (() => {
         slider.origin = xy.pixelsToCoordinates({x: .15*canvas.width, y: 30});
         slider.ending = xy.pixelsToCoordinates({x: .85*canvas.width, y: 30});   

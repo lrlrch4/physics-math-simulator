@@ -2,8 +2,14 @@ class Slider {
     constructor(props){ 
         this.origin = props.origin || {x: 0, y: 2};
         this.ending = props.ending || {x: 3, y: 2};
-        this.range = props.range || {start: 0, end: 5}
+        this.range = props.range || {start: 0, end: 1}
         this.value = this.range.start;
+
+        //style props
+        this.labelSize = props.labelSize || 40;
+        this.color = props.color || '#0af';
+        this.label = props.label || '';
+
  
         this.simulation = props.simulation || (()=>{
             'simulation added'
@@ -50,7 +56,17 @@ class Slider {
         this.subObjects[1].origin = this.origin;
         this.subObjects[1].ending = this.ending;
 
-        this.subObjects.forEach(element => element.draw())        
+        this.subObjects.forEach(element => element.draw())
+        
+        const layer = canvas.getContext('2d');
+        const labelPixels = xy.coordinatesToPixels(this.subObjects[0].pos);
+
+        layer.font = `${this.labelSize}px Courier`;
+        layer.fillStyle = this.color;   
+        layer.fillText(
+            this.label + ` = ${this.value.toFixed(2)}`,
+            labelPixels.x,
+            labelPixels.y + 1.25*this.labelSize);      
     }
 
     rotate(){}
