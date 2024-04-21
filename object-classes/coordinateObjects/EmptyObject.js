@@ -1,7 +1,11 @@
 class EmptyObject{
     constructor(props){
-        this.animation = props.animation || (() => {});
-        this.simulation = props.simulation || (() => {});
+        this.animation = props.animation || (() => {
+            console.log('animation added');
+        });
+        this.simulation = props.simulation || (() => {
+            console.log('simulation added');
+        });
     }
 
     //Graphics props
@@ -14,11 +18,11 @@ class EmptyObject{
     }
 
     //Interaction props
-    onMouseDown(){
+    onMouseDown(event){
 
     }
 
-    onMouseMove(){
+    onMouseMove(event){
 
     }
 
@@ -28,13 +32,10 @@ class EmptyObject{
 
     //Animation props
     animate(){
-
+        this.animation();
     }
 
     simulate(){
-
+        this.simulation();
     }
-    showTrace(){
-        
-    }
-}
+}//End of class

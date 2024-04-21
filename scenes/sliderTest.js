@@ -16,14 +16,14 @@ const slider = new Slider({
         slider.origin = xy.pixelsToCoordinates({x: .15*canvas.width, y: 30});
         slider.ending = xy.pixelsToCoordinates({x: .85*canvas.width, y: 30});   
     })
-})
+});
 
 const circle = new CircleArc({
     animation: (() => { 
         circle.pos.x = t
         circle.radius = .1*slider.value + .1;
     })
-})
+});
 
 
 drawObjects.push(circle, slider)

@@ -4,12 +4,22 @@ class VectorFieldArrow {
         this.vector = props.vector;
         this.color = props.color || '#0af';
         this.height = props.height || 100;
-        this.width = props.width || 15;        
+        this.width = props.width || 15; 
+        this.opacity = props.opacity || 1;
+
+        this.layer = 0;
+        this.animation = props.animation || (() => {
+            console.log('animation added');
+        });
+        this.simulation = props.simulation || (() => {
+            console.log('simulation added');
+        });
     }
 
     draw(){
+        const vector = new Vector(this.vector);
         const pixelsPos = xy.coordinatesToPixels(this.pos);
-        const direction = new Vector(this.vector).unitary();
+        const direction = vector.unitary();
 
         const pointP = {
             x: pixelsPos.x + this.height*direction.x,
@@ -23,14 +33,20 @@ class VectorFieldArrow {
             x: pixelsPos.x - this.width*direction.orthogonal().x,
             y: pixelsPos.y + this.width*direction.orthogonal().y
         }
+        const layer = canvas.getContext('2d');
 
-        ctx.beginPath();            
-        ctx.moveTo(pointP.x, pointP.y); 
-        ctx.lineTo(pointR.x, pointR.y);  
-        ctx.lineTo(pointQ.x, pointQ.y);             
-        ctx.closePath();            
-        ctx.fillStyle = this.color;            
-        ctx.fill();
+        layer.save();
+
+        layer.fillStyle = this.color;            
+        layer.globalAlpha = this.opacity;
+        layer.beginPath();            
+        layer.moveTo(pointP.x, pointP.y); 
+        layer.lineTo(pointR.x, pointR.y);  
+        layer.lineTo(pointQ.x, pointQ.y);             
+        layer.closePath();            
+        layer.fill();
+        
+        layer.restore(); 
     }
 }
 
@@ -45,18 +61,27 @@ class VectorField {
         this.height = props.height || 100;
         this.width = props.width || 15;
 
-        this.constantArrowLength = props.constantArrowLength && true;
+        this.constantLength = props.constantLength || false;
+        this.constantColor = props.constantColor || false;
+        this.constantOpacity = props.constantOpacity || false;
         this.pixelScale = props.pixelScale || 10;
+
+        this.layer = 0;
+        this.animation = props.animation || (() => {
+            console.log('animation added');
+        });
+        this.simulation = props.simulation || (() => {
+            console.log('simulation added');
+        });
     }
 
-    draw(){
-        
-        const topLeftCoordinates = xy.pixelsToCoordiantes({
+    draw(){        
+        const topLeftCoordinates = xy.pixelsToCoordinates({
             x: 0, 
             y: 0
         });
 
-        const BottomRightCoordinates = xy.pixelsToCoordiantes({
+        const BottomRightCoordinates = xy.pixelsToCoordinates({
             x: canvas.width, 
             y: canvas.height
         });
@@ -96,7 +121,7 @@ class VectorField {
 
         const fittingMap = new FittingMap({
             inRange: {min: minMagnitudeValue, max: maxMagnitudeValue},
-            outRange: {min: 0, max: 300}
+            outRange: {min: 0, max: 1}
         });
         
         for(let i = 0; i < horizontalArrows; i++){
@@ -116,8 +141,10 @@ class VectorField {
                     vector: this.mathFunction(coorPos),
 
                     width: this.width,
-                    height: this.constantArrowLength ? this.height : this.pixelScale * magnitude,
-                    color: `hsl(${fittingMap.linear(magnitude)}, 100%, 50%)`
+                    opacity: this.constantOpacity ? this.opacity : fittingMap.linear(magnitude),
+                    height: this.constantLength ? this.height : this.pixelScale * magnitude,
+                    color: this.constantColor? this.color : `hsl(${fittingMap.linear(magnitude)*300}, 100%, 50%)`,
+
                 });                
                 arrow.draw();
             }
@@ -137,10 +164,10 @@ class VectorField {
     }   
     
     animate() {
-
+        this.animation();
     }
     simulate() {
-        
+        this.simulation();
     }
 }
 
