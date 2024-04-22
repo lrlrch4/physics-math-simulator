@@ -1,5 +1,5 @@
 backgroundColor = '#000000';
-unit = 156;
+unit = 252;
 camera = {
     x: canvas.width/2, 
     y: canvas.height/2
@@ -9,23 +9,8 @@ xy.grid = true;
 xy.horizontalAxis = true;
 xy.verticalAxis = true;
 
-const particleA = new CoordinatePoint({
-    pos: {x: 0, y: 0}, 
-    radius: 30,
-    color: 'yellow'
-})
-drawObjects.push(particleA);
-interactiveObjects.push(particleA);
-
-const particleB = new CoordinatePoint({
-    pos: {x: 1, y: 0}, 
-    radius: 30,
-    color: '#f0a000'
-})
-drawObjects.push(particleB);
-interactiveObjects.push(particleB);
-
-const rmin = .5;
+const k = 10000;
+const rmin = .25;
 const vectorFunction = ((coor, particle) => {
     const r = Math.sqrt(
         (coor.x - particle.pos.x)**2 + (coor.y - particle.pos.y)**2
@@ -42,15 +27,45 @@ const vectorFunction = ((coor, particle) => {
             y: (coor.y - particle.pos.y)/r**3
         }
     }
+});
+const potentialFunction = ((coor, particle) => {
+    const r = Math.sqrt(
+        (coor.x - particle.pos.x)**2 + (coor.y - particle.pos.y)**2
+    ); 
+    if(r < rmin){
+        return k/rmin
+    }
+    if(r >= rmin){
+        return k/r
+    }
+});
 
-})  
+const particleA = new CoordinatePoint({
+    pos: {x: -1, y: 0}, 
+    radius: 20,
+    color: 'yellow', 
+    label: 'A'
+})
+
+interactiveObjects.push(particleA);
+
+const particleB = new CoordinatePoint({
+    pos: {x: 1, y: 0}, 
+    radius: 20,
+    color: 'yellow', 
+    label: 'B'
+})
+
+interactiveObjects.push(particleB);
 
 const electricField = new VectorField({ 
     pixelScale: 100,
-    color: 'yellow',
-    constantLength: true,
+    color: 'white',
+    constantLength: false,
     constantColor: true, 
-    constantOpacity: false,
+    constantOpacity: true,
+    distanceBetweenArrows: .5,
+    opacity: .5,
     animation: (() => {
         electricField.mathFunction = ((coor) => {
             const fieldA = vectorFunction(coor, particleA);
@@ -62,30 +77,55 @@ const electricField = new VectorField({
         })
     }) 
 });
-drawObjects.push(electricField);
+
 animatedObjects.push(electricField);
 
+const potentialField = new ScalarField({
+    dotRadius: 50,
+    distanceBetweenArrows: .5,
+    animation: (() => {        
+        potentialField.mathFunction = ((coor) => {
+            potentialA = potentialFunction(coor, particleA);
+            potentialB = potentialFunction(coor, particleB);
 
-const charge = new CoordinatePoint({
-    pos: {x: 1, y: 1}, 
-    radius: 15, 
-    color: '#3bff00'
+            return potentialA + potentialB;
+        })
+    }) 
 })
-drawObjects.push(charge);
+
+animatedObjects.push(potentialField);
+
+
+const q = -1;
+const charge = new CoordinatePoint({
+    pos: {x: 0, y: 3}, 
+    radius: 15, 
+    color: '#3bff00', 
+    label: 'q'
+})
+
 interactiveObjects.push(charge);
 
 const forceVector = new CoordinateVector({
+    color: '#3bff00',
     animation: (() => {
         const vector = electricField.mathFunction(charge.pos);
         const scale = 5;
         forceVector.origin = charge.pos;
         forceVector.ending = {
-            x: charge.pos.x + scale*vector.x,
-            y: charge.pos.y + scale*vector.y
+            x: charge.pos.x + q*scale*vector.x,
+            y: charge.pos.y + q*scale*vector.y
         }
 
     })
 })
-drawObjects.push(forceVector);
 animatedObjects.push(forceVector);
 
+drawObjects.push(
+    potentialField, 
+    electricField, 
+    particleA, 
+    particleB,
+    charge,
+    forceVector
+)

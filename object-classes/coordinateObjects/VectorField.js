@@ -53,18 +53,20 @@ class VectorFieldArrow {
 
 class VectorField {
     constructor(props){
-        this.mathFunction = props.mathFunction ||
-            function(coor){return {x: -coor.y, y: coor.x}};
-        this.color = props.color || '#0af';
+        this.mathFunction = props.mathFunction || (() => (
+            {x: -coor.y, y: coor.x}
+        ))
         this.distanceBetweenArrows = props.distanceBetweenArrows || 1;
-
+            
         this.height = props.height || 100;
         this.width = props.width || 15;
-
+            
+        this.color = props.color || '#0af';
         this.constantLength = props.constantLength || false;
         this.constantColor = props.constantColor || false;
         this.constantOpacity = props.constantOpacity || false;
         this.pixelScale = props.pixelScale || 10;
+        this.opacity = props.opacity || 1;
 
         this.layer = 0;
         this.animation = props.animation || (() => {

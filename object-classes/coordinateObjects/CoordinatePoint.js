@@ -50,7 +50,7 @@ class CoordinatePoint {
             layer.fillStyle = this.color;   
             layer.fillText(
                 this.label,
-                pixels.x + this.radius +  .75*this.labelSize,
+                pixels.x + this.radius,
                 pixels.y - this.radius);
         }
 

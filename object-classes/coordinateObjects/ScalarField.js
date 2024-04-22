@@ -1,25 +1,33 @@
 class ScalarField {
     constructor(props){
-        this.mathFunction = props.mathFunction ||
-            function(coor){return (coor.x)**2 + (coor.y)**2};
-        this.color = props.color || '#0af';
+        //Special props
+        this.mathFunction = props.mathFunction || ((coor) => (
+            (coor.x)**2 + (coor.y)**2
+        ));
         this.distanceBetweenArrows = props.distanceBetweenArrows || 1;
 
+        //Style props    
+        this.color = props.color || '#0af';
         this.dotRadius = props.dotRadius || 20;
+        this.opacity = props.opacity || .5;
+
+        this.animation = props.animation || (() => {
+            console.log('animation added')
+        });
+        this.simulation = props.simulation || (() => {
+            console.log('animation added')
+        });
     }
 
-    draw(){
-        
-        const topLeftCoordinates = xy.pixelsToCoordiantes({
+    draw(){        
+        const topLeftCoordinates = xy.pixelsToCoordinates({
             x: 0, 
             y: 0
         });
-
-        const BottomRightCoordinates = xy.pixelsToCoordiantes({
+        const BottomRightCoordinates = xy.pixelsToCoordinates({
             x: canvas.width, 
             y: canvas.height
         });
-
         const minXCoordinate = Math.ceil(topLeftCoordinates.x) - 1;
         const maxXCoordinate = Math.floor(BottomRightCoordinates.x) + 1;
 
@@ -32,7 +40,6 @@ class ScalarField {
         const verticalArrows = Math.ceil(
             Math.abs(maxYCoordinate - minYCoordinate)/this.distanceBetweenArrows
             ); 
-
         
         var minFunctionValue = this.mathFunction(topLeftCoordinates);
         var maxFunctionValue = minFunctionValue;
@@ -73,7 +80,8 @@ class ScalarField {
                 const dot = new CoordinatePoint({
                     pos: coorPos, 
                     color: `hsl(${fittingMap.linear(functionValue)}, 100%, 50%)`, 
-                    radius: this.dotRadius
+                    radius: this.dotRadius, 
+                    opacity: this.opacity
                 })
 
                 dot.draw();                           
@@ -94,11 +102,11 @@ class ScalarField {
     }    
     
     animate() {
-
+        this.animation();
     }
 
     simulate(){
-
+        this.simulation();
     }
 }
 
