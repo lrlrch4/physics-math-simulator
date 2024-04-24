@@ -1,5 +1,5 @@
 backgroundColor = '#000000';
-unit = 252;
+unit = 280;
 camera = {
     x: canvas.width/2, 
     y: canvas.height/2
@@ -28,6 +28,7 @@ const vectorFunction = ((coor, particle) => {
         }
     }
 });
+
 const potentialFunction = ((coor, particle) => {
     const r = Math.sqrt(
         (coor.x - particle.pos.x)**2 + (coor.y - particle.pos.y)**2
@@ -81,8 +82,8 @@ const electricField = new VectorField({
 animatedObjects.push(electricField);
 
 const potentialField = new ScalarField({
-    dotRadius: 50,
-    distanceBetweenArrows: .5,
+    dotRadius: 40,
+    distanceBetweenArrows: .25,
     animation: (() => {        
         potentialField.mathFunction = ((coor) => {
             potentialA = potentialFunction(coor, particleA);

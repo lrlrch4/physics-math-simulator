@@ -53,7 +53,7 @@ class VectorFieldArrow {
 
 class VectorField {
     constructor(props){
-        this.mathFunction = props.mathFunction || (() => (
+        this.mathFunction = props.mathFunction || ((coor) => (
             {x: -coor.y, y: coor.x}
         ))
         this.distanceBetweenArrows = props.distanceBetweenArrows || 1;
