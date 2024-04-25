@@ -32,6 +32,7 @@ function drawBackground(){
         .99*canvas.height);
         
     xy.draw();
+    colorScale.draw();
 }
 
 //Creating objects
@@ -43,6 +44,8 @@ const simulationObjects = [];
 //Create the main coordinates axis
 const xy = new AxisCoordinates({});
 interactiveObjects.push(xy);
+
+const colorScale = new ColorScaleBar({});
 
 //Handle animation
 var updateValuesBeforeDrawing = () => {};
