@@ -1,8 +1,7 @@
-
 backgroundColor = '#000000';
-unit = 420;
+unit = 230;
 camera = {
-    x: canvas.width/2, y: canvas.height/2
+    x: .2*canvas.width, y: .8*canvas.height
 }
 xy.origin = {
     x: camera.x, 
@@ -14,26 +13,29 @@ xy.verticalAxis = true;
 
 
 const waveTrace = [];
-const waveTraceLength = 10;
-const waveVel = 1*unit;
+const waveTraceLength = 20;
+const waveVel = 1;
 const saveFrameRate = 20;
-const rmax = .45*canvas.height
+
+const xmax = 9;
+const xmin = 0;
+const ymax = 5;
+const ymin = 0;
 const particle = new Particle({
-    pos: {x: 0, y: 0},
-    vel: {x: .5, y: 0},
+    pos: {x: xmax/2, y: ymax/2},
+    vel: {x: 0, y: 0},
     drawVelVec: true,
     velVecScale: .5, 
     addVelController: true,
     drawVelController: true, 
     radius: .1,
-    animation: (() => {      
-       
-
+    animation: (() => {   
+        const rmax = .45*canvas.height;
         const layer = canvas.getContext('2d');
         layer.save();
         layer.strokeStyle = 'white';
         waveTrace.forEach( (element, index) => {
-            const r = waveVel*(t - element.time);
+            const r = waveVel*(t - element.time)*unit;
             const radius = (r >= 0 & r < rmax)? r : 0;
             const pixelPos = xy.coordinatesToPixels(element.pos);
             layer.globalAlpha = 1 - r/rmax;
@@ -57,14 +59,29 @@ const particle = new Particle({
         }
 
 
+
         particle.pos.x += particle.vel.x*timeStep;
         particle.pos.y += particle.vel.y*timeStep;
+
+        if(particle.pos.x >= xmax - particle.radius){
+            particle.vel.x *= -1;
+        }
+        
+        if(particle.pos.x <= xmin + particle.radius){
+            particle.vel.x *= -1;
+        }
+        if(particle.pos.y >= ymax - particle.radius){
+            particle.vel.y *= -1;
+        }
+        
+        if(particle.pos.y <= ymin + particle.radius){
+            particle.vel.y *= -1;
+        }
 
         const s = particle.velVecScale;
         particle.controllerPos.x = particle.pos.x + s*particle.vel.x; 
         particle.controllerPos.y = particle.pos.y + s*particle.vel.y; 
 
-        xy.origin.x = camera.x - unit*particle.vel.x*t; 
     })
     
 })
