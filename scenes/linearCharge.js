@@ -8,6 +8,7 @@ xy.origin = camera;
 xy.grid = true;
 xy.horizontalAxis = true;
 xy.verticalAxis = true;
+const colorScale = new ColorScaleBar({});
 
 const rmin = .05;
 const vectorFunction = ((coor, particle) => {
@@ -36,7 +37,7 @@ const linearDistribution = ((index) => (
 ))
 
 
-const N = 20
+const N = 30
 const dl = .5;
 const particles = []
 for(let i = 0; i<= N; i++){
@@ -74,7 +75,8 @@ const electricField = new VectorField({
 
 drawObjects.push(
     ...particles,
-    electricField 
+    electricField, 
+    colorScale 
 )
 animatedObjects.push( 
     electricField

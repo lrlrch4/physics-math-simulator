@@ -27,5 +27,5 @@ Add construct properties (range, ticks)
 
 New Objects:
 Add an object that handles images. 
-Add a function by parts
+Add bazier curves
 

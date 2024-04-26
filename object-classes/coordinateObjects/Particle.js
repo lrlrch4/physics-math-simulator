@@ -192,7 +192,7 @@ class Particle {
             pixels.x = -this.offset.x + resolutionFactor * event.x;
             pixels.y = -this.offset.y + resolutionFactor * event.y;
             
-            this.pos = xy.pixelsToCoordiantes(pixels);  
+            this.pos = xy.pixelsToCoordinates(pixels);  
             this.vel.x = 0; 
             this.vel.y = 0;
             const s = this.velVecScale;               
@@ -205,7 +205,7 @@ class Particle {
         if(this.controllerIsClicked){
             controllerPixels.x = -this.controllerOffset.x + resolutionFactor*event.x;
             controllerPixels.y = -this.controllerOffset.y + resolutionFactor*event.y;
-            this.controllerPos = xy.pixelsToCoordiantes(controllerPixels);
+            this.controllerPos = xy.pixelsToCoordinates(controllerPixels);
             
             this.vel.x = (this.controllerPos.x - this.pos.x)/this.velVecScale;
             this.vel.y = (this.controllerPos.y - this.pos.y)/this.velVecScale;

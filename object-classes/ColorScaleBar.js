@@ -1,7 +1,13 @@
 class ColorScaleBar{
     constructor(props){
-        this.pixelOrigin = props.pixelOrigin || {x: .675*canvas.width, y: .985*canvas.height}; 
-        this.pixelEnding = props.pixelOrigin || {x: .98*canvas.width, y: .985*canvas.height}; 
+        this.pixelOrigin = props.pixelOrigin || {
+            x: .675*canvas.width, 
+            y: .01*canvas.height
+        }; 
+        this.pixelEnding = props.pixelOrigin || {
+            x: .99*canvas.width, 
+            y: .01*canvas.height
+        }; 
         this.steps = props.steps || 50;
         
         this.opacity = props.opacity || 1;
@@ -19,7 +25,7 @@ class ColorScaleBar{
         // const dl = 1;
         for(let i = 0; i < this.steps; i++){
             
-            layer.strokeStyle = `hsl(${(i*300)/(this.steps-1)}, 100%, 50%)`;  // Line color
+            layer.strokeStyle = `hsl(${(i*300)/(this.steps-1)}, 100%, 50%)`;
             layer.beginPath();
             layer.moveTo(
                 this.pixelOrigin.x + i*dl, 
