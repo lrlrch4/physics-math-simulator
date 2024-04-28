@@ -225,10 +225,17 @@ class AxisCoordinates {
         };
     }
 
-    coordinatePixelUnit(unit){
+    coordinatePixelUnit(value){
         //pixels value of one coordinate unit
-        const pixelFactor = this.coordinatesToPixels({x: 1, y: 0}).x - this.coordinatesToPixels({x: 0, y: 0}).x  
-        return pixelFactor*unit;
+        const p1 = this.coordinatesToPixels({x: 1, y: 0}).x;
+        const p0 = this.coordinatesToPixels({x: 0, y: 0}).x; 
+        return (p1 - p0)*value;
+    }
+    pixelCoordinateUnit(value){
+        const c1 = xy.pixelsToCoordinates({x: 1, y: 0}).x;
+        const c0 = xy.pixelsToCoordinates({x: 0, y: 0}).x
+        
+        return (c1 - c0)*value;
     }
 
 }//End of Axis Coordinates class

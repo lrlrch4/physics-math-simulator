@@ -50,11 +50,14 @@ simulationObjects = [];
 
 Code to start: 
 backgroundColor = '#000000';
-unit = 420;
+unit = 280;
 camera = {
-    x: canvas.width/2, y: canvas.height/2
+    x: .5*canvas.width, y: .5*canvas.height
 }
-xy.origin = camera;
+xy.origin = {
+    x: camera.x, 
+    y: camera.y
+};
 xy.grid = true;
 xy.horizontalAxis = true;
 xy.verticalAxis = true;

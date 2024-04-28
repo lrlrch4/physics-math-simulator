@@ -19,9 +19,9 @@ const ymin = 0;
 const m = 0;
 const M = 100;
 const d = .02;
-const c = 1;
+const c = 10;
 const r = .1;
-const R = .39;
+const R = .3;
 const attraction = {
     photons: {
         pos: {x: .1*xmax, y: .5*ymax}, 

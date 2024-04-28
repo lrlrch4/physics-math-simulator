@@ -25,6 +25,9 @@ NewAxis class:
 Add nonlinear transformation to NewAxis class. 
 Add construct properties (range, ticks)
 
+ScalarField 
+Change dots for rectangles
+
 New Objects:
 Add an object that handles images. 
 Add bazier curves
