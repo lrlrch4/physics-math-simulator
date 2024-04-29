@@ -111,7 +111,6 @@ class CoordinatePoint {
             this.onMouseMoveAddition();
             drawFrame();
         }
-
     }
     
     onMouseUp() {                    

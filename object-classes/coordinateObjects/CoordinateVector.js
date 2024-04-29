@@ -10,7 +10,7 @@ class CoordinateVector{
         this.label = props.label || '';
         this.labelSize = props.labelSize || 60;
         this.strokeWidth = props.strokeWidth || 5;
-        this.tipSize = props.tipSize || 20;
+        this.tipSize = props.tipSize || 30;
 
         //Interaction props
 
@@ -35,17 +35,18 @@ class CoordinateVector{
 
         const r = this.tipSize;
         const u = vector.unitary();
+        const v = u.orthogonal();
         const pointR = {
-            x: pixelsEnding.x - 2*r*u.x + (Math.sqrt(3)/2)*r*u.orthogonal().x,
-            y: pixelsEnding.y - 2*r*u.y + (Math.sqrt(3)/2)*r*u.orthogonal().y
+            x: pixelsEnding.x - 2*r*u.x + (Math.sqrt(3)/2)*r*v.x,
+            y: pixelsEnding.y - 2*r*u.y + (Math.sqrt(3)/2)*r*v.y
         }            
         const pointQ = {
-            x: pixelsEnding.x - 2*r*u.x - (Math.sqrt(3)/2)*r*u.orthogonal().x,
-            y: pixelsEnding.y - 2*r*u.y - (Math.sqrt(3)/2)*r*u.orthogonal().y
+            x: pixelsEnding.x - 2*r*u.x - (Math.sqrt(3)/2)*r*v.x,
+            y: pixelsEnding.y - 2*r*u.y - (Math.sqrt(3)/2)*r*v.y
         }   
         
-        layer1.save();
         layer0.save();
+        layer1.save();
 
         layer0.globalAlpha = this.opacity;
         layer1.globalAlpha = this.opacity;               
@@ -62,7 +63,7 @@ class CoordinateVector{
 
         layer0.beginPath();
         layer0.moveTo(pixelsOrigin.x, pixelsOrigin.y);
-        layer0.lineTo(pixelsEnding.x, pixelsEnding.y);
+        layer0.lineTo(pixelsEnding.x - 1.5*r*u.x, pixelsEnding.y - 1.5*r*u.y);
         layer0.strokeStyle = this.color; 
         layer0.lineWidth = this.strokeWidth;
         layer0.stroke();

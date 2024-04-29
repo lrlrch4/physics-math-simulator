@@ -7,6 +7,9 @@ Object general structure:
 
 class CoordinateObject { 
     constructor(props){ 
+        
+        this.layer = 0;
+
         this.simulation = props.simulation || (()=>{
             'simulation added'
         });
@@ -23,9 +26,9 @@ class CoordinateObject {
     applyMatrixTransformation(){}
 
     //Interaction props
-    onMouseDown(){}
+    onMouseDown(event){}
 
-    onMouseMove(){}
+    onMouseMove(event){}
 
     onMouseUp(){}
 

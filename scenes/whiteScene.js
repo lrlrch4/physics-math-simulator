@@ -1,5 +1,5 @@
 backgroundColor = '#000000';
-unit = 280;
+unit = 250;
 camera = {
     x: .5*canvas.width, y: .5*canvas.height
 }
@@ -11,7 +11,8 @@ xy.grid = true;
 xy.horizontalAxis = true;
 xy.verticalAxis = true;
 
-const line = new Line({});
+const colorField = new ColorField({
+    mathFunction: ((coor) => (coor.x**2 + coor.y**2))
+});
 
-drawObjects.push(line)
-interactiveObjects.push(line)
+drawObjects.push(colorField);

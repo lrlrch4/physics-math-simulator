@@ -13,7 +13,6 @@ Add a function to change the ticks in the axis according to the unit value
 CircleArc class: 
 
 CoordinatePoint class: 
-Add translate method
 
 For all objects:
 Add opacity property for all objects.
@@ -25,7 +24,7 @@ NewAxis class:
 Add nonlinear transformation to NewAxis class. 
 Add construct properties (range, ticks)
 
-ScalarField 
+ScalarField class:
 Change dots for rectangles
 
 New Objects:
