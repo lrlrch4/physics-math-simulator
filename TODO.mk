@@ -1,7 +1,6 @@
 General: 
 Complete selection by a box 
 Create a function that saves the value of the camera
-Create a slider to modify values
 Create a spring object for visualization
 
 AxisCoordinates class:

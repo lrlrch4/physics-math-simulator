@@ -24,10 +24,10 @@ class ColorField {
 
         const horizontalSteps = Math.floor(canvas.width/this.stepSize);
         const verticalSteps = Math.ceil(canvas.height/this.stepSize);
+        
         layer.save();
         layer.globalAlpha = this.opacity;
         layer.lineWidth = this.stepSize;
-
         const topLeftCoordinates = xy.pixelsToCoordinates({x: 0, y: 0});
         const extremeValues = {
             max: this.mathFunction(topLeftCoordinates),
@@ -49,9 +49,10 @@ class ColorField {
                 }
             }   
         }
+        
         const map = new FittingMap({ 
             inRange: extremeValues
-        })
+        });
 
         for(let i = 0; i <= horizontalSteps; i++){
             for(let j = 0; j <= verticalSteps; j++){

@@ -5,9 +5,10 @@ class FittingMap {
     }
 
     linear(value){
-        const slope = (this.outRange.max - this.outRange.min)/(this.inRange.max - this.inRange.min);
-        const bias = this.outRange.min - slope*this.inRange.min;
+        const m = (this.outRange.max - this.outRange.min)/
+            (this.inRange.max - this.inRange.min);
+        const b = this.outRange.min - m*this.inRange.min;
 
-        return slope*value + bias;
+        return m*value + b;
     }
 }

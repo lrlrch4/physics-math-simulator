@@ -108,7 +108,7 @@ class CoordinatePoint {
             pixels.y = -this.offset.y + resolutionFactor * event.y;
             
             this.pos = xy.pixelsToCoordinates(pixels);                 
-            this.onMouseMoveAddition();
+            this.onMouseMoveAddition(event);
             drawFrame();
         }
     }
