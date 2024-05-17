@@ -59,3 +59,6 @@ animatedObjects.push(dot);
 drawObjects.push(
     axis, axis2, dot
 )
+
+
+console.log('axisScene loaded')

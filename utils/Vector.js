@@ -51,4 +51,3 @@ function dotProduct(vector1, vector2){
 // const vector1 = new Vector({x: 60, y: 80});
 // const vector2 = new Vector({x: 2, y: 1});
 
-   

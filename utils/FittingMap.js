@@ -12,3 +12,4 @@ class FittingMap {
         return m*value + b;
     }
 }
+

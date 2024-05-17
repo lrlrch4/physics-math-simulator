@@ -6,8 +6,6 @@ function derivative({
     return (f(x0 + h) - f(x0))/h
 }
 
-const f = (x) => (x**3);
-
 function gradient({
     f = (r) => (r.x**2 + r.y**2),
     r0 = {x: 0, y: 0}, 

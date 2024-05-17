@@ -1,7 +1,7 @@
 backgroundColor = '#000000';
-unit = 120;
+unit = 150;
 camera = {
-    x: 500, y: 500
+    x: 300, y: 600
 }
 xy.origin = camera;
 xy.grid = true;

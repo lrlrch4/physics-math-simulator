@@ -5,6 +5,7 @@ xy.origin = {
     x: 454,
     y: 1407
 }
+
 var w = 1;
 const point = new CoordinatePoint({
     color: '#0fa',
@@ -104,7 +105,7 @@ const sinCurve = new ParametricCurve({
 
         sinCurve.range = {
             start: 0,
-            end: Math.min(t, xy.pixelsToCoordiantes({x: canvas.width, y: 0}).x)
+            end: Math.min(t, xy.pixelsToCoordinates({x: canvas.width, y: 0}).x)
         }
     })
 });
@@ -120,7 +121,7 @@ const cosCurve = new ParametricCurve({
 
         cosCurve.range = {
             start: 0,
-            end: Math.min(t, xy.pixelsToCoordiantes({x: 0, y: 0}).y)
+            end: Math.min(t, xy.pixelsToCoordinates({x: 0, y: 0}).y)
         }
     })
 });
