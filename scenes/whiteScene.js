@@ -28,4 +28,5 @@ const dataCurve = new DataCurve({
 
 drawObjects.push(dataCurve);
 interactiveObjects.push();
-simulationObjects.push()
+simulationObjects.push();
+animatedObjects.push();

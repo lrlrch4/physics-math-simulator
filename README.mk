@@ -48,10 +48,10 @@ class CoordinateObject {
 
 
 Objecst lists:
-drawObjects = [];
-interactiveObjects = [];
-animatedObjects = [];
-simulationObjects = [];
+drawObjects.push();
+interactiveObjects.push();
+animatedObjects.push();
+simulationObjects.push();
 
 Code to the starting configuration: 
 backgroundColor = '#000000';
