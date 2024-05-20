@@ -9,13 +9,16 @@ xy.grid = true;
 xy.horizontalAxis = true;
 xy.verticalAxis = true;
 
+
+const colorBar = new ColorScaleBar({});
+
 const slider = new Slider({
     range: {start: .1, end: 5},
     label: 'w',
     color: 'white',
     animation: (() => {
         slider.origin = xy.pixelsToCoordinates({x: .15*canvas.width, y: 30});
-        slider.ending = xy.pixelsToCoordinates({x: .85*canvas.width, y: 30});   
+        slider.ending = xy.pixelsToCoordinates({x: .45*canvas.width, y: 30});   
     })
 });
 
@@ -23,14 +26,15 @@ const point = new CoordinatePoint({
     pos: {x: 0, y: 0}, 
     color: 'white', 
     radius: 25, 
+    labelSize: 40,
     animation: (() => {
-        point.label = `(${point.pos.x}, ${point.pos.y})`
+        point.label = `r0 = (${point.pos.x.toFixed(2)}, ${point.pos.y.toFixed(2)})`
     })
 })
 
 
 const field = new ColorField({
-    opacity: .5,
+    opacity: .3,
     stepSize: 50,
     animation: (() => {
         field.mathFunction = ((coor) => {
@@ -55,19 +59,34 @@ const vectorField = new VectorField({
         }
         })
     })
-})
+});
 
+const text = new Text({
+    color: 'white',
+    size: 30,
+    animation: (() => {        
+        text.text = [`f(x,y) = x + sin(w*(x - (${point.pos.x.toFixed(2)}))**2 + w*(y - (${point.pos.y.toFixed(2)}))**2)`],
+        text.pos = xy.pixelsToCoordinates({
+            x: .05*canvas.width, 
+            y: .5*canvas.height
+        })
+    })
+});
 
 drawObjects.push(
     field,
     slider, 
     point,
     vectorField,
+    text,
+    colorBar
 );
 animatedObjects.push(
     field,
     slider, 
-    vectorField
+    vectorField, 
+    point,
+    text
 );
 interactiveObjects.push(
     point,
