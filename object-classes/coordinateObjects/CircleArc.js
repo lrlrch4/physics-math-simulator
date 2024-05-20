@@ -124,7 +124,7 @@ class CircleArc {
         const mouseX = resolutionFactor * event.x;
         const mouseY = resolutionFactor * event.y;
         
-        const mouseCoordinates = xy.pixelsToCoordiantes({x: mouseX, y: mouseY});
+        const mouseCoordinates = xy.pixelsToCoordinates({x: mouseX, y: mouseY});
         const mouseAngle = Math.atan2(
             mouseCoordinates.y - this.pos.y, 
             mouseCoordinates.x - this.pos.x
@@ -150,7 +150,7 @@ class CircleArc {
             pixels.x = -this.offset.x + resolutionFactor * event.x;
             pixels.y = -this.offset.y + resolutionFactor * event.y;
             
-            this.pos = xy.pixelsToCoordiantes(pixels); 
+            this.pos = xy.pixelsToCoordinates(pixels); 
             
             this.startPoint = {
                 x: this.pos.x + Math.cos(this.startAngle),

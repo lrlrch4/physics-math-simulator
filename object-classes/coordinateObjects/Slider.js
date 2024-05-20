@@ -23,7 +23,7 @@ class Slider {
                 pos: this.origin, 
                 radius: 15, 
                 opacity: .75, 
-                color: '#3db1ff',
+                color: this.color,
                 onMouseMoveAddition: (() => { 
                     if(this.subObjects[0].pos.x <= this.origin.x){
                         this.subObjects[0].pos.x = this.origin.x;
@@ -39,6 +39,7 @@ class Slider {
                 })
             }),
             new Line({
+                color: this.color,
                 lineWidth: 6 
             })
         ];

@@ -6,7 +6,7 @@ class Text {
         this.absolutePosition = props.absolutePosition || false;
         this.lineSpacing = props.lineSpacing || 75;
 
-        this.color = props.color || 'white', 
+        this.color = props.color || '#0af', 
         this.opacity = props.opacity || 1;
 
         this.layer = 0;

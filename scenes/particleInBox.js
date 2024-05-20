@@ -27,7 +27,7 @@ for(let i = 0; i < numberParticles; i++){
             vel: {x: v*(2*Math.random()-1), y: v*(2*Math.random()-1)},
             acc: {x: 0, y: 0},
             radius: cRadius*Math.random(),
-            mass: mass*Math.random(),
+            mass: mass,
             color: `hsl(${Math.random()*255}, ${100}%, ${50}%)`,
             simulation: (() => {
                 particleList[i].vel.y += timeStep*particleList[i].acc.y;
@@ -132,7 +132,7 @@ const description = new Text({
             average.y  += element.pos.y/numberParticles;
             average.vx += element.vel.x/numberParticles;
             average.vy += element.vel.y/numberParticles;
-            average.E += .5*element.mass*(element.vel.x**2 + element.vel.y**2);
+            average.E  += .5*element.mass*(element.vel.x**2 + element.vel.y**2);
         });
         description.text = Object.entries(average).map(([key, element]) => {
             return `${key} = ${element.toFixed(2)}`
