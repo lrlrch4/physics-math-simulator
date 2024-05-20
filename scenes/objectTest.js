@@ -48,7 +48,7 @@ const vectorField = new VectorField({
     color: 'white',
     constantLength: true,
     constantColor: true, 
-    constantOpacity: true,
+    constantOpacity: false,
     animation: (() => {
         vectorField.mathFunction = ((coor) => {
             const r2 = (coor.x - point.pos.x)**2 + (coor.y -point.pos.y)**2;
