@@ -10,7 +10,16 @@ xy.horizontalAxis = true;
 xy.verticalAxis = true;
 
 
-const colorBar = new ColorScaleBar({});
+const colorBar = new ColorScaleBar({
+    pixelOrigin: {
+        x: .85*canvas.width, 
+        y: .01*canvas.height
+    },
+    pixelEnding: {
+        x: .99*canvas.width, 
+        y: .01*canvas.height
+    }
+});
 
 const slider = new Slider({
     range: {start: .1, end: 5},
@@ -28,7 +37,7 @@ const point = new CoordinatePoint({
     radius: 25, 
     labelSize: 40,
     animation: (() => {
-        point.label = `r0 = (${point.pos.x.toFixed(2)}, ${point.pos.y.toFixed(2)})`
+        point.label = `(${point.pos.x.toFixed(2)}, ${point.pos.y.toFixed(2)})`
     })
 })
 
@@ -68,7 +77,7 @@ const text = new Text({
         text.text = [`f(x,y) = x + sin(w*(x - (${point.pos.x.toFixed(2)}))**2 + w*(y - (${point.pos.y.toFixed(2)}))**2)`],
         text.pos = xy.pixelsToCoordinates({
             x: .05*canvas.width, 
-            y: .5*canvas.height
+            y: .45*canvas.height
         })
     })
 });

@@ -4,7 +4,7 @@ class ColorScaleBar{
             x: .675*canvas.width, 
             y: .01*canvas.height
         }; 
-        this.pixelEnding = props.pixelOrigin || {
+        this.pixelEnding = props.pixelEnding || {
             x: .99*canvas.width, 
             y: .01*canvas.height
         }; 
