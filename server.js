@@ -4,7 +4,7 @@ const path = require('path');
 const process = require('process');
 const htmlBaseContent = require('./scripts/htmlBaseContent');
 
-const SCENE = process.argv[2] || 'whiteScene.js';
+const SCENE = process.argv[2] || 'objectTest.js';
 
 const createFolderProps = (folder) => {
     const folderPath = path.join(projectPath, projectName, folder);
@@ -26,7 +26,9 @@ const handleFiles = (fileProps, req, res) => {
                     res.end('File not found');
                     return;
                 }
-                res.writeHead(200, { 'Content-Type': 'text/javascript' });
+                res.writeHead(200, {
+                    'Content-Type': 'text/javascript',
+                });
                 res.end(data);
             });
         }
@@ -86,5 +88,5 @@ const server = http.createServer((req, res) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`);
+    console.log(`Sever is listening on port http://localhost:${PORT}`);
 });

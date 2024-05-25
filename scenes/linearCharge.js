@@ -37,8 +37,8 @@ const linearDistribution = ((index) => (
 ))
 
 
-const N = 30
-const dl = .5;
+const N = 10
+const dl = 1;
 const particles = []
 for(let i = 0; i<= N; i++){
     particles.push(
@@ -80,4 +80,7 @@ drawObjects.push(
 )
 animatedObjects.push( 
     electricField
+)
+interactiveObjects.push(
+    ...particles
 )

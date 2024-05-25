@@ -127,7 +127,7 @@ class CoordinatePoint {
     }
 
     showTrace({
-        maxLength = 20,
+        maxLength = 25,
         saveFrameRate = 3, 
         opacity = .3, 
         radiusFunction = ((index) => (index + 1)/maxLength)
@@ -136,12 +136,12 @@ class CoordinatePoint {
             this.trackList.shift();
         }
         if(frame % saveFrameRate === 0){ 
-            this.trackList.push(this.pos);
+            this.trackList.push({x: this.pos.x, y: this.pos.y});
         }
 
         this.trackList.forEach((element, index) => {
             new CoordinatePoint({
-                pos: element, 
+                pos: {x: element.x, y: element.y}, 
                 color: this.color, 
                 radius: radiusFunction(index)*this.radius, 
                 opacity: opacity

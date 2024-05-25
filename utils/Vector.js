@@ -47,7 +47,3 @@ function sumVectors(vector1, vector2){
 function dotProduct(vector1, vector2){
     return vector1.x*vector2.x + vector1.y*vector2.y;
 }
-
-// const vector1 = new Vector({x: 60, y: 80});
-// const vector2 = new Vector({x: 2, y: 1});
-

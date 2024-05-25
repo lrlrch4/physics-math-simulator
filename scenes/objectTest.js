@@ -31,16 +31,31 @@ const slider = new Slider({
     })
 });
 
+var angle = 0;
 const point = new CoordinatePoint({ 
     pos: {x: 0, y: 0}, 
     color: 'white', 
     radius: 25, 
     labelSize: 40,
-    animation: (() => {
-        point.label = `(${point.pos.x.toFixed(2)}, ${point.pos.y.toFixed(2)})`
+    animation: (() => {        
+        point.label = `(${point.pos.x.toFixed(2)}, ${point.pos.y.toFixed(2)})`;
+        point.showTrace({
+            maxLength: 100,
+            saveFrameRate: 10,
+            radiusFunction: ((index) => 0.25)
+        });
+    }), 
+    simulation: (() => { 
+        angle += 2*Math.random()-1; 
+        const v = .5;
+        const vel = { 
+            x: v*Math.cos(angle), 
+            y: v*Math.sin(angle)
+        }    
+        point.pos.x += vel.x*timeStep;
+        point.pos.y += vel.y*timeStep;
     })
-})
-
+});
 
 const field = new ColorField({
     opacity: .3,
@@ -61,10 +76,10 @@ const vectorField = new VectorField({
     animation: (() => {
         vectorField.mathFunction = ((coor) => {
             const r2 = (coor.x - point.pos.x)**2 + (coor.y -point.pos.y)**2;
-            const w = slider.value
+            const w = slider.value;
             return{
-            x: 1 + 2*slider.value*coor.x*Math.cos(w*r2),
-            y: 2*slider.value*coor.y*Math.cos(w*r2)
+            x: 1 + 2*w*coor.x*Math.cos(w*r2),
+            y: 2*w*coor.y*Math.cos(w*r2)
         }
         })
     })
@@ -82,6 +97,7 @@ const text = new Text({
     })
 });
 
+
 drawObjects.push(
     field,
     slider, 
@@ -95,9 +111,12 @@ animatedObjects.push(
     slider, 
     vectorField, 
     point,
-    text
+    text, 
 );
 interactiveObjects.push(
     point,
     slider.subObjects[0]
 );
+simulationObjects.push(
+    point
+)
