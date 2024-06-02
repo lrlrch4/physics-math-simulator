@@ -8,8 +8,7 @@ node server.js 'myScene.js'
 
 Object general structure:
 class CoordinateObject { 
-    constructor(props){ 
-        
+    constructor(props){         
         this.layer = 0;
 
         this.simulation = props.simulation || (()=>{
@@ -47,11 +46,6 @@ class CoordinateObject {
 }
 
 
-Objecst lists:
-drawObjects.push();
-interactiveObjects.push();
-animatedObjects.push();
-simulationObjects.push();
 
 Code to the starting configuration: 
 backgroundColor = '#000000';
@@ -66,3 +60,8 @@ xy.origin = {
 xy.grid = true;
 xy.horizontalAxis = true;
 xy.verticalAxis = true;
+
+drawObjects.push();
+interactiveObjects.push();
+animatedObjects.push();
+simulationObjects.push();

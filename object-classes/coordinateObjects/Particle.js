@@ -4,7 +4,7 @@ class Particle {
         this.pos = props.pos,
         this.vel = props.vel || {x: 0, y: 0};
         this.acc = props.acc || {x: 0, y: 0};
-        this.radius = props.radius || .25;
+        this.radius = props.radius || .1;
         this.mass = props.mass || 2;
         
         //style props

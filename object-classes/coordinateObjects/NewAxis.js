@@ -2,8 +2,8 @@ class NewAxis{
     constructor(props){
         //Special props
         this.newOrigin = props.newOrigin || {x: 0, y: 0};
-        this.newBasis1 = props.newBasis1; 
-        this.newBasis2 = props.newBasis2; 
+        this.newBasis1 = props.newBasis1 || {x: 1, y: 0}; 
+        this.newBasis2 = props.newBasis2 || {x: 0, y: 1}; 
         this.axis1Range = props.axis1Range || {start: 0, end: 5}
         this.axis2Range = props.axis2Range || {start: 0, end: 5}
         this.axis1Step = props.axis1Step || 1;
@@ -129,14 +129,14 @@ class NewAxis{
 
     }//End of draw method
 
-    getNewCoordinates(mainCoordinates){        
+    getNewCoordinates(newCoordinates){        
         const forwardMatrix = new Matrix( [
             [this.newBasis1.x, this.newBasis2.x],
             [this.newBasis1.y, this.newBasis2.y]
         ]);
         const vector = { 
-            x: mainCoordinates.x - this.newOrigin.x,
-            y: mainCoordinates.y - this.newOrigin.y
+            x: newCoordinates.x - this.newOrigin.x,
+            y: newCoordinates.y - this.newOrigin.y
         }
         return forwardMatrix.inverse().applyMatrixTo(vector);
     }

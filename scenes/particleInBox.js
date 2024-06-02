@@ -16,7 +16,7 @@ const v = 1;
 const particleList = [];
 const restitutionCoef = 1;
 for(let i = 0; i < numberParticles; i++){
-    const cRadius = .1; 
+    const cRadius = .05; 
     const mass = .1; 
     particleList.push(
         new Particle({
@@ -26,7 +26,7 @@ for(let i = 0; i < numberParticles; i++){
             },
             vel: {x: v*(2*Math.random()-1), y: v*(2*Math.random()-1)},
             acc: {x: 0, y: 0},
-            radius: cRadius*Math.random(),
+            radius: cRadius,
             mass: mass,
             color: `hsl(${Math.random()*255}, ${100}%, ${50}%)`,
             simulation: (() => {
