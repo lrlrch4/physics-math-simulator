@@ -48,6 +48,7 @@ class CoordinateObject {
 
 
 Code to the starting configuration: 
+
 backgroundColor = '#000000';
 unit = 280;
 camera = {

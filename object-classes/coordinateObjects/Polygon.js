@@ -1,36 +1,28 @@
 class Polygon { 
     constructor(props){
-        this.vertexCoordinates = props.vertexCoordinates;
-        
-        this.vertices = this.vertexCoordinates.map(
-            (element, index) => new CoordinatePoint({
-                pos: element, 
-                label: `P${index}`
-                })
-            );
-
-        this.drawVertices = props.drawVertices || false;
+        this.vertexPoints = props.vertexPoints; //list of CoordinatePoints elements
+        this.isClosed = props.isClosed || false;
+        this.lines = this.vertexPoints.map(() => (new Line({})));
+        if(!this.isClosed){
+            this.lines.pop()
+        }
     }
 
-    draw(){    
-        if(this.drawVertices){
-            this.vertices.forEach(point => point.draw());
-        }
-
-        for (let i = 0; i < this.vertices.length; i++) {
-            const origin = this.vertices[i].pos;
-            const ending = this.vertices[(i + 1) % this.vertices.length].pos;
-
-            new Line({ origin, ending }).draw();
-        }        
+    draw(){ 
+        this.lines.forEach( (element, index, arr) => {
+            const nextIndex = (index + 1) % this.vertexPoints.length;
+            element.origin = this.vertexPoints[index].pos
+            element.ending = this.vertexPoints[nextIndex].pos;
+            element.draw();            
+        })
     }//End of draw
 
     rotate({angle, from = {x: 0, y: 0}}){ 
-        this.vertices.forEach(element => element.rotate({angle, from}));
+        this.vertexPoints.forEach(element => element.rotate({angle, from}));
     }
 
     applyMatrixTransformation(matrix){ 
-        this.vertices.forEach(element => element.applyMatrixTransformation(matrix));
+        this.vertexPoints.forEach(element => element.applyMatrixTransformation(matrix));
         
     }
 
