@@ -22,7 +22,6 @@ class ColorScaleBar{
         
         // Define the starting and ending points of the line
         const dl = (this.pixelEnding.x - this.pixelOrigin.x)/this.steps;
-        // const dl = 1;
         for(let i = 0; i < this.steps; i++){
             
             layer.strokeStyle = `hsl(${(i*300)/(this.steps-1)}, 100%, 50%)`;

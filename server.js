@@ -48,7 +48,10 @@ const utilsScripts = utilsProps.files.map( (element, index) => {
 const sceneSetupProps = createFolderProps('scene-setup');
 
 //Include object-classes
-const objecClassesProps = createFolderProps('object-classes')
+const objectClassesProps = createFolderProps('object-classes');
+const objectClassesScripts = objectClassesProps.files.map((element, index) => {
+    return `<script src= object-classes/${element}></script>`
+})
 
 //Include object-classes/coordinateObjects
 const cObjectProps = createFolderProps('object-classes/coordinateObjects');
@@ -64,8 +67,7 @@ const htmlContent =
     htmlBaseContent + 
     utilsScripts +
     `<script src= 'scene-setup/canvasSetup.js'></script>` +
-    `<script src = 'object-classes/AxisCoordinates.js'></script>
-    <script src = 'object-classes/ColorScaleBar.js'></script>` +
+    objectClassesScripts +
     cObjectsScripts +
     `<script src = 'scene-setup/animationSetup.js'></script>
     <script src = 'scene-setup/animationHandlers.js'></script>` +
@@ -81,7 +83,7 @@ const server = http.createServer((req, res) => {
 
     handleFiles(utilsProps, req, res);
     handleFiles(sceneSetupProps, req, res);
-    handleFiles(objecClassesProps, req, res);
+    handleFiles(objectClassesProps, req, res);
     handleFiles(cObjectProps, req, res);
     handleFiles(scenesProps, req, res);
 });

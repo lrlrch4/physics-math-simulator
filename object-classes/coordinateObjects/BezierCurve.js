@@ -21,6 +21,15 @@ class BezierCubicCurve{
         ];
 
         this.color = props.color || '#0af';
+
+        this.layer = 0;
+
+        this.simulation = props.simulation || (()=>{
+            'simulation added'
+        });
+        this.animation = props.animation || (()=>{
+            'simulation added'
+        })
     }
 
     draw(){
@@ -61,12 +70,19 @@ class BezierCubicCurve{
 
         cubic.draw();
     }
+    animate(){
+        this.animation();
+    }
+
+    simulate(){
+        this.simulation();
+    }
 }
 
 class BezierConcCurve{
     constructor(props){
         this.anchorPoints = props.anchorPoints;
-        this.isClosed = props.isClosed || false;
+        this.isClosed = props.isClosed ?? false;
         this.bezierCurves = this.anchorPoints.map((element,index, arr) => {
             const nextElement = arr[(index + 1) % arr.length];
             const bCurve = new BezierCubicCurve({
@@ -81,14 +97,31 @@ class BezierConcCurve{
         if(!this.isClosed){
             this.bezierCurves.pop()
         }
+
         this.controlPoints = [];
         this.bezierCurves.forEach(element => {
             this.controlPoints.push(...element.controlPoints);
+        })
+
+        this.layer = 0;
+
+        this.simulation = props.simulation || (()=>{
+            'simulation added'
+        });
+        this.animation = props.animation || (()=>{
+            'simulation added'
         })
     }
 
     draw(){
         this.bezierCurves.forEach(element => element.draw())
         this.controlPoints.forEach(element => element.draw())
+    }
+    animate(){
+        this.animation();
+    }
+
+    simulate(){
+        this.simulation();
     }
 }

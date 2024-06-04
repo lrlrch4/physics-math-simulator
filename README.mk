@@ -50,6 +50,7 @@ class CoordinateObject {
 Code to the starting configuration: 
 
 backgroundColor = '#000000';
+showSceneData = true;
 unit = 280;
 camera = {
     x: .5*canvas.width, y: .5*canvas.height

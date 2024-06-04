@@ -77,7 +77,7 @@ class NewAxis{
         layer.fillStyle = this.color;   
         layer.fillText(
             this.axis1Label,
-            pixels1.x + .5*this.labelSize,
+            pixels1.x + .25*this.labelSize,
             pixels1.y);
 
         const pixels2 = xy.coordinatesToPixels(axis2.ending); 

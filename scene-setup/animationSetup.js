@@ -4,11 +4,14 @@ var frame = 0;
 var t = frame*timeStep;
 
 var backgroundColor = '#303030';
+var showSceneData = true; 
 function drawBackground(){
-
     ctx.fillStyle = backgroundColor;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
+    ctx.fillRect(0, 0, canvas.width, canvas.height);     
+    xy.draw();
+}
+
+function drawSceneData(){
     const backgroundInformation = [
         `frame: ${frame}`, 
         `t = ${t.toFixed(2)}s`, 
@@ -30,8 +33,6 @@ function drawBackground(){
         informationString,
         .01*canvas.width,
         .99*canvas.height);
-        
-    xy.draw();
 }
 
 //Creating objects
@@ -55,6 +56,7 @@ function drawFrame(){
     
     updateValuesBeforeDrawing();
     drawObjects.forEach(element => element.draw())
+    if(showSceneData){drawSceneData()};
 } 
 
 var updateValuesForSimulation = () => {};
