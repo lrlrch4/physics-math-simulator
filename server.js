@@ -1,74 +1,27 @@
 const http = require('http');
-const fs = require('fs');
-const path = require('path');
 const process = require('process');
+const fs = require('fs');
 const htmlBaseContent = require('./scripts/htmlBaseContent');
 
+
+
+//server.js
+const FileHandler = require('./FileHandler');
+
+const utilsHandler = new FileHandler({folder: 'utils'});
+const sceneSetupHandler = new FileHandler({folder: 'scene-setup'});
+const objectClassesHandler = new FileHandler({folder: 'object-classes'})
+const cObjectsHandler = new FileHandler({folder: 'object-classes/coordinateObjects'})
+const sceneHandler = new FileHandler({folder: 'scenes'})
+
 const SCENE = process.argv[2] || 'objectTest.js';
-
-const createFolderProps = (folder) => {
-    const folderPath = path.join(projectPath, projectName, folder);
-    const folderFiles = fs.readdirSync(folderPath).filter( file => file.endsWith('.js'));
-    return {
-        name: folder,
-        path: folderPath, 
-        files: folderFiles
-    }
-}
-
-const handleFiles = (fileProps, req, res) => {
-    fileProps.files.forEach( (element, index) => {
-        if(req.url === '/' + fileProps.name + `/${element}`){
-            const filePath = path.join(fileProps.path, element);
-            fs.readFile(filePath, (err, data) => {
-                if (err) {
-                    res.writeHead(404);
-                    res.end('File not found');
-                    return;
-                }
-                res.writeHead(200, {
-                    'Content-Type': 'text/javascript',
-                });
-                res.end(data);
-            });
-        }
-    });
-}
-
-const projectPath = path.dirname(__dirname);
-const projectName = path.basename(__dirname);
-
-//Include utils 
-const utilsProps = createFolderProps('utils');
-const utilsScripts = utilsProps.files.map( (element, index) => { 
-    return `<script src= utils/${element}></script>`
-});
-
-//Include scene-setup
-const sceneSetupProps = createFolderProps('scene-setup');
-
-//Include object-classes
-const objectClassesProps = createFolderProps('object-classes');
-const objectClassesScripts = objectClassesProps.files.map((element, index) => {
-    return `<script src= object-classes/${element}></script>`
-})
-
-//Include object-classes/coordinateObjects
-const cObjectProps = createFolderProps('object-classes/coordinateObjects');
-const cObjectsScripts = cObjectProps.files.map( (element, index) => {
-    return `<script src= object-classes/coordinateObjects/${element}></script>`
-})
-
-//Include scenes folder
-const scenesProps = createFolderProps('scenes');
-
 //Create de html content
 const htmlContent = 
     htmlBaseContent + 
-    utilsScripts +
+    utilsHandler.htmlScripts() +
     `<script src= 'scene-setup/canvasSetup.js'></script>` +
-    objectClassesScripts +
-    cObjectsScripts +
+    objectClassesHandler.htmlScripts() +
+    cObjectsHandler.htmlScripts() +
     `<script src = 'scene-setup/animationSetup.js'></script>
     <script src = 'scene-setup/animationHandlers.js'></script>` +
     `<script src = 'scenes/${SCENE}'></script>` + 
@@ -80,15 +33,22 @@ const server = http.createServer((req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(htmlContent);
     } 
+    utilsHandler.handleFiles(req, res);
+    sceneSetupHandler.handleFiles(req, res);
+    objectClassesHandler.handleFiles(req, res);
+    cObjectsHandler.handleFiles(req, res);
+    sceneHandler.handleFiles(req, res);
+});
 
-    handleFiles(utilsProps, req, res);
-    handleFiles(sceneSetupProps, req, res);
-    handleFiles(objectClassesProps, req, res);
-    handleFiles(cObjectProps, req, res);
-    handleFiles(scenesProps, req, res);
+fs.writeFile('./index.html', htmlContent, 'utf8', (err) => {
+    if (err) {
+        console.error('Error escribiendo el archivo:', err);
+        return;
+    }
+    console.log('Archivo HTML reescrito exitosamente');
 });
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`Sever is listening on port http://localhost:${PORT}`);
+    console.log(`Server is listening on port http://localhost:${PORT}`);
 });
