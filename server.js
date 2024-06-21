@@ -2,10 +2,6 @@ const http = require('http');
 const process = require('process');
 const fs = require('fs');
 const htmlBaseContent = require('./scripts/htmlBaseContent');
-
-
-
-//server.js
 const FileHandler = require('./FileHandler');
 
 const utilsHandler = new FileHandler({folder: 'utils'});
@@ -15,16 +11,17 @@ const cObjectsHandler = new FileHandler({folder: 'object-classes/coordinateObjec
 const sceneHandler = new FileHandler({folder: 'scenes'})
 
 const SCENE = process.argv[2] || 'objectTest.js';
-//Create de html content
+
+
 const htmlContent = 
-    htmlBaseContent + 
-    utilsHandler.htmlScripts() +
-    `<script src= 'scene-setup/canvasSetup.js'></script>` +
-    objectClassesHandler.htmlScripts() +
-    cObjectsHandler.htmlScripts() +
-    `<script src = 'scene-setup/animationSetup.js'></script>
+    htmlBaseContent + '\n' +
+    utilsHandler.htmlScripts() + '\n' +
+    `<script src= 'scene-setup/canvasSetup.js'></script>` + '\n' +
+    objectClassesHandler.htmlScripts() + '\n' +
+    cObjectsHandler.htmlScripts() + '\n' +
+    `<script src = 'scene-setup/animationSetup.js'></script> \n
     <script src = 'scene-setup/animationHandlers.js'></script>` +
-    `<script src = 'scenes/${SCENE}'></script>` + 
+    `<script src = 'scenes/${SCENE}'></script>` +  '\n' + 
     `<script src = 'scene-setup/sceneExecution.js'></script>`
 ;
 

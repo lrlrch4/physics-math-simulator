@@ -29,7 +29,7 @@ class FileHandler {
 
     htmlScripts(){
         const scripts = this.folderProps.files.map( (element, index) => { 
-            return `<script src= ${this.folder}/${element}></script>`
+            return `<script src= ${this.folder}/${element}></script> \n`  
         })
 
         return scripts;
