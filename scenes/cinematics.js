@@ -1,8 +1,8 @@
 backgroundColor = '#000000';
-showSceneData = false;
-unit = 350;
+showSceneData = true;
+unit = 225;
 camera = {
-    x: .70*canvas.width, y: .5*canvas.height
+    x: .5*canvas.width, y: .9*canvas.height
 }
 xy.origin = {
     x: camera.x, 
@@ -10,179 +10,205 @@ xy.origin = {
 };
 xy.grid = true;
 xy.horizontalAxis = true;
-xy.verticalAxis = true;
+xy.verticalAxis = false;
+interactiveObjects.pop(0);
 
-const circularMotion = new MathParametricFunction({
-    f: ((s) => ({x: Math.cos(s), y: Math.sin(s)}))
-});
+const Xmax = 5;
+const Xmin = -5;
+const k = 1;
 
-const epicycles = new MathParametricFunction({
-    f: ((s) => ({
-        x: Math.cos(s) + Math.cos(2*s), 
-        y: Math.sin(s) + Math.sin(2*s)
-    }))
-});
-
-const epicycles2 = new MathParametricFunction({
-    f: ((s) => ({
-        x: Math.cos(s) + .02*Math.cos(10*s), 
-        y: Math.sin(s) + .02*Math.sin(10*s)
-    }))
-});
-
-const positionFunction = epicycles;
-
-const particle = new Particle({ 
-    pos: {x: 1, y: 0},
-    radius: .05,
-    drawPosVec: true, 
-    drawVelVec: true, 
-    velVecScale: .25,
+const particle = new Particle({
+    pos: {x: 0, y: 0},
+    vel: {x: 0, y: 0},
+    drawVelVec: true,
+    velVecScale: .5, 
     drawAccVec: true,
-    accVecScale: .05,
+    addVelController: true,
+    drawVelController: true, 
+    radius: .1,
     animation: (() => { 
-        particle.showTrace({
-            maxLength: 50,
-            saveFrameRate: 5
-        });
-        const w = .5;
-        particle.pos = positionFunction.f(w*t);
-        particle.vel = positionFunction.derivative().f(w*t);
-        particle.acc = positionFunction.derivative().derivative().f(w*t);
-    })
-})
+        particle.pos.y = 0;  
+    }),
+    simulation: (() => {
 
-const delta = 11;
-const pixelNumber = 0.03*canvas.height;
+        particle.pos.x += particle.vel.x*timeStep;
+        particle.pos.y = 0;
 
-const posXTimeAxis = new NewAxis({
-    axis1Label: 't', 
-    axis2Label: 'x(t)',
-    axis1Step: 2,
-    animation: (()=>{
-        const pUnit = xy.pixelCoordinateUnit(pixelNumber);
-        posXTimeAxis.axis2Range = {start: -0.25*delta, end: .25*delta};
-        posXTimeAxis.newBasis1 = {x: pUnit, y: 0};
-        posXTimeAxis.newBasis2 = {x: 0, y: 2*pUnit};
-
-        const n = Math.floor(t/delta);
-        posXTimeAxis.axis1Range = {start: delta*n, end: delta*(n+1)};
-        posXTimeAxis.newOrigin = {
-            x: xy.pixelsToCoordinates({x: 100, y: 0}).x - pUnit*n*delta, 
-            y: xy.pixelsToCoordinates({x: 0, y: 8*pixelNumber}).y
+        if(particle.pos.x >= Xmax){
+            particle.vel.x *= -1;
         }
-    })
-})
-
-const posYTimeAxis = new NewAxis({
-    axis1Label: 't', 
-    axis2Label: 'y(t)',
-    axis1Step: 2,
-    animation: (()=>{
-        const pUnit = xy.pixelCoordinateUnit(pixelNumber);
-        posYTimeAxis.axis2Range = {start: -0.25*delta, end: .25*delta};
-        posYTimeAxis.newBasis1 = {x: pUnit, y: 0};
-        posYTimeAxis.newBasis2 = {x: 0, y: 2*pUnit};
-
-        const n = Math.floor(t/delta);
-        posYTimeAxis.axis1Range = {start: delta*n, end: delta*(n+1)};
-        posYTimeAxis.newOrigin = {
-            x: xy.pixelsToCoordinates({x: 100, y: 0}).x - pUnit*n*delta, 
-            y: xy.pixelsToCoordinates({x: 0, y: 22*pixelNumber}).y
+        if(particle.pos.x <= Xmin){
+            particle.vel.x *= -1;
         }
+
+        const s = particle.velVecScale;
+        particle.controllerPos.x = particle.pos.x + s*particle.vel.x; 
+        particle.controllerPos.y = particle.pos.y + s*particle.vel.y; 
+
+        const maxLength = 20;
+        const saveFrameRate = 5;
+
+        if(particle.trackList.length >= maxLength){ 
+            particle.trackList.shift();
+        }
+        if(frame % saveFrameRate === 0){ 
+            particle.trackList.push(
+                {
+                    pos: particle.pos.x, 
+                    vel: particle.vel.x
+                } 
+            );
+            const cf = particle.trackList[particle.trackList.length - 1]; 
+            const c0 = particle.trackList[particle.trackList.length - 2] ?? cf;
+            const dt = saveFrameRate/fps;
+            particle.acc.x = (cf.vel - c0.vel)/ dt;            
+        }        
+    })    
+})
+
+const cinematicsData = new Text({
+    color: 'white',
+    size: 50,
+    animation: (() => {
+        const a = particle.acc.x.toFixed(2);
+        const v = particle.vel.x.toFixed(2);
+        const x = particle.pos.x.toFixed(2);
+        cinematicsData.text = [
+            `t = ${t.toFixed(2)} s, x = ${x} m, v = ${v} m/s, a = ${a} m/s^2`
+        ], 
+        cinematicsData.pos = xy.pixelsToCoordinates({
+            x: 100, y: .975*canvas.height
+        })
     })
 })
 
-const xtPoint = new CoordinatePoint({
+const wUnits = 100;
+const hUnits = 50;
+
+const w = canvas.width/wUnits;
+const h = canvas.height/hUnits;
+
+const posTimeAxis = new NewAxis({
+    axis1Label: 't', 
+    axis2Label: 'x',
+    axis1Step: 5,
+    axis2Step: 2,
+    animation: (() => {
+        posTimeAxis.newOrigin = xy.pixelsToCoordinates({x: 2*w, y: 8*h});
+        posTimeAxis.newBasis1 = {x: xy.pixelCoordinateUnit(w), y: 0};
+        posTimeAxis.newBasis2 = {x: 0, y: xy.pixelCoordinateUnit(h)};
+
+        posTimeAxis.axis1Range = {start: 0, end: .95*wUnits}
+        posTimeAxis.axis2Range = {start: -5, end: 5}
+    })
+})
+
+const velTimeAxis = new NewAxis({
+    axis1Label: 't', 
+    axis2Label: 'v',
+    axis1Step: 5,
+    axis2Step: 2,
+    animation: (() => {
+        velTimeAxis.newOrigin = xy.pixelsToCoordinates({x: 2*w, y: 20*h});
+        velTimeAxis.newBasis1 = {x: xy.pixelCoordinateUnit(w), y: 0};
+        velTimeAxis.newBasis2 = {x: 0, y: xy.pixelCoordinateUnit(h)};
+
+        velTimeAxis.axis1Range = {start: 0, end: .95*wUnits}
+        velTimeAxis.axis2Range = {start: -5, end: 5}
+    })
+})
+
+const accTimeAxis = new NewAxis({
+    axis1Label: 't', 
+    axis2Label: 'a',
+    axis1Step: 5,
+    axis2Step: 2,
+    animation: (() => {
+        accTimeAxis.newOrigin = xy.pixelsToCoordinates({x: 2*w, y: 32*h});
+        accTimeAxis.newBasis1 = {x: xy.pixelCoordinateUnit(w), y: 0};
+        accTimeAxis.newBasis2 = {x: 0, y: xy.pixelCoordinateUnit(h)};
+
+        accTimeAxis.axis1Range = {start: 0, end: .95*wUnits}
+        accTimeAxis.axis2Range = {start: -5, end: 5}
+    })
+})
+
+const posTimeData = new DataCurve({
     color: 'red',
-    animation: (() => {  
-        xtPoint.pos = posXTimeAxis.getOriginalCoordinates({
-            x: t, 
+    simulation: (()=>{ 
+        const dataCoordinates = posTimeAxis.getOriginalCoordinates({
+            x: t,
             y: particle.pos.x
         })
-        if(isSimulating){
-            xtPoint.showTrace({
-                maxLength: 50,
-                saveFrameRate: 15,
-                opacity: 1,
-                radiusFunction: ((index) => .5)
-            });  
-        }    
+        
+        posTimeData.input.push(
+            dataCoordinates.x
+        );        
+        posTimeData.output.push(
+            dataCoordinates.y
+        );
     })
 })
 
-const ytPoint = new CoordinatePoint({
-    color: 'red',
-    animation: (() => {  
-        ytPoint.pos = posYTimeAxis.getOriginalCoordinates({
-            x: t, 
-            y: particle.pos.y
+const velTimeData = new DataCurve({
+    color: 'green',
+    simulation: (()=>{ 
+        const dataCoordinates = velTimeAxis.getOriginalCoordinates({
+            x: t,
+            y: particle.vel.x
         })
-        if(isSimulating){
-            ytPoint.showTrace({
-                maxLength: 50,
-                saveFrameRate: 15,
-                radiusFunction: ((index) => .5), 
-                opacity: 1
-            });      
-        }
+        
+        velTimeData.input.push(
+            dataCoordinates.x
+        );        
+        velTimeData.output.push(
+            dataCoordinates.y
+        );
     })
 })
 
-const cinematicsDescription = new Text({
-    size: 35,
-    color: 'white',
-    animation: (()=>{
-        cinematicsDescription.pos = xy.pixelsToCoordinates({
-            x: 40, 
-            y: .94*canvas.height 
+const accTimeData = new DataCurve({
+    color: 'yellow',
+    simulation: (()=>{ 
+        const dataCoordinates = accTimeAxis.getOriginalCoordinates({
+            x: t,
+            y: particle.acc.x
         })
-        const r = {
-            x: particle.pos.x.toFixed(2), 
-            y: particle.pos.y.toFixed(2)
-        }
-        const v = {
-            x: particle.vel.x.toFixed(2), 
-            y: particle.vel.y.toFixed(2)
-        }
-        const a = {
-            x: particle.acc.x.toFixed(2), 
-            y: particle.acc.y.toFixed(2)
-        }
-        cinematicsDescription.text = [
-            `t = ${t.toFixed(2)} ` +
-            `r = (${r.x}, ${r.y}) `,
-            `v = (${v.x}, ${v.y}) ` +
-            `a = (${a.x}, ${a.y}) `
-        ]
+        
+        accTimeData.input.push(
+            dataCoordinates.x
+        );        
+        accTimeData.output.push(
+            dataCoordinates.y
+        );
     })
-})
-
-const box = new Box({ 
-    pixelPos: {x: 0, y: 0}, 
-    width: 20*pixelNumber, 
-    height: canvas.height, 
-    borderRadius: 0, 
-    showStroke: false
 })
 
 
 drawObjects.push(
-    box,
     particle, 
-    posXTimeAxis, 
-    xtPoint, 
-    posYTimeAxis,
-    ytPoint, 
-    cinematicsDescription
+    cinematicsData, 
+    posTimeAxis, 
+    velTimeAxis, 
+    accTimeAxis, 
+    posTimeData, 
+    velTimeData, 
+    accTimeData
 );
-interactiveObjects.push();
+
+interactiveObjects.push(
+    particle
+);
 animatedObjects.push(
-    particle,
-    posXTimeAxis, 
-    xtPoint, 
-    posYTimeAxis,
-    ytPoint, 
-    cinematicsDescription
+    particle, 
+    cinematicsData, 
+    posTimeAxis,
+    velTimeAxis,
+    accTimeAxis,     
 );
-simulationObjects.push();
+simulationObjects.push(
+    particle, 
+    posTimeData,
+    velTimeData, 
+    accTimeData
+);

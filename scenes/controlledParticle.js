@@ -57,9 +57,7 @@ const particle = new Particle({
         if(waveTrace.length >= waveTraceLength){
             waveTrace.shift();
         }
-
-
-
+        
         particle.pos.x += particle.vel.x*timeStep;
         particle.pos.y += particle.vel.y*timeStep;
 

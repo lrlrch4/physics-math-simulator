@@ -82,7 +82,6 @@ class Particle {
 
         if(this.isClicked){ 
             layer.save();
-
             layer.globalAlpha = 0.3*this.opacity;
             layer.fillStyle = this.color;
             layer.beginPath();

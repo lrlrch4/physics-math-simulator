@@ -1,5 +1,4 @@
-const htmlBaseContent = `
-<!DOCTYPE html><html>
+const htmlBaseContent = `<!DOCTYPE html><html>
 <head>
     <title>Psi-mulator</title>
 </head>
@@ -30,6 +29,9 @@ const htmlBaseContent = `
         outline: none;
         box-shadow: none;
         margin: 2px;
+    }
+    .simulating {
+        color: rgb(180, 0, 0);
     }
     .buttonContainer{
         position: absolute;

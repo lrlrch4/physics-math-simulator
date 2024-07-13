@@ -233,8 +233,7 @@ class AxisCoordinates {
     }
     pixelCoordinateUnit(value){
         const c1 = xy.pixelsToCoordinates({x: 1, y: 0}).x;
-        const c0 = xy.pixelsToCoordinates({x: 0, y: 0}).x
-        
+        const c0 = xy.pixelsToCoordinates({x: 0, y: 0}).x;        
         return (c1 - c0)*value;
     }
 

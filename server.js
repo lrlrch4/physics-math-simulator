@@ -39,10 +39,10 @@ const server = http.createServer((req, res) => {
 
 fs.writeFile('./index.html', htmlContent, 'utf8', (err) => {
     if (err) {
-        console.error('Error escribiendo el archivo:', err);
+        console.error('Error writing file:', err);
         return;
     }
-    console.log('Archivo HTML reescrito exitosamente');
+    console.log('HTML rewrite successfully');
 });
 
 const PORT = process.env.PORT || 3000;

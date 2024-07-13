@@ -7,7 +7,7 @@ function update() {
             simulate();
             drawFrame();
             update();
-        }, 1000 / fps);
+        }, 1000 / fps);    
     }
 }    
 
@@ -16,12 +16,18 @@ function startSimulation(){
     startButtonCount += 1;
     if(startButtonCount==1){
         update();
-    }                    
+    } 
+    document.getElementById('startButton').classList.add('simulating');  
+    document.getElementById('pauseButton').classList.remove('simulating');  
+    document.getElementById('restartButton').classList.remove('simulating');                 
 }
 
 function pauseSimulation(){
     startButtonCount = 0;
-    isSimulating = false;           
+    isSimulating = false; 
+    document.getElementById('startButton').classList.remove('simulating');  
+    document.getElementById('pauseButton').classList.add('simulating');  
+    document.getElementById('restartButton').classList.remove('simulating');       
 }
 var resetValues = (() => {});
 function resetSimulation(){
@@ -29,7 +35,9 @@ function resetSimulation(){
     startButtonCount = 0;
     frame = 0;
     t = 0;
-
+    document.getElementById('startButton').classList.remove('simulating'); 
+    document.getElementById('pauseButton').classList.remove('simulating'); 
+    document.getElementById('restartButton').classList.add('simulating'); 
     resetValues();
     drawFrame();    
 }

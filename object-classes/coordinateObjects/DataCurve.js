@@ -1,7 +1,7 @@
 class DataCurve { 
     constructor(props){ 
-        this.input = props.input || [0, 1, 2, 3];
-        this.output = props.output || [2, 5, 7, 1];
+        this.input = props.input || [];
+        this.output = props.output || [];
 
         this.color = props.color || '#0af';
         this.opacity = props.opacity || 1;
