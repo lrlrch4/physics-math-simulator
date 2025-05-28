@@ -30,7 +30,6 @@ const particle = new Particle({
         particle.pos.y = 0;  
     }),
     simulation: (() => {
-
         particle.pos.x += particle.vel.x*timeStep;
         particle.pos.y = 0;
 
@@ -61,8 +60,8 @@ const particle = new Particle({
             const cf = particle.trackList[particle.trackList.length - 1]; 
             const c0 = particle.trackList[particle.trackList.length - 2] ?? cf;
             const dt = saveFrameRate/fps;
-            particle.acc.x = (cf.vel - c0.vel)/ dt;            
-        }        
+            particle.acc.x = (cf.vel - c0.vel)/ dt;                        
+        }              
     })    
 })
 
@@ -93,7 +92,8 @@ const posTimeAxis = new NewAxis({
     axis2Label: 'x',
     axis1Step: 5,
     axis2Step: 2,
-    animation: (() => {
+    animation: (() => {       
+
         posTimeAxis.newOrigin = xy.pixelsToCoordinates({x: 2*w, y: 8*h});
         posTimeAxis.newBasis1 = {x: xy.pixelCoordinateUnit(w), y: 0};
         posTimeAxis.newBasis2 = {x: 0, y: xy.pixelCoordinateUnit(h)};
@@ -126,15 +126,15 @@ const accTimeAxis = new NewAxis({
     animation: (() => {
         accTimeAxis.newOrigin = xy.pixelsToCoordinates({x: 2*w, y: 32*h});
         accTimeAxis.newBasis1 = {x: xy.pixelCoordinateUnit(w), y: 0};
-        accTimeAxis.newBasis2 = {x: 0, y: xy.pixelCoordinateUnit(h)};
+        accTimeAxis.newBasis2 = {x: 0, y: xy.pixelCoordinateUnit(.5*h)};
 
         accTimeAxis.axis1Range = {start: 0, end: .95*wUnits}
-        accTimeAxis.axis2Range = {start: -5, end: 5}
+        accTimeAxis.axis2Range = {start: -10, end: 10}
     })
 })
 
 const posTimeData = new DataCurve({
-    color: 'red',
+    color: '#ff7300',
     simulation: (()=>{ 
         const dataCoordinates = posTimeAxis.getOriginalCoordinates({
             x: t,
@@ -151,7 +151,7 @@ const posTimeData = new DataCurve({
 })
 
 const velTimeData = new DataCurve({
-    color: 'green',
+    color: '#3bff00',
     simulation: (()=>{ 
         const dataCoordinates = velTimeAxis.getOriginalCoordinates({
             x: t,
@@ -168,7 +168,7 @@ const velTimeData = new DataCurve({
 })
 
 const accTimeData = new DataCurve({
-    color: 'yellow',
+    color: '#f6ff00',
     simulation: (()=>{ 
         const dataCoordinates = accTimeAxis.getOriginalCoordinates({
             x: t,

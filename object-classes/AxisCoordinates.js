@@ -109,7 +109,10 @@ class AxisCoordinates {
         ctx.fillStyle = this.labelColor;                
 
         if(this.horizontalAxis){        
-            for(let i = -unitScale*horizontalNegativeLabels; i <= unitScale*horizontalPositiveLabels; i++){
+            for(let i = -unitScale*horizontalNegativeLabels; 
+                i <= unitScale*horizontalPositiveLabels; 
+                i++
+            ){
                 if(i != 0 & i%labelsMultiplicity === 0){
                     hLabelPos.x = i*(1/unitScale)*unit + this.origin.x - this.labelSize;
 
@@ -133,7 +136,10 @@ class AxisCoordinates {
             y: 0
         }
         if(this.verticalAxis){
-            for(let i = -unitScale*verticalNegativeLabels; i < unitScale*verticalPositiveLabels; i++){                        
+            for(let i = -unitScale*verticalNegativeLabels; 
+                i < unitScale*verticalPositiveLabels;
+                i++
+            ){                        
                 if(i != 0 & i%labelsMultiplicity === 0){
                     vLabelPos.y = -i*unit*(1/unitScale) + this.origin.y + this.labelSize
                     if(vLabelPos.x < 0){
@@ -148,11 +154,15 @@ class AxisCoordinates {
                 }
             }
         }
+
     //Draw grid
         if(this.grid){
             //Horizontal lines
             const gridCtx = canvas.getContext('2d');
-            for(let i = -unitScale*horizontalNegativeLabels; i < unitScale*horizontalPositiveLabels; i++){
+            for(let i = -unitScale*horizontalNegativeLabels; 
+                i < unitScale*horizontalPositiveLabels; 
+                i++
+            ){
                 if(i%labelsMultiplicity === 0){
                     gridCtx.save()
                     gridCtx.globalAlpha = this.gridOpacity;
@@ -166,7 +176,10 @@ class AxisCoordinates {
                 }                           
             }
 
-            for(let i = -unitScale*verticalNegativeLabels; i < unitScale*verticalPositiveLabels; i++){  
+            for(let i = -unitScale*verticalNegativeLabels; 
+                i < unitScale*verticalPositiveLabels; 
+                i++
+            ){  
                 if(i%labelsMultiplicity === 0){  
                     gridCtx.save()
                     gridCtx.globalAlpha = this.gridOpacity;         
@@ -213,7 +226,7 @@ class AxisCoordinates {
     //Coordinates methods    
     coordinatesToPixels(coordinates){
         return {
-            x: coordinates.x*unit + this.origin.x,
+            x:  coordinates.x*unit + this.origin.x,
             y: -coordinates.y*unit + this.origin.y
         };
     }

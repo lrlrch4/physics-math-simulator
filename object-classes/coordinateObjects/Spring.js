@@ -39,7 +39,8 @@ class Spring {
             range: {
                 start: 0, 
                 end: length
-            } 
+            }, 
+            color: this.color
         })
         sinCurve.draw();
     }

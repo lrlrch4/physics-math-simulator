@@ -19,7 +19,7 @@ class Curve {
         ctx.lineWidth = this.lineWidth;
 
         for (let pixelX = 0; pixelX < canvas.width; pixelX++) {
-            const coorX = xy.pixelsToCoordiantes({x: pixelX, y: 0}).x
+            const coorX = xy.pixelsToCoordinates({x: pixelX, y: 0}).x
             const coorY = this.mathFunction(coorX);
     
             const pixelY = xy.coordinatesToPixels({x: coorX, y: coorY}).y;

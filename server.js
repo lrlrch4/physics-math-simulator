@@ -19,8 +19,8 @@ const htmlContent =
     `<script src= 'scene-setup/canvasSetup.js'></script>` + '\n' +
     objectClassesHandler.htmlScripts() + '\n' +
     cObjectsHandler.htmlScripts() + '\n' +
-    `<script src = 'scene-setup/animationSetup.js'></script> \n
-    <script src = 'scene-setup/animationHandlers.js'></script>` +
+    `<script src = 'scene-setup/animationSetup.js'></script> \n` + 
+    `<script src = 'scene-setup/animationHandlers.js'></script> \n` +
     `<script src = 'scenes/${SCENE}'></script>` +  '\n' + 
     `<script src = 'scene-setup/sceneExecution.js'></script>`
 ;

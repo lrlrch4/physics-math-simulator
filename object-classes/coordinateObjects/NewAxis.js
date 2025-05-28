@@ -77,13 +77,13 @@ class NewAxis{
         layer.fillStyle = this.color;   
         layer.fillText(
             this.axis1Label,
-            pixels1.x + .25*this.labelSize,
+            pixels1.x + .1*this.labelSize,
             pixels1.y);
 
         const pixels2 = xy.coordinatesToPixels(axis2.ending); 
         layer.fillText(
             this.axis2Label,
-            pixels2.x + .5*this.labelSize,
+            pixels2.x + .2*this.labelSize,
             pixels2.y);
 
         //Horizontal ticks
