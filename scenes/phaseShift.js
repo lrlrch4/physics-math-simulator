@@ -12,23 +12,81 @@ xy.grid = false;
 xy.horizontalAxis = true;
 xy.verticalAxis = true;
 
+const planesNumber = 1;
+const planesDistance = .2;
+const planeHeight = 20;
+
 const w = 2;
 var w0 = 2*w;
 const ganma = .5;
 
 const x0 = 1/Math.sqrt(
     (w0**2 - w**2)**2 + ganma**2 * w**2
-)
+);
+
 const alpha =  Math.atan(
     ganma*w / (w0**2 - w)
 )
 
 
+const waveFunctions = [
+    (x) => Math.sin(w * (t - x))
+];
+
+for (let i = 1; i < planesNumber; i++) {
+    const x0 = 1 / Math.sqrt(
+        (w0 ** 2 - w ** 2) ** 2 + ganma ** 2 * w ** 2
+    );
+    waveFunctions[i] = (x) =>
+        waveFunctions[i - 1](x) + x0 * Math.sin(w * (t - Math.abs(x)) - alpha);
+}
+
+
+
+
 const sourceWave = new Curve({
-    mathFunction: ( 
-        (x)=> Math.sin( w*(t-x))
-    )
+    mathFunction: (x) => {
+        if(x<0){
+            return waveFunctions[0](x);
+        }
+    }
 })
+const waves = [
+    sourceWave
+];
+
+for(let i = 1; i < planesNumber; i++){
+    const newWave = new Curve({
+        mathFunction: (x) => {
+            if(x < (i)*planesDistance  & x > (i-1)*planesDistance){
+                return waveFunctions[i](x);
+            }
+            else{
+                return;
+            }
+        },
+    })    
+    waves.push(newWave);
+}
+
+const planes = [
+
+];
+
+for(let i = 0; i < planesNumber; i++){
+    const newPlane = new Line({
+        origin: {x: i*planesDistance, y: planeHeight/2},
+        ending: {x: i*planesDistance, y: -planeHeight/2},
+        opacity: .5,
+        color: '#ff00bb'
+    })
+    planes.push(newPlane);
+}
+
+
+
+
+
 
 const secondaryWave = new Curve({
     mathFunction: ( 
@@ -36,6 +94,7 @@ const secondaryWave = new Curve({
     ),
     color: '#0fa'
 })
+
 
 const totalWave = new Curve({
     mathFunction: ( 
@@ -89,13 +148,15 @@ const variablesText = new Text ({
 
 
 drawObjects.push(
-    sourceWave,
+    // sourceWave,
     secondaryWave, 
     totalWave, 
     springTop, 
     springDown,
     electron,
-    variablesText
+    variablesText,
+    ...waves, 
+    ...planes
 );
 
 interactiveObjects.push();
