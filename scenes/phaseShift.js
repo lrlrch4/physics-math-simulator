@@ -12,13 +12,13 @@ xy.grid = false;
 xy.horizontalAxis = true;
 xy.verticalAxis = true;
 
-const planesNumber = 1;
-const planesDistance = .2;
+const planesNumber = 200;
+const planesDistance = .05;
 const planeHeight = 20;
 
-const w = 2;
-var w0 = 2*w;
-const ganma = .5;
+const w = 5;
+var w0 = 10*w;
+const ganma = 10;
 
 const x0 = 1/Math.sqrt(
     (w0**2 - w**2)**2 + ganma**2 * w**2
@@ -65,6 +65,7 @@ for(let i = 1; i < planesNumber; i++){
                 return;
             }
         },
+        color: '#ffc900'
     })    
     waves.push(newWave);
 }
@@ -139,7 +140,7 @@ const springDown = new Spring({
 const variablesText = new Text ({
     text: [
         `     source frecuency: w`, 
-        `fundamental frecuency: w0 = ${w0}w`
+        `fundamental frecuency: w0 = ${w0/w}w`
     ],
     pos: {x:100, y: 150},
     absolutePosition: true,
@@ -149,8 +150,8 @@ const variablesText = new Text ({
 
 drawObjects.push(
     // sourceWave,
-    secondaryWave, 
-    totalWave, 
+    // secondaryWave, 
+    // totalWave, 
     springTop, 
     springDown,
     electron,
