@@ -4,12 +4,17 @@ camera =  {x: 500, y: 1700}
 xy.grid = true;
 xy.origin = {x: camera.x, y: camera.y}
 
-const box = new Rectangle({
-    respectTo: 'bottom-left',
+// const box = new Rectangle({
+//     respectTo: 'bottom-left',
+//     width: 5,
+//     height: 5
+// })
+// drawObjects.push(box);
+
+const box = {
     width: 5,
-    height: 5
-})
-drawObjects.push(box);
+    height: 5,
+}
 
 const numberParticles = 400;
 const v = 1;
@@ -135,7 +140,7 @@ const description = new Text({
             average.E  += .5*element.mass*(element.vel.x**2 + element.vel.y**2);
         });
         description.text = Object.entries(average).map(([key, element]) => {
-            return `${key} = ${element.toFixed(2)}`
+            return `<${key}> = ${element.toFixed(2)}`
         });
 
     })
