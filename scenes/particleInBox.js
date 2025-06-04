@@ -26,7 +26,7 @@ const phasesDistributionRandom = (index) => {
             y: speed*Math.cos(angle)
         },
         cRadius: cRadius, 
-        mass: .1*Math.random(), 
+        mass: .1*Math.random()+0.01, 
         speed: speed
     }
     return distribution;
@@ -58,13 +58,13 @@ const phasesDistributionOrdered = (index) => {
         speed: 0
     };     
 
-    if(index > numberParticles - 10){
+    if(index > numberParticles - 2){
         const angle = 2*Math.PI*Math.random();
-        distribution.speed = 1;
+        distribution.speed = 3;
         distribution.vel.x = speed * Math.cos(angle);
         distribution.vel.y = speed * Math.sin(angle);  
         distribution.mass = 20;   
-        distribution.cRadius = 0.2;  
+        distribution.cRadius = 0.1;  
     }
     return distribution;
 }
@@ -78,11 +78,35 @@ const energy = (distributionFunction) => {
     return energy;
 }
 
-
+const kB = 1; // Boltzman constant
+const entropy = (particles, bins = 20) => {
+    const velocitiesX = particles.map(p => p.vel.x);
+    const minVel = Math.min(...velocitiesX);
+    const maxVel = Math.max(...velocitiesX);
+    const binSize = (maxVel - minVel) / bins;
+    
+    const histogram = new Array(bins).fill(0);
+    
+    particles.forEach(p => {
+        const bin = Math.floor((p.vel.x - minVel) / binSize);
+        // Asegurarse de que el bin esté en el rango válido
+        if (bin >= 0 && bin < bins) histogram[bin]++;
+    });
+    
+    let entropy = 0;
+    const totalParticles = particles.length;
+    histogram.forEach(count => {
+        if (count > 0) {
+            const pi = count / totalParticles;
+            entropy -= pi * Math.log(pi);
+        }
+    });    
+    return kB * entropy;
+};
 
 
 const restitutionCoef = 1;
-const distributionFunction = phasesDistributionRandom;
+const distributionFunction = phasesDistributionOrdered;
 const totalEnergy = energy(distributionFunction);
 const particleList = [];
 
@@ -204,7 +228,8 @@ const description = new Text({
             y: 0,
             vx: 0, 
             vy: 0,
-            E: 0,            
+            E: 0,    
+            S: 0,        
         }
         particleList.forEach(element => {
             average.x  += element.pos.x/numberParticles; 
@@ -213,6 +238,9 @@ const description = new Text({
             average.vy += element.vel.y/numberParticles;
             average.E  += .5*element.mass*(element.vel.x**2 + element.vel.y**2);
         });
+
+        average.S = entropy(particleList, 20);
+
         description.text = Object.entries(average).map(([key, element]) => {
             return `${key} = ${element.toFixed(2)}`
         });
