@@ -4,36 +4,107 @@ camera =  {x: 500, y: 1700}
 xy.grid = true;
 xy.origin = {x: camera.x, y: camera.y}
 
-// const box = new Rectangle({
-//     respectTo: 'bottom-left',
-//     width: 5,
-//     height: 5
-// })
-// drawObjects.push(box);
+const numberParticles = 500;
 
-const box = {
-    width: 5,
-    height: 5,
+const box = new Rectangle({
+    origin: {x: 0, y: 0},
+    ending: {x: 5, y: 5}
+});
+
+
+const phasesDistributionRandom = (index) => {
+    const speed = Math.random();
+    const angle = 2*Math.PI*Math.random();
+    const cRadius = .1*Math.random()+.001;
+    const distribution = {
+        pos: {
+                x: cRadius + Math.random()*(box.width - 2*cRadius), 
+                y: cRadius + Math.random()*(box.height - 2*cRadius)
+        },
+        vel: {
+            x: speed*Math.cos(angle), 
+            y: speed*Math.cos(angle)
+        },
+        cRadius: cRadius, 
+        mass: .1*Math.random(), 
+        speed: speed
+    }
+    return distribution;
 }
 
-const numberParticles = 400;
-const v = 1;
-const particleList = [];
+const phasesDistributionOrdered = (index) => {
+    const speed = 1;
+
+    const cols = Math.ceil(Math.sqrt(numberParticles));
+    const rows = Math.ceil(numberParticles / cols);
+
+    const spacingX = box.width / (cols + 1);
+    const spacingY = box.height / (rows + 1);
+
+    const col = index % cols;
+    const row = Math.floor(index / cols);
+
+    const distribution = {
+        pos: {
+            x: spacingX * (col + 1),
+            y: spacingY * (row + 1)
+        },
+        vel: {
+            x: 0,
+            y: 0
+        },
+        cRadius: .05,
+        mass: .5,
+        speed: 0
+    };     
+
+    if(index > numberParticles - 10){
+        const angle = 2*Math.PI*Math.random();
+        distribution.speed = 1;
+        distribution.vel.x = speed * Math.cos(angle);
+        distribution.vel.y = speed * Math.sin(angle);  
+        distribution.mass = 20;   
+        distribution.cRadius = 0.2;  
+    }
+    return distribution;
+}
+
+const energy = (distributionFunction) => {
+    let energy = 0;
+    for(let i = 0; i < numberParticles; i++){
+        const distribution = distributionFunction(i);     
+        energy += .5*distribution.mass*(distribution.speed**2)
+    }
+    return energy;
+}
+
+
+
+
 const restitutionCoef = 1;
+const distributionFunction = phasesDistributionRandom;
+const totalEnergy = energy(distributionFunction);
+const particleList = [];
+
 for(let i = 0; i < numberParticles; i++){
-    const cRadius = .05; 
-    const mass = .1; 
+    const distribution = distributionFunction(i);
+
+    const colorHue = (.5*distribution.mass*(distribution.speed**2) / totalEnergy) * 300;
+    console.log(distribution.speed);
     particleList.push(
         new Particle({
             pos: {
-                x: cRadius + Math.random()*(box.width - 2*cRadius), 
-                y: cRadius + Math.random()*(box.height - 2*cRadius)
+                x: distribution.pos.x, 
+                y: distribution.pos.y
             },
-            vel: {x: v*(2*Math.random()-1), y: v*(2*Math.random()-1)},
+            vel: {
+                x: distribution.vel.x, 
+                y: distribution.vel.y
+            },
             acc: {x: 0, y: 0},
-            radius: cRadius,
-            mass: mass,
-            color: `hsl(${Math.random()*255}, ${100}%, ${50}%)`,
+            radius: distribution.cRadius,
+            mass: distribution.mass,
+            color: `hsl(${colorHue}, ${100}%, ${50}%)`,
             simulation: (() => {
                 particleList[i].vel.y += timeStep*particleList[i].acc.y;
 
@@ -114,6 +185,9 @@ for(let i = 0; i < numberParticles; i++){
                         }
                     }// end of if statement              
                 })// end of for each
+                const speed = (particleList[i].vel.x)**2 + (particleList[i].vel.y)**2;
+                const colorHue = (.5*particleList[i].mass* speed**2 / totalEnergy) * 300;
+                particleList[i].color = `hsl(${colorHue}, ${100}%, ${50}%)`
             }) // end of simulation
         }) //end of object
     )// end of push
@@ -140,12 +214,15 @@ const description = new Text({
             average.E  += .5*element.mass*(element.vel.x**2 + element.vel.y**2);
         });
         description.text = Object.entries(average).map(([key, element]) => {
-            return `<${key}> = ${element.toFixed(2)}`
+            return `${key} = ${element.toFixed(2)}`
         });
 
     })
 })
-drawObjects.push(description);
+drawObjects.push(
+    box,
+    description
+);
 animatedObjects.push(description)
 
 
