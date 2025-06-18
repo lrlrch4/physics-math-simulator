@@ -78,10 +78,10 @@ class Slider {
     onMouseDown(event){
     }
 
-    onMouseMove(){
+    onMouseMove(event){
     }
 
-    onMouseUp(){
+    onMouseUp(event){
 
     }
 

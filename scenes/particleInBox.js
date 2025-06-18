@@ -11,7 +11,6 @@ const box = new Rectangle({
     ending: {x: 5, y: 5}
 });
 
-
 const phasesDistributionRandom = (index) => {
     const speed = Math.random();
     const angle = 2*Math.PI*Math.random();
@@ -53,7 +52,7 @@ const phasesDistributionOrdered = (index) => {
             x: 0,
             y: 0
         },
-        cRadius: .05,
+        cRadius: .025,
         mass: .5,
         speed: 0
     };     
@@ -63,7 +62,7 @@ const phasesDistributionOrdered = (index) => {
         distribution.speed = 3;
         distribution.vel.x = speed * Math.cos(angle);
         distribution.vel.y = speed * Math.sin(angle);  
-        distribution.mass = 20;   
+        distribution.mass = 100;   
         distribution.cRadius = 0.1;  
     }
     return distribution;
@@ -89,7 +88,6 @@ const entropy = (particles, bins = 20) => {
     
     particles.forEach(p => {
         const bin = Math.floor((p.vel.x - minVel) / binSize);
-        // Asegurarse de que el bin esté en el rango válido
         if (bin >= 0 && bin < bins) histogram[bin]++;
     });
     
@@ -105,16 +103,14 @@ const entropy = (particles, bins = 20) => {
 };
 
 
-const restitutionCoef = 1;
+const restitutionCoef = .8;
 const distributionFunction = phasesDistributionOrdered;
 const totalEnergy = energy(distributionFunction);
 const particleList = [];
 
 for(let i = 0; i < numberParticles; i++){
     const distribution = distributionFunction(i);
-
     const colorHue = (.5*distribution.mass*(distribution.speed**2) / totalEnergy) * 300;
-    console.log(distribution.speed);
     particleList.push(
         new Particle({
             pos: {
@@ -244,6 +240,8 @@ const description = new Text({
         description.text = Object.entries(average).map(([key, element]) => {
             return `${key} = ${element.toFixed(2)}`
         });
+
+        description.text.unshift('Average quantities: ');
 
     })
 })

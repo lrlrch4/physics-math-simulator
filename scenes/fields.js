@@ -1,6 +1,6 @@
 backgroundColor = '#000000';
 showSceneData = true;
-unit = 1600;
+unit = 150;
 camera = {
     x: .5*canvas.width, y: .5*canvas.height
 }
@@ -12,19 +12,20 @@ xy.grid = true;
 xy.horizontalAxis = true;
 xy.verticalAxis = true;
 
-const n1 = 5; 
-const n2 = 3;
+
 const scalarField = new ScalarField({
     mathFunction: (
-        (coor) => (coor.x + coor.y)
+        (coor) => (coor.x*Math.cos(coor.x-t))
     ), 
-    // domainRelation: (
-    //     (coor) => (1)
-    // ),
-    stepSize: 500, 
-    opacity: .5
+    domainRelation: (()=>true),
+    stepSize: 100, 
+    opacity: .5,
+    simulation: (() => {
+        scalarField.mathFunction = (coor) => (
+            coor.x*Math.cos(coor.x-t)
+        )        
+    })
 })
-
 
 
 drawObjects.push(
@@ -32,4 +33,6 @@ drawObjects.push(
 );
 interactiveObjects.push();
 animatedObjects.push();
-simulationObjects.push();
+simulationObjects.push(
+    scalarField
+);

@@ -68,9 +68,7 @@ class ScalarField {
                     matrixValues[i][j] = NaN;
                 }
             }   
-        }
-        console.log(matrixValues)
-
+        }     
         
         const map = new FittingMap({ 
             inRange: extremeValues
