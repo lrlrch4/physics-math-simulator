@@ -12,34 +12,6 @@ xy.grid = false; //show coordinates grid
 xy.horizontalAxis = false; //Show horizontal axis in scene
 xy.verticalAxis = false; //Show vertical axis in scene
 
-const fieldStepSize = 20; //simulation setup
-
-var lambda = 50;
-var slitWidth = 1;
-var screenDistance = 100;
-var scale = 10;
-var c = 50;
-var screenWidth = 1000;
-
-
-const setFresnelScene = () => {
-    lambda = 0.05;
-    slitWidth = 100*lambda;
-    screenDistance = (10**4)*lambda;
-    setCameraGeneral('Fresnel');
-    scale = 300;
-    c = .1;
-}
-
-const setFraunhoferScene = () => {
-    lambda = 0.05;
-    slitWidth = 100*lambda;
-    screenDistance = (10**5)*lambda;
-    setCameraGeneral('Fraunhofer');
-    scale = 300;
-    c = .1;
-}
-
 const setCameraGeneral = (scene) => {
     if(scene == 'Fresnel'){
         unit = 3;
@@ -78,6 +50,37 @@ const setCameraScreen = (scene) => {
         drawFrame();
     }
 }
+
+
+const fieldStepSize = 20; //simulation setup
+
+var lambda = 50;
+var slitWidth = 1;
+var screenDistance = 100;
+var scale = 10;
+var c = 50;
+var screenWidth = 1000;
+
+
+const setFresnelScene = () => {
+    lambda = 0.05;
+    slitWidth = 100*lambda;
+    screenDistance = (10**4)*lambda;
+    setCameraGeneral('Fresnel');
+    scale = 300;
+    c = .1;
+}
+
+const setFraunhoferScene = () => {
+    lambda = 0.05;
+    slitWidth = 100*lambda;
+    screenDistance = (10**5)*lambda;
+    setCameraGeneral('Fraunhofer');
+    scale = 300;
+    c = .1;
+}
+
+
 
 setFresnelScene();
 // setFraunhoferScene();

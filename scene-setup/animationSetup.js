@@ -142,10 +142,12 @@ function updateSceneSetup(){
     
     //Handle zoom
     window.addEventListener('wheel', (event) => {
-    
+        if(event.ctrlKey){
+            event.preventDefault();
+        }
         xy.addZoom(event);
         drawFrame();
-    });
+    }, {passive: false});
 
     updateValuesBeforeDrawing = () => {
         animatedObjects.forEach(element => element.animate());
