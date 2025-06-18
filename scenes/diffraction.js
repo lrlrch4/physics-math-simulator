@@ -79,7 +79,7 @@ const setCameraScreen = (scene) => {
     }
 }
 
-// setFresnelScene();
+setFresnelScene();
 // setFraunhoferScene();
 
 const k = 2*Math.PI/lambda;
