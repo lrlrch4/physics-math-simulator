@@ -12,10 +12,18 @@ xy.grid = true;
 xy.horizontalAxis = true;
 xy.verticalAxis = true;
 
-
+const inputData = [];
+const outputData = [];
 
 const dataCurve = new DataCurve({
-
+    animation: (() => {
+        if(Math.ceil(t*60) % 10 == 1){
+            inputData.push(t);
+            outputData.push(Math.random());
+        }
+        dataCurve.input = inputData;
+        dataCurve.output = outputData;
+    }) 
 })
 
 
@@ -23,5 +31,7 @@ drawObjects.push(
     dataCurve
 );
 interactiveObjects.push();
-animatedObjects.push();
+animatedObjects.push(
+    dataCurve
+);
 simulationObjects.push();

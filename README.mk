@@ -49,19 +49,19 @@ class CoordinateObject {
 
 Code to the starting configuration: 
 
-backgroundColor = '#000000';
-showSceneData = true;
-unit = 280;
+backgroundColor = '#000000'; //Background color of the simulation
+showSceneData = true; //Show scene frames, time, resolution, etc. 
+unit = 15; // pixels of a unit in coordinate system
 camera = {
-    x: .5*canvas.width, y: .5*canvas.height
-}
+    x: 980, y: 980
+} //Position of the window camera in window coordinates
 xy.origin = {
     x: camera.x, 
     y: camera.y
-};
-xy.grid = true;
-xy.horizontalAxis = true;
-xy.verticalAxis = true;
+}; //Origin of coordinates position in the window coordinates
+xy.grid = false; //show coordinates grid
+xy.horizontalAxis = false; //Show horizontal axis in scene
+xy.verticalAxis = false; //Show vertical axis in scene
 
 drawObjects.push();
 interactiveObjects.push();
