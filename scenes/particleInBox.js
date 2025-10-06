@@ -32,7 +32,7 @@ const phasesDistributionRandom = (index) => {
 }
 
 const phasesDistributionOrdered = (index) => {
-    const speed = 1;
+    const speed = 2;
 
     const cols = Math.ceil(Math.sqrt(numberParticles));
     const rows = Math.ceil(numberParticles / cols);

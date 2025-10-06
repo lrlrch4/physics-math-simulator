@@ -13,7 +13,7 @@ xy.horizontalAxis = true; //Show horizontal axis in scene
 xy.verticalAxis = true; //Show vertical axis in scene
 
 const n = 100;
-const temperature = 10;
+const temperature = 100;
 const scale = 1;
 const r = 10;
 const iterationsPerFrame = 10;
@@ -27,7 +27,8 @@ const monteCarloStep = () => {
     const currentEnergy = energies[randomIndex];    
    
     const delta = Math.random() < 0.5 ? -1 : 1;
-    const proposedEnergy = currentEnergy + delta;    
+    
+    const proposedEnergy = currentEnergy + delta;   
     
     if (proposedEnergy < 0) return false;    
     
@@ -56,12 +57,10 @@ const oscillatorsSorted = Array.from({ length: n }, (_, index) => {
     });
 });
 
-
 const mt = n / (Math.exp(1/temperature) - 1);
 const tEntropy = n*Math.log((n+mt)/n) + mt*Math.log((n+mt)/mt);
 const tChemPot = - Math.log((mt+n)/n)/Math.log((mt+n)/mt)
 const tCapacity = (mt/n)*(mt+n)*( Math.log((n+mt)/mt) )**2
-
 
 
 const canonicalData = new Text({
@@ -106,8 +105,6 @@ const canonicalData = new Text({
 
     })
 })
-
-
 
 
 
